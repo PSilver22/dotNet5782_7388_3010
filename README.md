@@ -2,4 +2,4 @@
 
 *as he wants*
 
-other Moon!
+No Moon!
