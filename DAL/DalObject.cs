@@ -76,7 +76,7 @@
                 /// </summary>
                 /// <param name="array">Array to create list from</param>
                 /// <returns>String that lists the elements of array</returns>
-                private string ListArrayItems<T>(T[] array) where T : new()
+                private string ListArrayItems<T>(T[] array) where T : struct
                 {
                     // concatenate every element in array into a list
                     string result = "";
