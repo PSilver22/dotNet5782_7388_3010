@@ -9,6 +9,14 @@ namespace DalObject
     public class DalObject
     {
         /// <summary>
+        /// Initializes DataSource
+        /// </summary>
+        public DalObject()
+        {
+            DataSource.Initialize();
+        }
+
+        /// <summary>
         /// Gets item from array with ID equal to key
         /// </summary>
         /// <param name="key">Key to search for</param>
