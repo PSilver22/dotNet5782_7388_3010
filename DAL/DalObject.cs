@@ -1,4 +1,5 @@
-﻿using IDAL.DO;
+﻿using System;
+using IDAL.DO;
 
 namespace DalObject
 {
@@ -53,14 +54,29 @@ namespace DalObject
         }
 
         /// <summary>
-        /// Adds a package to the list of packages
+        /// Creates a new package and adds it to the list of packages
         /// </summary>
-        /// <param name="package">The package to add</param>
-        public void AddPackage(Package package)
+        /// <param name="senderId">The ID of the package's sender</param>
+        /// <param name="targetId">The ID of the package's target</param>
+        /// <param name="weight">The package's weight category</param>
+        /// <param name="priority">The package's priority</param>
+        public void AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
         {
             if (DataSource.Config.CurrentPackagesSize < DataSource.packages.Length)
             {
-                DataSource.packages[DataSource.Config.CurrentPackagesSize++] = package;
+                DataSource.packages[DataSource.Config.CurrentPackagesSize] = new Package(
+                    id: DataSource.Config.CurrentPackagesSize + 1,
+                    senderId,
+                    targetId,
+                    weight,
+                    priority,
+                    // Use UtcNow instead of Now to avoid portability issues
+                    DateTime.UtcNow,
+                    0,
+                    null,
+                    null,
+                    null);
+                ++DataSource.Config.CurrentPackagesSize;
             }
         }
 

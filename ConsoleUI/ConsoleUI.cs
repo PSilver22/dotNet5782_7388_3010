@@ -1,8 +1,11 @@
 ﻿using System;
+using IDAL.DO;
 namespace ConsoleUI
 {
     public class ConsoleUI
     {
+        static DalObject.DalObject dalObject = new DalObject.DalObject();
+
         const string helpText =
 @"Available commands:
 command:                        description:                                    options:
@@ -174,13 +177,36 @@ e[x]it                          Quit the program
 
         static void showHelp() => Console.WriteLine(helpText);
 
-        static void addBaseStation() { }
 
-        static void addDrone() { }
+        static void addBaseStation() => dalObject.AddStation(
+            new Station(
+                Utils.PromptInt("id: "),
+                Utils.Prompt("name: "),
+                Utils.PromptDouble("longitude: "),
+                Utils.PromptDouble("latitude: "),
+                Utils.PromptInt("# of charge spots: ")));
 
-        static void addCustomer() { }
+        static void addDrone() => dalObject.AddDrone(
+            new Drone(
+                Utils.PromptInt("id: "),
+                Utils.Prompt("model: "),
+                Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
+                Utils.PromptEnum<DroneStatus>("status [free|maintenance|delivery]: "),
+                Utils.PromptDouble("battery level: ")));
 
-        static void addPackage() { }
+        static void addCustomer() => dalObject.AddCustomer(
+            new Customer(
+                Utils.PromptInt("id: "),
+                Utils.Prompt("name: "),
+                Utils.Prompt("phone: "),
+                Utils.PromptDouble("longitude: "),
+                Utils.PromptDouble("latitude: ")));
+
+        static void addPackage() => dalObject.AddPackage(
+            Utils.PromptInt("sender id: "),
+            Utils.PromptInt("target id: "),
+            Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
+            Utils.PromptEnum<Priority>("priority [regular|fast|emergency]: "));
 
 
         static void assignPackage() { }

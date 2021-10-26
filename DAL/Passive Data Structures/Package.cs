@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDAL
 {
@@ -20,9 +16,9 @@ namespace IDAL
             public Priority priority { get; set; }
             public DateTime Requested { get; set; }
             public int DroneId { get; set; }
-            public DateTime Scheduled { get; set; }
-            public DateTime PickedUp { get; set; }
-            public DateTime Delivered { get; set; }
+            public DateTime? Scheduled { get; set; }
+            public DateTime? PickedUp { get; set; }
+            public DateTime? Delivered { get; set; }
 
             public Package(
                 int id,
@@ -32,9 +28,9 @@ namespace IDAL
                 Priority priority,
                 DateTime requested,
                 int droneId,
-                DateTime scheduled,
-                DateTime pickedUp,
-                DateTime delivered)
+                DateTime? scheduled,
+                DateTime? pickedUp,
+                DateTime? delivered)
             {
                 Id = id;
                 SenderId = senderId;
@@ -64,9 +60,9 @@ namespace IDAL
                     $"Priority: {priority.ToString()}\n" +
                     $"Date requested: {Requested.ToLongDateString()}\n" +
                     $"Drone ID: {DroneId}\n" +
-                    $"Scheduled date: {Scheduled.ToLongDateString()}\n" +
-                    $"Pick up date: {PickedUp.ToLongDateString()}\n" +
-                    $"Delivered date: {Delivered.ToLongDateString()}\n";
+                    $"Scheduled date: {Scheduled?.ToLongDateString() ?? "N/A"}\n" +
+                    $"Pick up date: {PickedUp?.ToLongDateString() ?? "N/A"}\n" +
+                    $"Delivered date: {Delivered?.ToLongDateString() ?? "N/A"}\n";
             }
         }
     }
