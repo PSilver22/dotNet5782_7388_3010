@@ -13,7 +13,7 @@ namespace IDAL
             public int SenderId { get; set; }
             public int TargetId { get; set; }
             public WeightCategory Weight { get; set; }
-            public Priority priority { get; set; }
+            public Priority Priority { get; set; }
             public DateTime Requested { get; set; }
             public int DroneId { get; set; }
             public DateTime? Scheduled { get; set; }
@@ -36,7 +36,7 @@ namespace IDAL
                 SenderId = senderId;
                 TargetId = targetId;
                 Weight = weight;
-                this.priority = priority;
+                Priority = priority;
                 Requested = requested;
                 DroneId = droneId;
                 Scheduled = scheduled;
@@ -57,7 +57,7 @@ namespace IDAL
                     $"Sender ID: {SenderId}\n" +
                     $"Target ID: {TargetId}\n" +
                     $"Weight class: {Weight.ToString()}\n" +
-                    $"Priority: {priority.ToString()}\n" +
+                    $"Priority: {Priority.ToString()}\n" +
                     $"Date requested: {Requested.ToLongDateString()}\n" +
                     $"Drone ID: {DroneId}\n" +
                     $"Scheduled date: {Scheduled?.ToLongDateString() ?? "N/A"}\n" +
