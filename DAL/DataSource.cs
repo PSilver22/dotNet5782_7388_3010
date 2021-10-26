@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IDAL.DO;
 
 namespace DalObject
@@ -18,6 +19,8 @@ namespace DalObject
         internal static Customer[] customers = new Customer[MaxCustomers];
         internal static Package[] packages = new Package[MaxPackages];
 
+        internal static List<DroneCharge> droneCharges = new();
+
         private static Random randomGenerator = new Random(DateTime.Now.Millisecond);
 
         /// <summary>
@@ -35,12 +38,12 @@ namespace DalObject
             for (int index = 0; index < Config.CurrentDronesSize; ++index)
             {
                 // create a randomized drone
-                drones[index] = new Drone() 
+                drones[index] = new Drone()
                 {
                     Id = index,
                     Model = "Model " + index,
-                    MaxWeight = (WeightCategory) randomGenerator.Next(3),
-                    Status = (DroneStatus) randomGenerator.Next(3),
+                    MaxWeight = (WeightCategory)randomGenerator.Next(3),
+                    Status = (DroneStatus)randomGenerator.Next(3),
                     Battery = randomGenerator.NextDouble()
                 };
             }
