@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-	namespace DO 
-	{
-		public enum WeightCategory { heavy, medium, light };
+    namespace DO
+    {
+        public enum WeightCategory { heavy = 3, medium = 2, light = 1 };
 
-		public enum DroneStatus { free, maintenance, delivery };
+        public enum DroneStatus { free, maintenance, delivery };
 
-		public enum Priority { regular, fast, emergency };
-	}
+        public enum Priority { regular, fast, emergency };
+    }
 }
