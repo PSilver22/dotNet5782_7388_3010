@@ -140,7 +140,10 @@ e[x]it                          Quit the program
                                 {
                                     case "b":
                                     case "base-stations":
-                                        listBaseStations();
+                                        if (components.Length > 2 && (components[2] == "-u" || components[2] == "--unoccupied"))
+                                            listUnoccupiedBaseStations();
+                                        else
+                                            listBaseStations();
                                         continue;
 
                                     case "d":
@@ -155,7 +158,10 @@ e[x]it                          Quit the program
 
                                     case "p":
                                     case "packages":
-                                        listPackages();
+                                        if (components.Length > 2 && (components[2] == "-u" || components[2] == "--unassigned"))
+                                            listUnassignedPackages();
+                                        else
+                                            listPackages();
                                         continue;
 
                                     default:
@@ -178,63 +184,138 @@ e[x]it                          Quit the program
         static void showHelp() => Console.WriteLine(helpText);
 
 
-        static void addBaseStation() => dalObject.AddStation(
-            new Station(
-                Utils.PromptInt("id: "),
-                Utils.Prompt("name: "),
-                Utils.PromptDouble("longitude: "),
-                Utils.PromptDouble("latitude: "),
-                Utils.PromptInt("# of charge spots: ")));
+        static void addBaseStation()
+        {
+            if (dalObject.AddStation(
+                new Station(
+                    Utils.PromptInt("id: "),
+                    Utils.Prompt("name: "),
+                    Utils.PromptDouble("longitude: "),
+                    Utils.PromptDouble("latitude: "),
+                    Utils.PromptInt("# of charge spots: "))))
+            {
+                Console.WriteLine("Station added successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add station.");
+            }
+        }
 
-        static void addDrone() => dalObject.AddDrone(
-            new Drone(
-                Utils.PromptInt("id: "),
-                Utils.Prompt("model: "),
+        static void addDrone()
+        {
+            if (dalObject.AddDrone(
+                new Drone(
+                    Utils.PromptInt("id: "),
+                    Utils.Prompt("model: "),
+                    Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
+                    Utils.PromptEnum<DroneStatus>("status [free|maintenance|delivery]: "),
+                    Utils.PromptDouble("battery level: "))))
+            {
+                Console.WriteLine("Drone added successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add drone.");
+            }
+        }
+
+        static void addCustomer()
+        {
+            if (dalObject.AddCustomer(
+                new Customer(
+                    Utils.PromptInt("id: "),
+                    Utils.Prompt("name: "),
+                    Utils.Prompt("phone: "),
+                    Utils.PromptDouble("longitude: "),
+                    Utils.PromptDouble("latitude: "))))
+            {
+                Console.WriteLine("Customer added successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add customer.");
+            }
+        }
+
+        static void addPackage()
+        {
+            if (dalObject.AddPackage(
+                Utils.PromptInt("sender id: "),
+                Utils.PromptInt("target id: "),
                 Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
-                Utils.PromptEnum<DroneStatus>("status [free|maintenance|delivery]: "),
-                Utils.PromptDouble("battery level: ")));
+                Utils.PromptEnum<Priority>("priority [regular|fast|emergency]: ")))
+            {
+                Console.WriteLine("Package added successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add package.");
+            }
+        }
 
-        static void addCustomer() => dalObject.AddCustomer(
-            new Customer(
-                Utils.PromptInt("id: "),
-                Utils.Prompt("name: "),
-                Utils.Prompt("phone: "),
-                Utils.PromptDouble("longitude: "),
-                Utils.PromptDouble("latitude: ")));
+        static void assignPackage()
+        {
+            var id = Utils.PromptInt("package id: ");
+            if (dalObject.AssignPackage(id))
+            {
+                Console.WriteLine("Assigned package to a drone.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to assign package to a drone.");
+            }
+        }
 
-        static void addPackage() => dalObject.AddPackage(
-            Utils.PromptInt("sender id: "),
-            Utils.PromptInt("target id: "),
-            Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
-            Utils.PromptEnum<Priority>("priority [regular|fast|emergency]: "));
+        static void collectPackage() => dalObject.CollectPackage(
+            Utils.PromptInt("package id: "));
 
+        static void providePackage() => dalObject.ProvidePackage(
+            Utils.PromptInt("package id: "));
 
-        static void assignPackage() { }
+        static void chargeDrone()
+        {
+            var droneId = Utils.PromptInt("drone id: ");
 
-        static void collectPackage() { }
+            Console.WriteLine("Choose a charging station:");
+            Console.WriteLine(dalObject.GetUnoccupiedStationsList());
 
-        static void providePackage() { }
+            dalObject.ChargeDrone(droneId, Utils.PromptInt("station id: "));
+        }
 
-        static void chargeDrone() { }
-
-        static void releaseDrone() { }
-
-
-        static void displayBaseStation(int id) { }
-
-        static void displayDrone(int id) { }
-
-        static void displayCustomer(int id) { }
-
-        static void displayPackage(int id) { }
+        static void releaseDrone() => dalObject.ReleaseDrone(
+            Utils.PromptInt("drone id: "));
 
 
-        static void listBaseStations() { }
+        static void displayBaseStation(int id) =>
+            Console.WriteLine(dalObject.GetStation(id));
 
-        static void listDrones() { }
+        static void displayDrone(int id) =>
+            Console.WriteLine(dalObject.GetDrone(id));
 
-        static void listCustomers() { }
+        static void displayCustomer(int id) =>
+            Console.WriteLine(dalObject.GetCustomer(id));
 
-        static void listPackages() { }
+        static void displayPackage(int id) =>
+            Console.WriteLine(dalObject.GetPackage(id));
+
+
+        static void listBaseStations() =>
+            Console.WriteLine(dalObject.GetStationList());
+
+        static void listUnoccupiedBaseStations() =>
+            Console.WriteLine(dalObject.GetUnoccupiedStationsList());
+
+        static void listDrones() =>
+            Console.WriteLine(dalObject.GetDroneList());
+
+        static void listCustomers() =>
+            Console.WriteLine(dalObject.GetCustomerList());
+
+        static void listPackages() =>
+            Console.WriteLine(dalObject.GetPackageList());
+
+        static void listUnassignedPackages() =>
+            Console.WriteLine(dalObject.GetUnassignedPackageList());
     }
 }

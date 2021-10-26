@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using IDAL.DO;
 
 namespace DalObject
@@ -21,36 +22,45 @@ namespace DalObject
         /// Adds a station to the list of base stations
         /// </summary>
         /// <param name="station">The station to add</param>
-        public void AddStation(Station station)
+        /// <returns>true if the station was successfully added, false otherwise</returns>
+        public bool AddStation(Station station)
         {
             if (DataSource.Config.CurrentStationsSize < DataSource.stations.Length)
             {
                 DataSource.stations[DataSource.Config.CurrentStationsSize++] = station;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
         /// Adds a drone to the list of drones
         /// </summary>
         /// <param name="drone">The drone to add</param>
-        public void AddDrone(Drone drone)
+        /// <returns>true if the drone was successfully added, false otherwise</returns>
+        public bool AddDrone(Drone drone)
         {
             if (DataSource.Config.CurrentDronesSize < DataSource.drones.Length)
             {
                 DataSource.drones[DataSource.Config.CurrentDronesSize++] = drone;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
         /// Adds a customer to the list of customers
         /// </summary>
         /// <param name="customer">The customer to add</param>
-        public void AddCustomer(Customer customer)
+        /// <returns>true if the customer was successfully added, false otherwise</returns>
+        public bool AddCustomer(Customer customer)
         {
             if (DataSource.Config.CurrentCustomersSize < DataSource.customers.Length)
             {
                 DataSource.customers[DataSource.Config.CurrentCustomersSize++] = customer;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -60,7 +70,8 @@ namespace DalObject
         /// <param name="targetId">The ID of the package's target</param>
         /// <param name="weight">The package's weight category</param>
         /// <param name="priority">The package's priority</param>
-        public void AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
+        /// <returns>true if the package was successfully added, false otherwise</returns>
+        public bool AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
         {
             if (DataSource.Config.CurrentPackagesSize < DataSource.packages.Length)
             {
@@ -77,7 +88,116 @@ namespace DalObject
                     null,
                     null);
                 ++DataSource.Config.CurrentPackagesSize;
+                return true;
             }
+            return false;
+        }
+
+        /// <summary>
+        /// Assigns a package to a drone
+        /// </summary>
+        /// <param name="packageId">The ID of the package</param>
+        /// <returns>true if the package was successfully assigned to a drone, false otherwise</returns>
+        public bool AssignPackage(int packageId)
+        {
+            var package = GetPackage(packageId);
+            //var drone = Array.Find(
+            //    DataSource.drones[0..DataSource.Config.CurrentDronesSize],
+            //    d => d.Status == DroneStatus.free && d.MaxWeight >= package.Weight);
+
+            // Find a free drone with the minimum required weight, in order to
+            // efficiently assign more capable drones.
+            Drone? drone = null;
+            foreach (var d in DataSource.drones[0..DataSource.Config.CurrentDronesSize])
+            {
+                if (d.Status == DroneStatus.free)
+                {
+                    if (d.MaxWeight == package.Weight)
+                    {
+                        drone = d;
+                        break;
+                    }
+
+                    if (d.MaxWeight > package.Weight)
+                    {
+                        // If this is the first available drone, or a better choice
+                        // use it.
+                        if (drone is null || drone?.MaxWeight > d.MaxWeight)
+                        {
+                            drone = d;
+                        }
+                    }
+                }
+            }
+
+            if (drone is null) return false;
+
+            Drone selectedDrone = drone.Value;
+
+            package.DroneId = selectedDrone.Id;
+            package.Scheduled = DateTime.UtcNow;
+
+            selectedDrone.Status = DroneStatus.delivery;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Collects a package that's been assigned to a drone
+        /// </summary>
+        /// <param name="packageId">The ID of the package to collect</param>
+        public void CollectPackage(int packageId)
+        {
+            var package = GetPackage(packageId);
+            if (package.Scheduled is not null)
+                package.PickedUp = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Provide a package that's been collected by a drone to the customer
+        /// </summary>
+        /// <param name="packageId">The ID of the package to provide</param>
+        public void ProvidePackage(int packageId)
+        {
+            var package = GetPackage(packageId);
+            if (package.PickedUp is not null)
+            {
+                // Set the delivery time and mark the drone as free
+                package.Delivered = DateTime.UtcNow;
+                var drone = GetDrone(package.DroneId);
+                drone.Status = DroneStatus.free;
+            }
+        }
+
+        /// <summary>
+        /// Sends a drone to a charging station
+        /// </summary>
+        /// <param name="droneId">The ID of the drone</param>
+        /// <param name="stationId">The ID of the station</param>
+        public void ChargeDrone(int droneId, int stationId)
+        {
+            var station = GetStation(stationId);
+
+            if (station.ChargeSlots > 0)
+            {
+                var droneCharge = new DroneCharge(droneId, stationId);
+
+                DataSource.droneCharges.Add(droneCharge);
+
+                station.ChargeSlots--;
+            }
+        }
+
+        /// <summary>
+        /// Releases a drone from a charging station
+        /// </summary>
+        /// <param name="droneId">The ID of the drone</param>
+        public void ReleaseDrone(int droneId)
+        {
+            var droneChargeIndex = DataSource.droneCharges.FindIndex(dc => dc.DroneId == droneId);
+            var station = GetStation(DataSource.droneCharges[droneChargeIndex].StationId);
+            station.ChargeSlots++;
+            DataSource.droneCharges.RemoveAt(droneChargeIndex);
         }
 
         /// <summary>
@@ -174,6 +294,20 @@ namespace DalObject
         }
 
         /// <summary>
+        /// Creates a string with the information for every unoccupied station in the stations list
+        /// </summary>
+        /// <returns>
+        /// string with the information for every unoccupied station
+        /// </returns>
+        public string GetUnoccupiedStationsList()
+        {
+            return string.Join(
+                "\n",
+                DataSource.stations[0..DataSource.Config.CurrentStationsSize]
+                    .Where(s => s.ChargeSlots > 0));
+        }
+
+        /// <summary>
         /// Creates a string with the information for every drone in the drones list
         /// </summary>
         /// <returns>
@@ -193,6 +327,20 @@ namespace DalObject
         public string GetPackageList()
         {
             return ListArrayItems<Package>(DataSource.packages, DataSource.Config.CurrentPackagesSize);
+        }
+
+        /// <summary>
+        /// Creates a string with the information for every unassigned package in the packages list
+        /// </summary>
+        /// <returns>
+        /// string with the information for every unassigned package
+        /// </returns>
+        public string GetUnassignedPackageList()
+        {
+            return string.Join(
+                "\n",
+                DataSource.packages[0..DataSource.Config.CurrentPackagesSize]
+                    .Where(p => p.DroneId == 0));
         }
 
         /// <summary>
