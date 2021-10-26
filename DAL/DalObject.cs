@@ -17,6 +17,54 @@ namespace DalObject
         }
 
         /// <summary>
+        /// Adds a station to the list of base stations
+        /// </summary>
+        /// <param name="station">The station to add</param>
+        public void AddStation(Station station)
+        {
+            if (DataSource.Config.CurrentStationsSize < DataSource.stations.Length)
+            {
+                DataSource.stations[DataSource.Config.CurrentStationsSize++] = station;
+            }
+        }
+
+        /// <summary>
+        /// Adds a drone to the list of drones
+        /// </summary>
+        /// <param name="drone">The station to add</param>
+        public void AddDrone(Drone drone)
+        {
+            if (DataSource.Config.CurrentDronesSize < DataSource.drones.Length)
+            {
+                DataSource.drones[DataSource.Config.CurrentDronesSize++] = drone;
+            }
+        }
+
+        /// <summary>
+        /// Adds a customer to the list of customers
+        /// </summary>
+        /// <param name="customer">The station to add</param>
+        public void AddCustomer(Customer customer)
+        {
+            if (DataSource.Config.CurrentCustomersSize < DataSource.customers.Length)
+            {
+                DataSource.customers[DataSource.Config.CurrentCustomersSize++] = customer;
+            }
+        }
+
+        /// <summary>
+        /// Adds a station to the list of base stations
+        /// </summary>
+        /// <param name="package">The station to add</param>
+        public void AddPackage(Package package)
+        {
+            if (DataSource.Config.CurrentPackagesSize < DataSource.packages.Length)
+            {
+                DataSource.packages[DataSource.Config.CurrentPackagesSize++] = package;
+            }
+        }
+
+        /// <summary>
         /// Gets item from array with ID equal to key
         /// </summary>
         /// <param name="key">Key to search for</param>
@@ -141,5 +189,5 @@ namespace DalObject
         {
             return ListArrayItems<Customer>(DataSource.customers, DataSource.Config.CurrentCustomersSize);
         }
-	}
+    }
 }
