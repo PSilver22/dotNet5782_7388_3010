@@ -31,7 +31,7 @@ namespace DalObject
         /// <summary>
         /// Adds a drone to the list of drones
         /// </summary>
-        /// <param name="drone">The station to add</param>
+        /// <param name="drone">The drone to add</param>
         public void AddDrone(Drone drone)
         {
             if (DataSource.Config.CurrentDronesSize < DataSource.drones.Length)
@@ -43,7 +43,7 @@ namespace DalObject
         /// <summary>
         /// Adds a customer to the list of customers
         /// </summary>
-        /// <param name="customer">The station to add</param>
+        /// <param name="customer">The customer to add</param>
         public void AddCustomer(Customer customer)
         {
             if (DataSource.Config.CurrentCustomersSize < DataSource.customers.Length)
@@ -53,9 +53,9 @@ namespace DalObject
         }
 
         /// <summary>
-        /// Adds a station to the list of base stations
+        /// Adds a package to the list of packages
         /// </summary>
-        /// <param name="package">The station to add</param>
+        /// <param name="package">The package to add</param>
         public void AddPackage(Package package)
         {
             if (DataSource.Config.CurrentPackagesSize < DataSource.packages.Length)
