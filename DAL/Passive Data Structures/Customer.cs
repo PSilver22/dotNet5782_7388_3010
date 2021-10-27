@@ -34,8 +34,8 @@
                     $"Customer {Id}:\n" +
                     $"Name: {Name}\n" +
                     $"Phone: {Phone}\n" +
-                    $"Longitude: {Longitude}\n" +
-                    $"Latitude: {Latitude}\n";
+                    $"Longitude: {FormatUtils.Coordinates.Sexagesimal(Longitude, FormatUtils.Coordinates.Axis.longitude)}\n" +
+                    $"Latitude: {FormatUtils.Coordinates.Sexagesimal(Latitude, FormatUtils.Coordinates.Axis.latitude)}\n";
             }
         }
     }
