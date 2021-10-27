@@ -315,7 +315,7 @@ namespace DalObject
         /// </returns>
         public string GetDroneList()
         {
-            return ListArrayItems<Drone>(DataSource.drones, DataSource.Config.CurrentCustomersSize);
+            return ListArrayItems<Drone>(DataSource.drones, DataSource.Config.CurrentDronesSize);
         }
 
         /// <summary>
