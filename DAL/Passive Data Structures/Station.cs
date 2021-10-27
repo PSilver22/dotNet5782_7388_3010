@@ -35,8 +35,8 @@
                     $"Station: {Id}\n" +
                     $"Name: {Name}\n" +
                     $"Longitude: {FormatUtils.Coordinates.Sexagesimal(Longitude, FormatUtils.Coordinates.Axis.longitude)}\n" +
-                    $"Latitude: {FormatUtils.Coordinates.Sexagesimal(Latitude, FormatUtils.Coordinates.Axis.latitude)}\n";
-                $"Charge slots: {ChargeSlots}\n";
+                    $"Latitude: {FormatUtils.Coordinates.Sexagesimal(Latitude, FormatUtils.Coordinates.Axis.latitude)}\n" +
+                    $"Charge slots: {ChargeSlots}\n";
             }
         }
     }
