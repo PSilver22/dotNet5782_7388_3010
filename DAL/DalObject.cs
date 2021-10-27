@@ -100,21 +100,19 @@ namespace DalObject
         /// <returns>true if the package was successfully assigned to a drone, false otherwise</returns>
         public bool AssignPackage(int packageId)
         {
-            var package = GetPackage(packageId);
-            //var drone = Array.Find(
-            //    DataSource.drones[0..DataSource.Config.CurrentDronesSize],
-            //    d => d.Status == DroneStatus.free && d.MaxWeight >= package.Weight);
+            ref var package = ref GetPackage(packageId);
 
             // Find a free drone with the minimum required weight, in order to
             // efficiently assign more capable drones.
-            Drone? drone = null;
-            foreach (var d in DataSource.drones[0..DataSource.Config.CurrentDronesSize])
+            int droneIndex = -1;
+            for (var i = 0; i < DataSource.Config.CurrentDronesSize; i++)
             {
+                var d = DataSource.drones[i];
                 if (d.Status == DroneStatus.free)
                 {
                     if (d.MaxWeight == package.Weight)
                     {
-                        drone = d;
+                        droneIndex = i;
                         break;
                     }
 
@@ -122,22 +120,22 @@ namespace DalObject
                     {
                         // If this is the first available drone, or a better choice
                         // use it.
-                        if (drone is null || drone?.MaxWeight > d.MaxWeight)
+                        if (droneIndex == -1 || DataSource.drones[droneIndex].MaxWeight > d.MaxWeight)
                         {
-                            drone = d;
+                            droneIndex = i;
                         }
                     }
                 }
             }
 
-            if (drone is null) return false;
+            if (droneIndex == -1) return false;
 
-            Drone selectedDrone = drone.Value;
+            ref Drone drone = ref DataSource.drones[droneIndex];
 
-            package.DroneId = selectedDrone.Id;
+            package.DroneId = drone.Id;
             package.Scheduled = DateTime.UtcNow;
 
-            selectedDrone.Status = DroneStatus.delivery;
+            drone.Status = DroneStatus.delivery;
 
             return true;
         }
@@ -148,7 +146,7 @@ namespace DalObject
         /// <param name="packageId">The ID of the package to collect</param>
         public void CollectPackage(int packageId)
         {
-            var package = GetPackage(packageId);
+            ref var package = ref GetPackage(packageId);
             if (package.Scheduled is not null)
                 package.PickedUp = DateTime.UtcNow;
         }
@@ -159,12 +157,12 @@ namespace DalObject
         /// <param name="packageId">The ID of the package to provide</param>
         public void ProvidePackage(int packageId)
         {
-            var package = GetPackage(packageId);
+            ref var package = ref GetPackage(packageId);
             if (package.PickedUp is not null)
             {
                 // Set the delivery time and mark the drone as free
                 package.Delivered = DateTime.UtcNow;
-                var drone = GetDrone(package.DroneId);
+                ref var drone = ref GetDrone(package.DroneId);
                 drone.Status = DroneStatus.free;
             }
         }
@@ -176,7 +174,7 @@ namespace DalObject
         /// <param name="stationId">The ID of the station</param>
         public void ChargeDrone(int droneId, int stationId)
         {
-            var station = GetStation(stationId);
+            ref var station = ref GetStation(stationId);
 
             if (station.ChargeSlots > 0)
             {
@@ -195,7 +193,7 @@ namespace DalObject
         public void ReleaseDrone(int droneId)
         {
             var droneChargeIndex = DataSource.droneCharges.FindIndex(dc => dc.DroneId == droneId);
-            var station = GetStation(DataSource.droneCharges[droneChargeIndex].StationId);
+            ref var station = ref GetStation(DataSource.droneCharges[droneChargeIndex].StationId);
             station.ChargeSlots++;
             DataSource.droneCharges.RemoveAt(droneChargeIndex);
         }
@@ -205,42 +203,43 @@ namespace DalObject
         /// </summary>
         /// <param name="key">Key to search for</param>
         /// <param name="array">Array to search within</param>
-        /// <returns>element with ID equal to key. default value if key isn't found</returns>
-        private T GetItemByKey<T>(int key, T[] array, int size) where T : IIdentifiable
+        /// <returns>element with ID equal to key. throws if key isn't found</returns>
+        private ref T GetItemByKey<T>(int key, T[] array, int size) where T : IIdentifiable
         {
             // search for element in array with id equal to key
             for (int index = 0; index < size; ++index)
             {
-                T element = array[index];
+                ref T element = ref array[index];
 
                 if (element.Id == key)
                 {
-                    return element;
+                    return ref element;
                 }
             }
 
-            // if an element with id is not found, return default
-            return default;
+            // if an element with id is not found, throw an exception
+            // These should really be classes...
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// gets a station by id from the stations array
         /// </summary>
         /// <param name="id">id of the station</param>
-        /// <returns>Station with the given id if found. null otherwise</returns>
-        public Station GetStation(int id)
+        /// <returns>Station with the given id if found. throws otherwise</returns>
+        public ref Station GetStation(int id)
         {
-            return GetItemByKey<Station>(id, DataSource.stations, DataSource.Config.CurrentStationsSize);
+            return ref GetItemByKey<Station>(id, DataSource.stations, DataSource.Config.CurrentStationsSize);
         }
 
         /// <summary>
         /// gets a drone by id from the drones array
         /// </summary>
         /// <param name="id">id of the drone</param>
-        /// <returns>Drone with the given id if found. null otherwise</returns>
-        public Drone GetDrone(int id)
+        /// <returns>Drone with the given id if found. throws otherwise</returns>
+        public ref Drone GetDrone(int id)
         {
-            return GetItemByKey<Drone>(id, DataSource.drones, DataSource.Config.CurrentDronesSize);
+            return ref GetItemByKey<Drone>(id, DataSource.drones, DataSource.Config.CurrentDronesSize);
         }
 
         /// <summary>
@@ -248,9 +247,9 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the customer</param>
         /// <returns>Customer with the given id if found. null otherwise</returns>
-        public Customer GetCustomer(int id)
+        public ref Customer GetCustomer(int id)
         {
-            return GetItemByKey<Customer>(id, DataSource.customers, DataSource.Config.CurrentCustomersSize);
+            return ref GetItemByKey<Customer>(id, DataSource.customers, DataSource.Config.CurrentCustomersSize);
         }
 
         /// <summary>
@@ -258,9 +257,9 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the package</param>
         /// <returns>Package with the given id if found. null otherwise</returns>
-        public Package GetPackage(int id)
+        public ref Package GetPackage(int id)
         {
-            return GetItemByKey<Package>(id, DataSource.packages, DataSource.Config.CurrentPackagesSize);
+            return ref GetItemByKey<Package>(id, DataSource.packages, DataSource.Config.CurrentPackagesSize);
         }
 
         /// <summary>
