@@ -82,22 +82,22 @@ e[x]it                          Quit the program
                         case "s":
                         case "assign-package":
                             assignPackage();
-                            break;
+                            continue;
 
                         case "c":
                         case "collect-package":
                             collectPackage();
-                            break;
+                            continue;
 
                         case "p":
                         case "provide-package":
                             providePackage();
-                            break;
+                            continue;
 
                         case "g":
                         case "charge-drone":
                             chargeDrone();
-                            break;
+                            continue;
 
                         case "r":
                         case "release-drone":
