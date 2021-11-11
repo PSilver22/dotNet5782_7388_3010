@@ -9,15 +9,15 @@ namespace DalObject
     /// </summary>
     public class DataSource
     {
-        const int MaxDrones = 10;
-        const int MaxStations = 5;
-        const int MaxCustomers = 100;
-        const int MaxPackages = 1000;
+        internal const int MaxDrones = 10;
+        internal const int MaxStations = 5;
+        internal const int MaxCustomers = 100;
+        internal const int MaxPackages = 1000;
 
-        internal static Drone[] drones = new Drone[MaxDrones];
-        internal static Station[] stations = new Station[MaxStations];
-        internal static Customer[] customers = new Customer[MaxCustomers];
-        internal static Package[] packages = new Package[MaxPackages];
+        internal static List<Drone> drones = new();
+        internal static List<Station> stations = new();
+        internal static List<Customer> customers = new();
+        internal static List<Package> packages = new();
 
         internal static List<DroneCharge> droneCharges = new();
 
@@ -29,73 +29,69 @@ namespace DalObject
         public static void Initialize()
         {
             // Set the sizes of all arrays to a random number
-            Config.CurrentDronesSize = randomGenerator.Next(5, MaxDrones);
-            Config.CurrentStationsSize = randomGenerator.Next(2, MaxStations);
-            Config.CurrentCustomersSize = randomGenerator.Next(10, MaxCustomers);
-            Config.CurrentPackagesSize = randomGenerator.Next(5, MaxPackages);
+            int dronesSize = randomGenerator.Next(5, MaxDrones);
+            int stationsSize = randomGenerator.Next(2, MaxStations);
+            int customersSize = randomGenerator.Next(10, MaxCustomers);
+            int packagesSize = randomGenerator.Next(5, MaxPackages);
 
             // initialize drone array
-            for (int index = 0; index < Config.CurrentDronesSize; ++index)
+            for (int count = 0; count < dronesSize; ++count)
             {
                 // create a randomized drone
-                drones[index] = new Drone()
+                drones.Add(new Drone()
                 {
-                    Id = index,
-                    Model = "Model " + index,
+                    Id = count,
+                    Model = "Model " + count,
                     MaxWeight = (WeightCategory)randomGenerator.Next(3),
                     Status = (DroneStatus)randomGenerator.Next(3),
                     Battery = randomGenerator.NextDouble()
-                };
+                });
             }
 
             // initialize station array
-            for (int index = 0; index < Config.CurrentStationsSize; ++index)
+            for (int count = 0; count < stationsSize; ++count)
             {
                 // create a randomized station
-                stations[index] = new Station()
+                stations.Add(new Station()
                 {
-                    Id = index,
-                    Name = "Station " + index,
+                    Id = count,
+                    Name = "Station " + count,
                     Longitude = (randomGenerator.NextDouble() * 360) - 180,
                     Latitude = (randomGenerator.NextDouble() * 180) - 90,
                     ChargeSlots = randomGenerator.Next(1, 11)
-                };
+                });
             }
 
             // initialize customer array
-            for (int index = 0; index < Config.CurrentCustomersSize; ++index)
+            for (int count = 0; count < customersSize; ++count)
             {
                 // create a randomized customer
-                customers[index] = new Customer()
+                customers.Add(new Customer()
                 {
-                    Id = index,
-                    Name = "Customer " + index,
+                    Id = count,
+                    Name = "Customer " + count,
                     Phone = (randomGenerator.Next(1000000000)).ToString(),
                     Longitude = (randomGenerator.NextDouble() * 360) - 180,
                     Latitude = (randomGenerator.NextDouble() * 180) - 90
-                };
+                });
             }
 
             // initialize package array
-            for (int index = 0; index < Config.CurrentPackagesSize; ++index)
+            for (int count = 0; count < packagesSize; ++count)
             {
                 // create a randomized package
-                packages[index] = new Package()
+                packages.Add(new Package()
                 {
-                    Id = index
-                };
+                    Id = count
+                });
             }
+
+            Config.CurrentPackageId = packagesSize;
         }
 
         internal class Config
         {
-            // variables with the current size of each of DataSource's arrays
-            internal static int CurrentDronesSize = 0;
-            internal static int CurrentStationsSize = 0;
-            internal static int CurrentCustomersSize = 0;
-            internal static int CurrentPackagesSize = 0;
-            internal static int NextPackageId = 0;
-
+            internal static int CurrentPackageId = 0;
         }
     }
 }
