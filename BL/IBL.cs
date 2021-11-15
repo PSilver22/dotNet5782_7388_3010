@@ -1,7 +1,9 @@
 ﻿#nullable enable
 
 using System;
-namespace BL
+using System.Collections.Generic;
+
+namespace IBL
 {
     public interface IBL
     {
@@ -23,18 +25,18 @@ namespace BL
         void CollectPackageByDrone(int id);
         void DeliverPackageByDrone(int id);
 
-        // Display
-        void DisplayBaseStation(int id);
-        void DisplayDrone(int id);
-        void DisplayCustomer(int id);
-        void DisplayPackage(int id);
+        // Get
+        BO.BaseStation GetBaseStation(int id);
+        BO.Drone GetDrone(int id);
+        BO.Customer GetCustomer(int id);
+        BO.Package GetPackage(int id);
 
-        // List Display
-        void DisplayBaseStationList();
-        void DisplayDroneList();
-        void DisplayCustomerList();
-        void DisplayPackageList();
-        void DisplayUnassignedPackageList();
-        void DisplayAvailableChargingStations();
+        // Get List
+        List<BO.BaseStationListing> GetBaseStationList();
+        List<BO.DroneListing> GetDroneList();
+        List<BO.CustomerListing> GetCustomerList();
+        List<BO.PackageListing> GetPackageList();
+        List<BO.PackageListing> GetUnassignedPackageList();
+        List<BO.BaseStationListing> GetAvailableChargingStations();
     }
 }
