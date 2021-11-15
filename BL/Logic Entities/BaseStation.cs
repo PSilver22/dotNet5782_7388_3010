@@ -5,11 +5,11 @@ namespace IBL.BO
 {
     public class BaseStation
     {
-        int Id { get; init; }
-        string Name { get; init; }
-        Location Location { get; init; }
-        int AvailableChargingSlots { get; init; }
-        List<ChargingDrone> ChargingDrones { get; init; }
+        public int Id { get; init; }
+        public string Name { get; init; }
+        public Location Location { get; init; }
+        public int AvailableChargingSlots { get; init; }
+        public List<ChargingDrone> ChargingDrones { get; init; }
 
         public BaseStation(int id, string name, Location location, int availableChargingSlots, List<ChargingDrone> chargingDrones)
         {
@@ -18,6 +18,15 @@ namespace IBL.BO
             Location = location;
             AvailableChargingSlots = availableChargingSlots;
             ChargingDrones = chargingDrones;
+        }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"name: {Name}\n" +
+                $"location: {Location}\n" +
+                $"available charge slots: {AvailableChargingSlots}\n" +
+                "charging drones:\n" + String.Join("\n", ChargingDrones);
         }
     }
 }

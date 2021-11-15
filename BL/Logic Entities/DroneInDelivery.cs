@@ -3,15 +3,22 @@ namespace IBL.BO
 {
     public class DroneInDelivery
     {
-        int Id { get; init; }
-        double BatteryStatus { get; init; }
-        Location CurentLocation { get; init; }
+        public int Id { get; init; }
+        public double BatteryStatus { get; init; }
+        public Location CurrentLocation { get; init; }
 
-        public DroneInDelivery(int id, double batteryStatus, Location curentLocation)
+        public DroneInDelivery(int id, double batteryStatus, Location currentLocation)
         {
             Id = id;
             BatteryStatus = batteryStatus;
-            CurentLocation = curentLocation;
+            CurrentLocation = currentLocation;
+        }
+
+        public override string ToString()
+        {
+            return $"  id: {Id}\n" +
+                $"  battery status: {BatteryStatus * 100:F2}\n" +
+                $"  location: {CurrentLocation}";
         }
     }
 }

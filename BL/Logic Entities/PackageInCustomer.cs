@@ -5,11 +5,11 @@ namespace IBL.BO
 {
     public class PackageInCustomer
     {
-        int Id { get; init; }
-        IDAL.DO.WeightCategory Weight { get; init; }
-        IDAL.DO.Priority Priority { get; init; }
-        PackageStatus Status { get; init; }
-        PackageCustomer Customer { get; init; }
+        public int Id { get; init; }
+        public IDAL.DO.WeightCategory Weight { get; init; }
+        public IDAL.DO.Priority Priority { get; init; }
+        public PackageStatus Status { get; init; }
+        public PackageCustomer Customer { get; init; }
 
         public PackageInCustomer(int id, WeightCategory weight, Priority priority, PackageStatus status, PackageCustomer customer)
         {
@@ -18,6 +18,15 @@ namespace IBL.BO
             Priority = priority;
             Status = status;
             Customer = customer;
+        }
+
+        public override string ToString()
+        {
+            return $"  id: {Id}\n" +
+                $"  weight: {Weight}\n" +
+                $"  priority: {Priority}\n" +
+                $"  status: {Status}\n" +
+                $"  customer:\n{Customer}";
         }
     }
 }

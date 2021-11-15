@@ -5,15 +5,15 @@ namespace IBL.BO
 {
     public class PackageInTransfer
     {
-        int Id { get; init; }
-        IDAL.DO.WeightCategory Weight { get; init; }
-        IDAL.DO.Priority Priority { get; init; }
-        bool OutForDelivery { get; init; }
-        PackageCustomer Sender { get; init; }
-        PackageCustomer Receiver { get; init; }
-        Location CollectionLoc { get; init; }
-        Location DeliveryLoc { get; init; }
-        double DeliveryDistance { get; init; }
+        public int Id { get; init; }
+        public IDAL.DO.WeightCategory Weight { get; init; }
+        public IDAL.DO.Priority Priority { get; init; }
+        public bool OutForDelivery { get; init; }
+        public PackageCustomer Sender { get; init; }
+        public PackageCustomer Receiver { get; init; }
+        public Location CollectionLoc { get; init; }
+        public Location DeliveryLoc { get; init; }
+        public double DeliveryDistance { get; init; }
 
         public PackageInTransfer(int id,
                                  WeightCategory weight,
@@ -34,6 +34,19 @@ namespace IBL.BO
             CollectionLoc = collectionLoc;
             DeliveryLoc = deliveryLoc;
             DeliveryDistance = deliveryDistance;
+        }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"weight: {Weight}\n" +
+                $"priority: {Priority}\n" +
+                $"out for delivery: {OutForDelivery}\n" +
+                $"sender:\n{Sender}\n" +
+                $"receiver:\n{Receiver}\n" +
+                $"collection location: {CollectionLoc}\n" +
+                $"delivery location: {DeliveryLoc}\n" +
+                $"delivery distance: {DeliveryDistance}";
         }
     }
 }

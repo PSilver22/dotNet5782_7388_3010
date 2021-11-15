@@ -5,12 +5,12 @@ namespace IBL.BO
 {
     public class Customer
     {
-        int Id { get; init; }
-        string Name { get; init; }
-        string Phone { get; init; }
-        Location Location { get; init; }
-        List<PackageInCustomer> SentPackages { get; init; }
-        List<PackageInCustomer> ExpectedPackages { get; init; }
+        public int Id { get; init; }
+        public string Name { get; init; }
+        public string Phone { get; init; }
+        public Location Location { get; init; }
+        public List<PackageInCustomer> SentPackages { get; init; }
+        public List<PackageInCustomer> ExpectedPackages { get; init; }
 
         public Customer(int id, string name, string phone, Location location, List<PackageInCustomer> sentPackages, List<PackageInCustomer> expectedPackages)
         {
@@ -20,6 +20,16 @@ namespace IBL.BO
             Location = location;
             SentPackages = sentPackages;
             ExpectedPackages = expectedPackages;
+        }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"name: {Name}\n" +
+                $"phone number: {Phone}\n" +
+                $"location: {Location}\n" +
+                $"sent packages: " + String.Join("\n", SentPackages) + "\n" +
+                $"expected packages: " + String.Join("\n", ExpectedPackages);
         }
     }
 }

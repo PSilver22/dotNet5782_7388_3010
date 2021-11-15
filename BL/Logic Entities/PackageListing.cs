@@ -21,5 +21,15 @@ namespace IBL.BO
             Priority = priority;
             Status = status;
         }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"sender:\n{SenderName}\n" +
+                $"receiver:\n{ReceiverName}\n" +
+                $"weight: {Weight}\n" +
+                $"priority: {Priority}\n" +
+                $"status: {Status}";
+        }
     }
 }

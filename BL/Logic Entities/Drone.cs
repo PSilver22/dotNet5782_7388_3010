@@ -5,13 +5,13 @@ namespace IBL.BO
 {
     public class Drone
     {
-        int Id { get; init; }
-        string Model { get; init; }
-        IDAL.DO.WeightCategory WeightCategory { get; init; }
-        double BatteryStatus { get; init; }
-        DroneStatus Status { get; init; }
-        PackageInTransfer? Package { get; init; }
-        Location Location { get; init; }
+        public int Id { get; init; }
+        public string Model { get; init; }
+        public IDAL.DO.WeightCategory WeightCategory { get; init; }
+        public double BatteryStatus { get; init; }
+        public DroneStatus Status { get; init; }
+        public PackageInTransfer? Package { get; init; }
+        public Location Location { get; init; }
 
         public Drone(int id, string model, IDAL.DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, PackageInTransfer? package, Location location)
         {
@@ -22,6 +22,17 @@ namespace IBL.BO
             Status = status;
             Package = package;
             Location = location;
+        }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"model: {Model}\n" +
+                $"weight category: {WeightCategory}\n" +
+                $"battery status: {BatteryStatus * 100:F2}\n" +
+                $"status: {Status}\n" +
+                Package is not null ? $"package:\n{Package!}\n" : "" +
+                $"location: {Location}";
         }
     }
 }

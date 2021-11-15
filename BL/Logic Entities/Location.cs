@@ -11,5 +11,11 @@ namespace IBL.BO
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        public override string ToString()
+        {
+            return FormatUtils.Coordinates.Sexagesimal(Latitude, FormatUtils.Coordinates.Axis.latitude) +
+                ", " + FormatUtils.Coordinates.Sexagesimal(Longitude, FormatUtils.Coordinates.Axis.longitude);
+        }
     }
 }

@@ -3,10 +3,10 @@ namespace IBL.BO
 {
     public class BaseStationListing
     {
-        int Id { get; init; }
-        string Name { get; init; }
-        int AvailableChargingSlotsCount { get; init; }
-        int OccupiedChargingSlotsCount { get; init; }
+        public int Id { get; init; }
+        public string Name { get; init; }
+        public int AvailableChargingSlotsCount { get; init; }
+        public int OccupiedChargingSlotsCount { get; init; }
 
         public BaseStationListing(int id, string name, int availableChargingSlotsCount, int occupiedChargingSlotsCount)
         {
@@ -14,6 +14,14 @@ namespace IBL.BO
             Name = name;
             AvailableChargingSlotsCount = availableChargingSlotsCount;
             OccupiedChargingSlotsCount = occupiedChargingSlotsCount;
+        }
+
+        public override string ToString()
+        {
+            return $"id: {Id}\n" +
+                $"name: {Name}\n" +
+                $"available charge slots: {AvailableChargingSlotsCount}\n" +
+                $"occupied charging slots: {OccupiedChargingSlotsCount}";
         }
     }
 }
