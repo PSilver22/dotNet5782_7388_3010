@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
 
-namespace IDal
+namespace IDAL
 {
 	interface IDal
 	{
@@ -46,5 +46,7 @@ namespace IDal
 		public string GetUnassignedPackageList();
 
 		public string GetCustomerList();
+
+		public double[] GetPowerConsumption();
 	}
 }

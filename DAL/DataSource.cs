@@ -92,6 +92,13 @@ namespace DalObject
         internal class Config
         {
             internal static int CurrentPackageId = 0;
+
+            internal static readonly double free = 5;
+            internal static readonly double lightWeight = 10;
+            internal static readonly double midWeight = 15;
+            internal static readonly double heavyWeight = 20;
+
+            internal static readonly double chargeRate = 80;
         }
     }
 }

@@ -198,5 +198,21 @@ namespace DalObject
         {
             return GetItemIndexByKey<Drone>(id, DataSource.drones);
         }
+
+        /// <summary>
+        /// Getter for the power consumption rates
+        /// </summary>
+        /// <returns> A double with the power consumption rates in the order: free, light-weight, mid-weight, heavy-weight, charging-rate</returns>
+        public double[] GetPowerConsumption()
+        {
+            double[] result = {
+                DataSource.Config.free,
+                DataSource.Config.lightWeight,
+                DataSource.Config.midWeight,
+                DataSource.Config.heavyWeight,
+                DataSource.Config.chargeRate };
+
+            return result;
+        }
     }
 }
