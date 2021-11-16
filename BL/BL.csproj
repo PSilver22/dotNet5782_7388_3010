@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Remove="BL Object\" />
     <None Remove="Exceptions\" />
+    <None Remove="System.Device.Location.Portable" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic Entities\" />
@@ -16,5 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\FormatUtils\FormatUtils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ namespace DalObject
     /// A class that interacts with and performs operations
     /// on the data source class
     /// </summary>
-    public partial class DalObject : IDAL.IDal
+    public partial class DalObject : IDAL.IDAL
     {
         /// <summary>
         /// Initializes DataSource

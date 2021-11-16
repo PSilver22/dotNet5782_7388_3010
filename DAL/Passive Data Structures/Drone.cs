@@ -10,15 +10,13 @@
             public int Id { get; set; }
             public string Model { get; set; }
             public WeightCategory MaxWeight { get; set; }
-            public DroneStatus Status { get; set; }
             public double Battery { get; set; }
 
-            public Drone(int id, string model, WeightCategory maxWeight, DroneStatus status, double battery)
+            public Drone(int id, string model, WeightCategory maxWeight, double battery)
             {
                 Id = id;
                 Model = model;
                 MaxWeight = maxWeight;
-                Status = status;
                 Battery = battery;
             }
 
@@ -34,7 +32,6 @@
                     $"Drone: {Id}\n" +
                     $"Model: {Model}\n" +
                     $"Max weight: {MaxWeight}\n" +
-                    $"Status: {Status}\n" +
                     $"Battery: {Battery}\n";
             }
         }
