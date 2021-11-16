@@ -38,7 +38,7 @@ e[x]it                          Quit the program
         static void Main()
         {
             Console.WriteLine("Welcome to the Drone Delivery Manager!\n\n");
-            showHelp();
+            ShowHelp();
 
             string command;
             do
@@ -56,22 +56,22 @@ e[x]it                          Quit the program
                                 {
                                     case "b":
                                     case "base-station":
-                                        addBaseStation();
+                                        AddBaseStation();
                                         continue;
 
                                     case "d":
                                     case "drone":
-                                        addDrone();
+                                        AddDrone();
                                         continue;
 
                                     case "c":
                                     case "customer":
-                                        addCustomer();
+                                        AddCustomer();
                                         continue;
 
                                     case "p":
                                     case "package":
-                                        addPackage();
+                                        AddPackage();
                                         continue;
 
                                     default:
@@ -81,27 +81,27 @@ e[x]it                          Quit the program
 
                         case "s":
                         case "assign-package":
-                            assignPackage();
+                            AssignPackage();
                             continue;
 
                         case "c":
                         case "collect-package":
-                            collectPackage();
+                            CollectPackage();
                             continue;
 
                         case "p":
                         case "provide-package":
-                            providePackage();
+                            ProvidePackage();
                             continue;
 
                         case "g":
                         case "charge-drone":
-                            chargeDrone();
+                            ChargeDrone();
                             continue;
 
                         case "r":
                         case "release-drone":
-                            releaseDrone();
+                            ReleaseDrone();
                             break;
 
                         case "d":
@@ -111,22 +111,22 @@ e[x]it                          Quit the program
                                 {
                                     case "b":
                                     case "base-station":
-                                        displayBaseStation(id);
+                                        DisplayBaseStation(id);
                                         continue;
 
                                     case "d":
                                     case "drone":
-                                        displayDrone(id);
+                                        DisplayDrone(id);
                                         continue;
 
                                     case "c":
                                     case "customer":
-                                        displayCustomer(id);
+                                        DisplayCustomer(id);
                                         continue;
 
                                     case "p":
                                     case "package":
-                                        displayPackage(id);
+                                        DisplayPackage(id);
                                         continue;
 
                                     default:
@@ -141,27 +141,27 @@ e[x]it                          Quit the program
                                     case "b":
                                     case "base-stations":
                                         if (components.Length > 2 && (components[2] == "-u" || components[2] == "--unoccupied"))
-                                            listUnoccupiedBaseStations();
+                                            ListUnoccupiedBaseStations();
                                         else
-                                            listBaseStations();
+                                            ListBaseStations();
                                         continue;
 
                                     case "d":
                                     case "drones":
-                                        listDrones();
+                                        ListDrones();
                                         continue;
 
                                     case "c":
                                     case "customers":
-                                        listCustomers();
+                                        ListCustomers();
                                         continue;
 
                                     case "p":
                                     case "packages":
                                         if (components.Length > 2 && (components[2] == "-u" || components[2] == "--unassigned"))
-                                            listUnassignedPackages();
+                                            ListUnassignedPackages();
                                         else
-                                            listPackages();
+                                            ListPackages();
                                         continue;
 
                                     default:
@@ -177,103 +177,68 @@ e[x]it                          Quit the program
                             break;
                     }
 
-                showHelp();
+                ShowHelp();
             } while (command != "x" && command != "exit");
         }
 
-        static void showHelp() => Console.WriteLine(helpText);
+        static void ShowHelp() => Console.WriteLine(helpText);
 
 
-        static void addBaseStation()
+        static void AddBaseStation()
         {
-            if (dalObject.AddStation(
+            dalObject.AddStation(
                 new Station(
                     Utils.PromptInt("id: "),
                     Utils.Prompt("name: "),
                     Utils.PromptDouble("longitude: "),
                     Utils.PromptDouble("latitude: "),
-                    Utils.PromptInt("# of charge spots: "))))
-            {
-                Console.WriteLine("Station added successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to add station.");
-            }
+                    Utils.PromptInt("# of charge spots: ")));
         }
 
-        static void addDrone()
+        static void AddDrone()
         {
-            if (dalObject.AddDrone(
+            dalObject.AddDrone(
                 new Drone(
                     Utils.PromptInt("id: "),
                     Utils.Prompt("model: "),
                     Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
                     Utils.PromptEnum<DroneStatus>("status [free|maintenance|delivery]: "),
-                    Utils.PromptDouble("battery level: "))))
-            {
-                Console.WriteLine("Drone added successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to add drone.");
-            }
+                    Utils.PromptDouble("battery level: ")));
         }
 
-        static void addCustomer()
+        static void AddCustomer()
         {
-            if (dalObject.AddCustomer(
+            dalObject.AddCustomer(
                 new Customer(
                     Utils.PromptInt("id: "),
                     Utils.Prompt("name: "),
                     Utils.Prompt("phone: "),
                     Utils.PromptDouble("longitude: "),
-                    Utils.PromptDouble("latitude: "))))
-            {
-                Console.WriteLine("Customer added successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to add customer.");
-            }
+                    Utils.PromptDouble("latitude: ")));
         }
 
-        static void addPackage()
+        static void AddPackage()
         {
-            if (dalObject.AddPackage(
+            dalObject.AddPackage(
                 Utils.PromptInt("sender id: "),
                 Utils.PromptInt("target id: "),
                 Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
-                Utils.PromptEnum<Priority>("priority [regular|fast|emergency]: ")))
-            {
-                Console.WriteLine("Package added successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to add package.");
-            }
+                Utils.PromptEnum<Priority>("priority [regular|fast|emergency]: "));
         }
 
-        static void assignPackage()
+        static void AssignPackage()
         {
             var id = Utils.PromptInt("package id: ");
-            if (dalObject.AssignPackage(id))
-            {
-                Console.WriteLine("Assigned package to a drone.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to assign package to a drone.");
-            }
+            dalObject.AssignPackage(id);
         }
 
-        static void collectPackage() => dalObject.CollectPackage(
+        static void CollectPackage() => dalObject.CollectPackage(
             Utils.PromptInt("package id: "));
 
-        static void providePackage() => dalObject.ProvidePackage(
+        static void ProvidePackage() => dalObject.ProvidePackage(
             Utils.PromptInt("package id: "));
 
-        static void chargeDrone()
+        static void ChargeDrone()
         {
             var droneId = Utils.PromptInt("drone id: ");
 
@@ -283,39 +248,39 @@ e[x]it                          Quit the program
             dalObject.ChargeDrone(droneId, Utils.PromptInt("station id: "));
         }
 
-        static void releaseDrone() => dalObject.ReleaseDrone(
+        static void ReleaseDrone() => dalObject.ReleaseDrone(
             Utils.PromptInt("drone id: "));
 
 
-        static void displayBaseStation(int id) =>
+        static void DisplayBaseStation(int id) =>
             Console.WriteLine(dalObject.GetStation(id));
 
-        static void displayDrone(int id) =>
+        static void DisplayDrone(int id) =>
             Console.WriteLine(dalObject.GetDrone(id));
 
-        static void displayCustomer(int id) =>
+        static void DisplayCustomer(int id) =>
             Console.WriteLine(dalObject.GetCustomer(id));
 
-        static void displayPackage(int id) =>
+        static void DisplayPackage(int id) =>
             Console.WriteLine(dalObject.GetPackage(id));
 
 
-        static void listBaseStations() =>
+        static void ListBaseStations() =>
             Console.WriteLine(dalObject.GetStationList());
 
-        static void listUnoccupiedBaseStations() =>
+        static void ListUnoccupiedBaseStations() =>
             Console.WriteLine(dalObject.GetUnoccupiedStationsList());
 
-        static void listDrones() =>
+        static void ListDrones() =>
             Console.WriteLine(dalObject.GetDroneList());
 
-        static void listCustomers() =>
+        static void ListCustomers() =>
             Console.WriteLine(dalObject.GetCustomerList());
 
-        static void listPackages() =>
+        static void ListPackages() =>
             Console.WriteLine(dalObject.GetPackageList());
 
-        static void listUnassignedPackages() =>
+        static void ListUnassignedPackages() =>
             Console.WriteLine(dalObject.GetUnassignedPackageList());
     }
 }
