@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using IBL.BO;
-using IDAL.DO;
 
 namespace IBL
 {
@@ -9,32 +9,68 @@ namespace IBL
     {
         public IEnumerable<BaseStationListing> GetAvailableChargingStations()
         {
-            throw new NotImplementedException();
+            var charging = dal.GetDroneChargeList();
+            return dal.GetUnoccupiedStationsList().ConvertAll(s =>
+            {
+                var numOccSlots = charging.Count(c => c.StationId == s.Id);
+                return new BaseStationListing(s.Id, s.Name, s.ChargeSlots, numOccSlots);
+            });
         }
 
         public IEnumerable<BaseStationListing> GetBaseStationList()
         {
-            throw new NotImplementedException();
+            var charging = dal.GetDroneChargeList();
+            return dal.GetStationList().ConvertAll(s =>
+            {
+                var numOccSlots = charging.Count(c => c.StationId == s.Id);
+                return new BaseStationListing(s.Id, s.Name, s.ChargeSlots, numOccSlots);
+            });
         }
 
         public IEnumerable<CustomerListing> GetCustomerList()
         {
-            throw new NotImplementedException();
+            var packages = dal.GetPackageList();
+            return dal.GetCustomerList().ConvertAll(c => new CustomerListing(
+                c.Id,
+                c.Name,
+                c.Phone,
+                packages.Count(p => p.SenderId == c.Id && p.Delivered is not null),
+                packages.Count(p => p.SenderId == c.Id && p.Delivered is null),
+                packages.Count(p => p.TargetId == c.Id && p.Delivered is not null),
+                packages.Count(p => p.TargetId == c.Id && p.Delivered is null)));
         }
 
         public IEnumerable<DroneListing> GetDroneList()
         {
-            throw new NotImplementedException();
+            return drones;
         }
 
         public IEnumerable<PackageListing> GetPackageList()
         {
-            throw new NotImplementedException();
+            return dal.GetPackageList().ConvertAll(p => new PackageListing(
+                p.Id,
+                dal.GetCustomer(p.SenderId).Name,
+                dal.GetCustomer(p.TargetId).Name,
+                p.Weight,
+                p.Priority,
+                p.Delivered is not null ? PackageStatus.delivered
+                : p.PickedUp is not null ? PackageStatus.collected
+                : p.Scheduled is not null ? PackageStatus.assigned
+                : PackageStatus.created));
         }
 
         public IEnumerable<PackageListing> GetUnassignedPackageList()
         {
-            throw new NotImplementedException();
+            return dal.GetUnassignedPackageList().ConvertAll(p => new PackageListing(
+                p.Id,
+                dal.GetCustomer(p.SenderId).Name,
+                dal.GetCustomer(p.TargetId).Name,
+                p.Weight,
+                p.Priority,
+                p.Delivered is not null ? PackageStatus.delivered
+                : p.PickedUp is not null ? PackageStatus.collected
+                : p.Scheduled is not null ? PackageStatus.assigned
+                : PackageStatus.created));
         }
     }
 }
