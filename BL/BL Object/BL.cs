@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IBL.BO;
@@ -10,7 +12,7 @@ namespace IBL
     {
         private List<DroneListing> drones;
         private IDAL.IDAL dal;
-        private double[] powerConsumption;
+        private (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) powerConsumption;
 
         public BL()
         {
@@ -30,9 +32,6 @@ namespace IBL
                 DroneStatus status;
                 int? packageId = null;
 
-                // TODO: random attery status
-                batteryStatus = 100;
-
                 var packageIndex = packages.FindIndex(p => p.Delivered is null && p.DroneId == d.Id);
 
                 if (packageIndex != -1)
@@ -47,16 +46,34 @@ namespace IBL
 
                     if (package.PickedUp is null)
                     {
-                        (location, _) = stations.ConvertAll<(Location loc, double dist)>(s =>
-                        {
-                            Location sLoc = new(s.Latitude, s.Longitude);
-                            return (sLoc, Utils.DistanceBetween(senderLoc, sLoc));
-                        }).Aggregate((curr, next) => curr.dist < next.dist ? curr : next);
+                        var closestStation = Utils.ClosestStation(senderLoc, stations);
+                        location = new(closestStation.Latitude, closestStation.Longitude);
                     }
                     else
                     {
                         location = senderLoc;
                     }
+
+                    // Calculate min required battery
+                    var distToSender = package.PickedUp is null ? Utils.DistanceBetween(location, senderLoc) : 0;
+
+                    var recipient = dal.GetCustomer(package.TargetId);
+                    Location recipientLoc = new(recipient.Latitude, recipient.Longitude);
+
+                    var distToRecip = Utils.DistanceBetween(location, recipientLoc);
+                    var nearestStationToRecipient = Utils.ClosestStation(recipientLoc, stations);
+                    var distToStation = Utils.DistanceBetween(recipientLoc, new(nearestStationToRecipient.Latitude, nearestStationToRecipient.Longitude));
+
+                    var minBattery = (package.Weight switch
+                    {
+                        WeightCategory.light => powerConsumption.LightWeight,
+                        WeightCategory.medium => powerConsumption.MidWeight,
+                        WeightCategory.heavy => powerConsumption.HeavyWeight,
+                        _ => 0
+                    } * distToRecip) + (powerConsumption.Free * (distToSender + distToStation));
+
+                    // Randomize battery
+                    batteryStatus = minBattery + (rand.NextDouble() * (100.0 - minBattery));
                 }
                 else
                 {
@@ -66,12 +83,22 @@ namespace IBL
                         var deliveredPackages = packages.FindAll(p => p.Delivered is not null);
                         var customer = dal.GetCustomer(deliveredPackages[rand.Next(deliveredPackages.Count)].TargetId);
                         location = new(customer.Latitude, customer.Longitude);
+
+                        var nearestStationToRecipient = Utils.ClosestStation(location, stations);
+                        var distToStation = Utils.DistanceBetween(location, new(nearestStationToRecipient.Latitude, nearestStationToRecipient.Longitude));
+
+                        // Randomize battery
+                        var minBattery = powerConsumption.Free * distToStation;
+                        batteryStatus = minBattery + (rand.NextDouble() * (100.0 - minBattery));
                     }
                     else
                     {
                         status = DroneStatus.maintenance;
                         var station = stations[rand.Next(stations.Count)];
                         location = new(station.Latitude, station.Longitude);
+
+                        // Randomize battery
+                        batteryStatus = rand.NextDouble() * 20;
                     }
                 }
 

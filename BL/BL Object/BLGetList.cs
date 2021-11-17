@@ -7,32 +7,32 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public List<BaseStationListing> GetAvailableChargingStations()
+        public IEnumerable<BaseStationListing> GetAvailableChargingStations()
         {
             throw new NotImplementedException();
         }
 
-        public List<BaseStationListing> GetBaseStationList()
+        public IEnumerable<BaseStationListing> GetBaseStationList()
         {
             throw new NotImplementedException();
         }
 
-        public List<CustomerListing> GetCustomerList()
+        public IEnumerable<CustomerListing> GetCustomerList()
         {
             throw new NotImplementedException();
         }
 
-        public List<DroneListing> GetDroneList()
+        public IEnumerable<DroneListing> GetDroneList()
         {
             throw new NotImplementedException();
         }
 
-        public List<PackageListing> GetPackageList()
+        public IEnumerable<PackageListing> GetPackageList()
         {
             throw new NotImplementedException();
         }
 
-        public List<PackageListing> GetUnassignedPackageList()
+        public IEnumerable<PackageListing> GetUnassignedPackageList()
         {
             throw new NotImplementedException();
         }

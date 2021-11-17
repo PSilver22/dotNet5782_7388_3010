@@ -7,7 +7,7 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public void AddBaseStation(int id, string name, double latitude, double longitude)
+        public void AddBaseStation(int id, string name, double latitude, double longitude, int numBaseStations)
         {
             throw new NotImplementedException();
         }
