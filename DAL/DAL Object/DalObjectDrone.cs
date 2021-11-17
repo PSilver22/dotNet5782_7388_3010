@@ -5,8 +5,8 @@ using IDAL.DO;
 
 namespace DalObject
 {
-	public partial class DalObject
-	{
+    public partial class DalObject
+    {
         /// <summary>
         /// Adds a drone to the list of drones
         /// </summary>
@@ -74,8 +74,6 @@ namespace DalObject
             package.DroneId = drone.Id;
             package.Scheduled = DateTime.UtcNow;
 
-            drone.Status = DroneStatus.delivery;
-
             DataSource.drones[droneIndex] = drone;
             DataSource.packages[GetPackageIndex(packageId)] = package;
         }
@@ -115,7 +113,6 @@ namespace DalObject
                 // Set the delivery time and mark the drone as free
                 package.Delivered = DateTime.UtcNow;
                 var drone = GetDrone(package.DroneId);
-                drone.Status = DroneStatus.free;
 
                 DataSource.drones[GetDroneIndex(package.DroneId)] = drone;
             }
@@ -131,9 +128,9 @@ namespace DalObject
         public void ChargeDrone(int droneId, int stationId)
         {
             if (droneId < 0 || stationId < 0)
-			{
+            {
                 throw new InvalidIdException((droneId < 0) ? droneId : stationId);
-			}
+            }
 
             var station = GetStation(stationId);
 
@@ -203,16 +200,14 @@ namespace DalObject
         /// Getter for the power consumption rates
         /// </summary>
         /// <returns> A double with the power consumption rates in the order: free, light-weight, mid-weight, heavy-weight, charging-rate</returns>
-        public double[] GetPowerConsumption()
+        public (double, double, double, double, double) GetPowerConsumption()
         {
-            double[] result = {
+            return (
                 DataSource.Config.free,
                 DataSource.Config.lightWeight,
                 DataSource.Config.midWeight,
                 DataSource.Config.heavyWeight,
-                DataSource.Config.chargeRate };
-
-            return result;
+                DataSource.Config.chargeRate);
         }
     }
 }

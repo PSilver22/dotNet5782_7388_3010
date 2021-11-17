@@ -43,7 +43,6 @@ namespace DalObject
                     Id = count,
                     Model = "Model " + count,
                     MaxWeight = (WeightCategory)randomGenerator.Next(3),
-                    Status = (DroneStatus)randomGenerator.Next(3),
                     Battery = randomGenerator.NextDouble()
                 });
             }

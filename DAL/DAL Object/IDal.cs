@@ -35,6 +35,14 @@ namespace IDAL
 
         public Package GetPackage(int id);
 
+        public void SetStation(int id, Station station);
+
+        public void SetDrone(int id, Drone drone);
+
+        public void SetCustomer(int id, Customer customer);
+
+        public void SetPackage(int id, Package package);
+
         public List<Station> GetStationList();
 
         public List<Station> GetUnoccupiedStationsList();
@@ -47,6 +55,6 @@ namespace IDAL
 
         public List<Customer> GetCustomerList();
 
-        public double[] GetPowerConsumption();
+        public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) GetPowerConsumption();
     }
 }
