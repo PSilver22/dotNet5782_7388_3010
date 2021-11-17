@@ -38,15 +38,15 @@ namespace IBL.BO
 
         public override string ToString()
         {
-            return $"id: {Id}\n" +
-                $"weight: {Weight}\n" +
-                $"priority: {Priority}\n" +
-                $"out for delivery: {OutForDelivery}\n" +
-                $"sender:\n{Sender}\n" +
-                $"receiver:\n{Receiver}\n" +
-                $"collection location: {CollectionLoc}\n" +
-                $"delivery location: {DeliveryLoc}\n" +
-                $"delivery distance: {DeliveryDistance}";
+            return $"  id: {Id}\n" +
+                $"  weight: {Weight}\n" +
+                $"  priority: {Priority}\n" +
+                $"  out for delivery: {OutForDelivery}\n" +
+                $"  sender:\n{Sender}\n" +
+                $"  receiver:\n{Receiver}\n" +
+                $"  collection location: {CollectionLoc}\n" +
+                $"  delivery location: {DeliveryLoc}\n" +
+                $"  delivery distance: {DeliveryDistance}";
         }
     }
 }

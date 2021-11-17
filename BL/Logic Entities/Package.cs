@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using IDAL.DO;
 
 namespace IBL.BO
@@ -10,22 +12,22 @@ namespace IBL.BO
         public PackageCustomer Receiver { get; init; }
         public IDAL.DO.WeightCategory Weight { get; init; }
         public IDAL.DO.Priority Priority { get; init; }
-        public DroneInDelivery Drone { get; init; }
+        public DroneInDelivery? Drone { get; init; }
         public DateTime CreationTime { get; init; }
-        public DateTime AssignmentTime { get; init; }
-        public DateTime CollectionTime { get; init; }
-        public DateTime DeliveryTime { get; init; }
+        public DateTime? AssignmentTime { get; init; }
+        public DateTime? CollectionTime { get; init; }
+        public DateTime? DeliveryTime { get; init; }
 
         public Package(int id,
                        PackageCustomer sender,
                        PackageCustomer receiver,
                        WeightCategory weight,
                        Priority priority,
-                       DroneInDelivery drone,
+                       DroneInDelivery? drone,
                        DateTime creationTime,
-                       DateTime assignmentTime,
-                       DateTime collectionTime,
-                       DateTime deliveryTime)
+                       DateTime? assignmentTime,
+                       DateTime? collectionTime,
+                       DateTime? deliveryTime)
         {
             Id = id;
             Sender = sender;

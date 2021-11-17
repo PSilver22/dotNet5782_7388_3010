@@ -6,8 +6,8 @@ namespace IBL.BO
     public class PackageInCustomer
     {
         public int Id { get; init; }
-        public IDAL.DO.WeightCategory Weight { get; init; }
-        public IDAL.DO.Priority Priority { get; init; }
+        public WeightCategory Weight { get; init; }
+        public Priority Priority { get; init; }
         public PackageStatus Status { get; init; }
         public PackageCustomer Customer { get; init; }
 

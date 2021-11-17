@@ -82,6 +82,8 @@ namespace IDAL
 
         public List<Customer> GetCustomerList();
 
+        public List<DroneCharge> GetDroneChargeList();
+
         public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) GetPowerConsumption();
     }
 }
