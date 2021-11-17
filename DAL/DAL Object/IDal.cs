@@ -34,9 +34,9 @@ namespace IDAL
 
         public void SetPackage(Package package);
 
-        public void UpdateStation(int id, string? name, double? longitude, double? latitude, int? chargeSlots);
+        public void UpdateStation(int id, string? name = null, double? longitude = null, double? latitude = null, int? chargeSlots = null);
 
-        public void UpdateDrone(int id, string? model, WeightCategory? maxWeight, double? battery);
+        public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null);
 
         public void UpdateCustomer(int id, string? name = null, string? phone = null, double? longitude = null, double? latitude = null);
 
@@ -56,15 +56,15 @@ namespace IDAL
         /// <param name="delivered">use DateTime(0) to set to null</param>
         public void UpdatePackage(
                 int id,
-                int? senderId,
-                int? targetId,
-                WeightCategory? weight,
-                Priority? priority,
-                DateTime? requested,
-                int? droneId,
-                DateTime? scheduled,
-                DateTime? pickedUp,
-                DateTime? delivered);
+                int? senderId = null,
+                int? targetId = null,
+                WeightCategory? weight = null,
+                Priority? priority = null,
+                DateTime? requested = null,
+                int? droneId = null,
+                DateTime? scheduled = null,
+                DateTime? pickedUp = null,
+                DateTime? delivered = null);
 
         public void DeleteDroneCharge(int droneId);
 
