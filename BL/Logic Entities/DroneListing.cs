@@ -5,13 +5,13 @@ namespace IBL.BO
 {
     public class DroneListing
     {
-        public int Id { get; init; }
-        public string Model { get; init; }
-        public IDAL.DO.WeightCategory WeightCategory { get; init; }
-        public double BatteryStatus { get; init; }
-        public DroneStatus Status { get; init; }
-        public Location Location { get; init; }
-        public int? PackageId { get; init; }
+        public int Id { get; set; }
+        public string Model { get; set; }
+        public IDAL.DO.WeightCategory WeightCategory { get; set; }
+        public double BatteryStatus { get; set; }
+        public DroneStatus Status { get; set; }
+        public Location Location { get; set; }
+        public int? PackageId { get; set; }
 
         public DroneListing(int id, string model, IDAL.DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, Location location, int? packageId)
         {

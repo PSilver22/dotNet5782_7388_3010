@@ -14,11 +14,11 @@ namespace IBL
         private IDAL.IDAL dal;
         private (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) powerConsumption;
 
+        private Random rand = new();
+
         public BL()
         {
             dal = new DalObject.DalObject();
-
-            var rand = new Random();
 
             powerConsumption = dal.GetPowerConsumption();
 
