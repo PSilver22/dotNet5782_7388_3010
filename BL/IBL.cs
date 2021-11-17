@@ -8,35 +8,35 @@ namespace IBL
     public interface IBL
     {
         // Add
-        void AddBaseStation(int id, string name, double latitude, double longitude, int numChargingSlots);
-        void AddDrone(int id, string model, IDAL.DO.WeightCategory maxWeight, int startingStationId);
-        void AddCustomer(int id, string name, string phone, double longitude, double latitude);
-        void AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
+        public void AddBaseStation(int id, string name, double latitude, double longitude, int numChargingSlots);
+        public void AddDrone(int id, string model, IDAL.DO.WeightCategory maxWeight, int startingStationId);
+        public void AddCustomer(int id, string name, string phone, double longitude, double latitude);
+        public void AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
 
         // Update
-        void UpdateBaseStation(int id, string? name = null, int? numChargingStations = null);
-        void UpdateDrone(int id, string model);
-        void UpdateCustomer(int id, string? name = null, string? phone = null);
+        public void UpdateBaseStation(int id, string? name = null, int? numChargingStations = null);
+        public void UpdateDrone(int id, string model);
+        public void UpdateCustomer(int id, string? name = null, string? phone = null);
 
-        void SendDroneToCharge(int id);
-        void ReleaseDroneFromCharge(int id, int chargingTime);
+        public void SendDroneToCharge(int id);
+        public void ReleaseDroneFromCharge(int id, int chargingTime);
 
-        void AssignPackageToDrone(int id);
-        void CollectPackageByDrone(int id);
-        void DeliverPackageByDrone(int id);
+        public void AssignPackageToDrone(int id);
+        public void CollectPackageByDrone(int id);
+        public void DeliverPackageByDrone(int id);
 
         // Get
-        BO.BaseStation GetBaseStation(int id);
-        BO.Drone GetDrone(int id);
-        BO.Customer GetCustomer(int id);
-        BO.Package GetPackage(int id);
+        public BO.BaseStation GetBaseStation(int id);
+        public BO.Drone GetDrone(int id);
+        public BO.Customer GetCustomer(int id);
+        public BO.Package GetPackage(int id);
 
         // Get List
-        IEnumerable<BO.BaseStationListing> GetBaseStationList();
-        IEnumerable<BO.DroneListing> GetDroneList();
-        IEnumerable<BO.CustomerListing> GetCustomerList();
-        IEnumerable<BO.PackageListing> GetPackageList();
-        IEnumerable<BO.PackageListing> GetUnassignedPackageList();
-        IEnumerable<BO.BaseStationListing> GetAvailableChargingStations();
+        public IEnumerable<BO.BaseStationListing> GetBaseStationList();
+        public IEnumerable<BO.DroneListing> GetDroneList();
+        public IEnumerable<BO.CustomerListing> GetCustomerList();
+        public IEnumerable<BO.PackageListing> GetPackageList();
+        public IEnumerable<BO.PackageListing> GetUnassignedPackageList();
+        public IEnumerable<BO.BaseStationListing> GetAvailableChargingStations();
     }
 }

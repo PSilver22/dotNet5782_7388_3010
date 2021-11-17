@@ -26,6 +26,8 @@ namespace IDAL
 
         public Package GetPackage(int id);
 
+        public DroneCharge GetDroneCharge(int droneId);
+
         public void SetStation(Station station);
 
         public void SetDrone(Drone drone);
