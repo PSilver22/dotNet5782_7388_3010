@@ -36,7 +36,7 @@ namespace IDAL
 
         public void UpdateStation(int id, string? name, double? longitude, double? latitude, int? chargeSlots);
 
-        public void UpdateDroneDrone(int id, string? model, WeightCategory? maxWeight, double? battery);
+        public void UpdateDrone(int id, string? model, WeightCategory? maxWeight, double? battery);
 
         public void UpdateCustomer(int id, string? name = null, string? phone = null, double? longitude = null, double? latitude = null);
 
