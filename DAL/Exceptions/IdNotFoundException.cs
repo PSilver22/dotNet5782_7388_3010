@@ -4,7 +4,7 @@ namespace IDAL
 {
     namespace DO
     {
-        class IdNotFoundException : Exception
+        public class IdNotFoundException : Exception
         {
             public IdNotFoundException() : base() { }
 

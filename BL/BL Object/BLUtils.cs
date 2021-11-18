@@ -2,6 +2,7 @@
 
 using System;
 using IDAL.DO;
+
 namespace IBL
 {
     public partial class BL

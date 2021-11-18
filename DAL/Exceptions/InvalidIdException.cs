@@ -4,7 +4,7 @@ namespace IDAL
 {
     namespace DO
     {
-        class InvalidIdException : Exception
+        public class InvalidIdException : Exception
         {
             public InvalidIdException() : base() { }
 

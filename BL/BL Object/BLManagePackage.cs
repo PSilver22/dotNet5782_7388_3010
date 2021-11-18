@@ -12,11 +12,11 @@ namespace IBL
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
-            { /* TODO: throw DroneNotFound */ }
+            { throw new DroneNotFoundException(id); }
             var drone = drones[droneIndex];
 
             if (drone.Status != DroneStatus.free)
-            { /* TODO: throw DroneNotFree */ }
+            { throw new DroneNotFreeException("assign package"); }
 
             IDAL.DO.Package? package = dal.GetPackageList()
                 .Where(p => p.DroneId is null)
@@ -57,7 +57,7 @@ namespace IBL
             }
             else
             {
-                // TODO: throw NoRelevantPackage
+                throw new NoRelevantPackageException();
             }
         }
 
@@ -65,16 +65,16 @@ namespace IBL
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
-            { /* TODO: throw DroneNotFound */ }
+            { throw new DroneNotFoundException(id); }
             var drone = drones[droneIndex];
 
             if (drone.PackageId is null)
-            { /* TODO: throw DroneNotAssignedPackage */ }
+            { throw new DroneNotAssignedPackageException(); }
 
             var package = dal.GetPackage(drone.PackageId!.Value);
 
             if (package.PickedUp is not null)
-            { /* TODO: throw PackageAlreadyPickedUp */ }
+            { throw new PackageAlreadyPickedUpException(); }
 
             var sender = dal.GetCustomer(package.SenderId);
             Location senderLoc = new(sender.Latitude, sender.Longitude);
@@ -91,25 +91,23 @@ namespace IBL
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
-            { /* TODO: throw DroneNotFound */ }
+            { throw new DroneNotFoundException(id); }
             var drone = drones[droneIndex];
 
             if (drone.PackageId is null)
-            { /* TODO: throw DroneNotAssignedPackage */ }
+            { throw new DroneNotAssignedPackageException(); }
 
             var package = dal.GetPackage(drone.PackageId!.Value);
 
             if (package.PickedUp is null)
-            { /* TODO: throw PackageNotPickedUp */ }
-
-            if (package.Delivered is not null)
-            { /* TODO: throw PackageAlreadyDelivered */ }
+            { throw new PackageAlreadyPickedUpException(); }
 
             var recip = dal.GetCustomer(package.TargetId);
             Location recipLoc = new(recip.Latitude, recip.Longitude);
             drone.BatteryStatus -= getPowerConsumption(package.Weight) * Utils.DistanceBetween(drone.Location, recipLoc);
             drone.Location = recipLoc;
             drone.Status = DroneStatus.free;
+            drone.PackageId = null;
             drones[droneIndex] = drone;
 
             dal.UpdateDrone(id, battery: drone.BatteryStatus);
