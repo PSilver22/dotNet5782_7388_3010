@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using IBL.BO;
 using System.Device.Location;
@@ -12,10 +11,10 @@ namespace IBL
         /// </summary>
         /// <param name="l1">the first location</param>
         /// <param name="l2">the second location</param>
-        /// <returns>the distance between the two locations</returns>
+        /// <returns>the distance between the two locations in km</returns>
         public static double DistanceBetween(Location l1, Location l2)
         {
-            return new GeoCoordinate(l1.Latitude, l1.Longitude).GetDistanceTo(new(l2.Latitude, l2.Longitude));
+            return new GeoCoordinate(l1.Latitude, l1.Longitude).GetDistanceTo(new(l2.Latitude, l2.Longitude)) / 1000;
         }
 
         /// <summary>
