@@ -47,22 +47,20 @@ namespace DalObject
             for (var i = 0; i < DataSource.drones.Count; i++)
             {
                 var d = DataSource.drones[i];
-                if (d.Status == DroneStatus.free)
+                
+                if (d.MaxWeight == package.Weight)
                 {
-                    if (d.MaxWeight == package.Weight)
+                    droneIndex = i;
+                    break;
+                }
+
+                if (d.MaxWeight > package.Weight)
+                {
+                    // If this is the first available drone, or a better choice
+                    // use it.
+                    if (droneIndex == -1 || DataSource.drones[droneIndex].MaxWeight > d.MaxWeight)
                     {
                         droneIndex = i;
-                        break;
-                    }
-
-                    if (d.MaxWeight > package.Weight)
-                    {
-                        // If this is the first available drone, or a better choice
-                        // use it.
-                        if (droneIndex == -1 || DataSource.drones[droneIndex].MaxWeight > d.MaxWeight)
-                        {
-                            droneIndex = i;
-                        }
                     }
                 }
             }
@@ -112,9 +110,9 @@ namespace DalObject
             {
                 // Set the delivery time and mark the drone as free
                 package.Delivered = DateTime.UtcNow;
-                var drone = GetDrone(package.DroneId);
+                var drone = GetDrone(package.DroneId ?? -1);
 
-                DataSource.drones[GetDroneIndex(package.DroneId)] = drone;
+                DataSource.drones[GetDroneIndex(package.DroneId ?? -1)] = drone;
             }
 
             DataSource.packages[GetPackageIndex(packageId)] = package;
@@ -179,11 +177,49 @@ namespace DalObject
         /// Creates a string with the information for every drone in the drones list
         /// </summary>
         /// <returns>
-        /// string with the information for every drone
+        /// Drone list
         /// </returns>
-        public string GetDroneList()
+        public List<Drone> GetDroneList()
         {
-            return ListItems<Drone>(DataSource.drones);
+            return DataSource.drones;
+        }
+
+        /// <summary>
+        /// Returns the list of drone charges
+        /// </summary>
+        /// <returns>Drone charge list</returns>
+        public List<DroneCharge> GetDroneChargeList()
+        {
+            return DataSource.droneCharges;
+        }
+
+        /// <summary>
+        /// Returns the charge of the given drone
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns></returns>
+        public DroneCharge GetDroneCharge(int droneId)
+        {
+            return DataSource.droneCharges.Find(x => x.DroneId == droneId);
+        }
+
+        /// <summary>
+        /// Removes charge from the drone charge list with the given drone id
+        /// </summary>
+        /// <param name="droneId"></param>
+        public void DeleteDroneCharge(int droneId)
+        {
+            DataSource.droneCharges.Remove(GetDroneCharge(droneId));
+        }
+
+        /// <summary>
+        /// Adds new drone charge to the database
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <param name="droneId"></param>
+        public void AddDroneCharge(int stationId, int droneId)
+        {
+            DataSource.droneCharges.Add(new DroneCharge(stationId, droneId));
         }
 
         /// <summary>
@@ -194,6 +230,37 @@ namespace DalObject
         private int GetDroneIndex(int id)
         {
             return GetItemIndexByKey<Drone>(id, DataSource.drones);
+        }
+
+        /// <summary>
+        /// Updates the drone with the given id's properties to the given values
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="maxWeight"></param>
+        /// <param name="battery"></param>
+        public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null)
+        {
+            int index = GetDroneIndex(id);
+
+            Drone updatedDrone = DataSource.drones[id];
+
+            updatedDrone.Model = model ?? updatedDrone.Model;
+            updatedDrone.MaxWeight = maxWeight ?? updatedDrone.MaxWeight;
+            updatedDrone.Battery = battery ?? updatedDrone.Battery;
+
+            SetDrone(updatedDrone);
+        }
+
+        /// <summary>
+        /// Sets the drone with a matching id in the database to the given drone.
+        /// </summary>
+        /// <param name="drone"></param>
+        public void SetDrone(Drone drone)
+        {
+            int index = GetDroneIndex(drone.Id);
+
+            DataSource.drones[index] = drone;
         }
 
         /// <summary>

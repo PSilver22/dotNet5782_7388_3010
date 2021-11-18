@@ -28,14 +28,14 @@ namespace DalObject
         }
 
         /// <summary>
-        /// Creates a string with the information for every station in the stations list
+        /// Returns the station list with information for every station in the stations list
         /// </summary>
         /// <returns>
-        /// string with the information for every station
+        /// Station list
         /// </returns>
-        public string GetStationList()
+        public List<Station> GetStationList()
         {
-            return ListItems<Station>(DataSource.stations);
+            return DataSource.stations;
         }
 
         /// <summary>
@@ -54,12 +54,42 @@ namespace DalObject
         /// <returns>
         /// string with the information for every unoccupied station
         /// </returns>
-        public string GetUnoccupiedStationsList()
+        public List<Station> GetUnoccupiedStationsList()
         {
-            return string.Join(
-                "\n",
-                DataSource.stations.GetRange(0, DataSource.stations.Count)
-                    .Where(s => s.ChargeSlots > 0));
+            return (List<Station>) DataSource.stations.Where(x => x.ChargeSlots > 0);
+        }
+
+        /// <summary>
+        /// Changes the data of a station in the database
+        /// </summary>
+        /// <param name="id"> ID of the station to change. </param>
+        /// <param name="name"> The new name of the station. </param>
+        /// <param name="longitude"> The new longitude of the station. </param>
+        /// <param name="latitude"> The new latitude of the station. </param>
+        /// <param name="chargeSlot"> The updated amount of charge slots. </param>
+        public void UpdateStation(int id, string? name = null, double? longitude = null, double? latitude = null, int? chargeSlot = null)
+        {
+            int index = GetStationIndex(id);
+
+            Station updatedStation = DataSource.stations[index];
+
+            updatedStation.Name = name ?? updatedStation.Name;
+            updatedStation.Longitude = longitude ?? updatedStation.Longitude;
+            updatedStation.Latitude = latitude ?? updatedStation.Latitude;
+            updatedStation.ChargeSlots = chargeSlot ?? updatedStation.ChargeSlots;
+
+            SetStation(updatedStation);
+        }
+
+        /// <summary>
+        /// Sets the station with the matching id to the given station
+        /// </summary>
+        /// <param name="station"></param>
+        public void SetStation(Station station)
+        {
+            int index = GetStationIndex(station.Id);
+
+            DataSource.stations[index] = station;
         }
 
         /// <summary>

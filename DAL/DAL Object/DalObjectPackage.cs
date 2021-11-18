@@ -5,8 +5,8 @@ using IDAL.DO;
 
 namespace DalObject
 {
-	public partial class DalObject
-	{
+    public partial class DalObject
+    {
         /// <summary>
         /// Creates a new package and adds it to the list of packages
         /// </summary>
@@ -53,14 +53,14 @@ namespace DalObject
         }
 
         /// <summary>
-        /// Creates a string with the information for every package in the packages list
+        /// Returns a list with the information for every package in the packages list
         /// </summary>
         /// <returns>
-        /// string with the information for every package
+        /// Packages list
         /// </returns>
-        public string GetPackageList()
+        public List<Package> GetPackageList()
         {
-            return ListItems<Package>(DataSource.packages);
+            return DataSource.packages;
         }
 
         /// <summary>
@@ -69,12 +69,62 @@ namespace DalObject
         /// <returns>
         /// string with the information for every unassigned package
         /// </returns>
-        public string GetUnassignedPackageList()
+        public List<Package> GetUnassignedPackageList()
         {
-            return string.Join(
-                "\n",
-                DataSource.packages.GetRange(0, DataSource.packages.Count)
-                    .Where(p => p.DroneId == 0));
+            return (List<Package>) DataSource.packages.Where(x => x.DroneId == 0);
+        }
+
+        /// <summary>
+        /// Update the given package properties for the package with the given ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="senderId"></param>
+        /// <param name="targetId"></param>
+        /// <param name="weight"></param>
+        /// <param name="priority"></param>
+        /// <param name="requested"></param>
+        /// <param name="droneId"></param>
+        /// <param name="scheduled"></param>
+        /// <param name="pickedUp"></param>
+        /// <param name="delivered"></param>
+        public void UpdatePackage(
+            int id,
+            int? senderId = null,
+            int? targetId = null,
+            WeightCategory? weight = null,
+            Priority? priority = null,
+            DateTime? requested = null,
+            int? droneId = null,
+            DateTime? scheduled = null,
+            DateTime? pickedUp = null,
+            DateTime? delivered = null)
+        {
+            int index = GetPackageIndex(id);
+
+            Package updatedPackage = DataSource.packages[index];
+
+            updatedPackage.SenderId = senderId ?? updatedPackage.SenderId;
+            updatedPackage.TargetId = targetId ?? updatedPackage.TargetId;
+            updatedPackage.Weight = weight ?? updatedPackage.Weight;
+            updatedPackage.Priority = priority ?? updatedPackage.Priority;
+            updatedPackage.Requested = requested ?? updatedPackage.Requested;
+            updatedPackage.DroneId = droneId ?? updatedPackage.DroneId;
+            updatedPackage.Scheduled = scheduled ?? updatedPackage.Scheduled;
+            updatedPackage.PickedUp = pickedUp ?? updatedPackage.PickedUp;
+            updatedPackage.Delivered = delivered ?? updatedPackage.Delivered;
+
+            SetPackage(updatedPackage);
+        }
+
+        /// <summary>
+        /// Sets the package with matching id to the given package
+        /// </summary>
+        /// <param name="package"></param>
+        public void SetPackage(Package package)
+        {
+            int index = GetPackageIndex(package.Id);
+
+            DataSource.packages[index] = package;
         }
 
         /// <summary>

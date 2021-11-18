@@ -38,14 +38,47 @@ namespace DalObject
         }
 
         /// <summary>
-        /// Creates a string with the information for every customer in the customers list
+        /// Returns a list with the information for every customer in the customers list
         /// </summary>
         /// <returns>
-        /// string with the information for every customer
+        /// Customer list
         /// </returns>
-        public string GetCustomerList()
+        public List<Customer> GetCustomerList()
         {
-            return ListItems<Customer>(DataSource.customers);
+            return DataSource.customers;
+        }
+
+        /// <summary>
+        /// Updates the customer with given id to the given values
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="longitude"></param>
+        /// <param name="latitude"></param>
+        public void UpdateCustomer(int id, string? name = null, string? phone = null, double? longitude = null, double? latitude = null)
+        {
+            int index = GetCustomerIndex(id);
+
+            Customer updatedCustomer = DataSource.customers[index];
+
+            updatedCustomer.Name = name ?? updatedCustomer.Name;
+            updatedCustomer.Phone = phone ?? updatedCustomer.Phone;
+            updatedCustomer.Longitude = longitude ?? updatedCustomer.Longitude;
+            updatedCustomer.Latitude = latitude ?? updatedCustomer.Latitude;
+
+            SetCustomer(updatedCustomer);
+        }
+
+        /// <summary>
+        /// Sets the customer with matching id to the given customer
+        /// </summary>
+        /// <param name="customer"></param>
+        public void SetCustomer(Customer customer)
+        {
+            int index = GetCustomerIndex(customer.Id);
+
+            DataSource.customers[index] = customer;
         }
 
         /// <summary>

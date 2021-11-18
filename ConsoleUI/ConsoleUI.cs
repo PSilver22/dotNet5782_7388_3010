@@ -202,7 +202,6 @@ e[x]it                          Quit the program
                     Utils.PromptInt("id: "),
                     Utils.Prompt("model: "),
                     Utils.PromptEnum<WeightCategory>("weight category [heavy|medium|light]: "),
-                    Utils.PromptEnum<DroneStatus>("status [free|maintenance|delivery]: "),
                     Utils.PromptDouble("battery level: ")));
         }
 
