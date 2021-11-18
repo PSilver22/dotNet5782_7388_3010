@@ -7,6 +7,8 @@ namespace IBL
 {
     public interface IBL
     {
+        // TODO: Add documentation
+
         // Add
         public void AddBaseStation(int id, string name, double latitude, double longitude, int numChargingSlots);
         public void AddDrone(int id, string model, IDAL.DO.WeightCategory maxWeight, int startingStationId);
