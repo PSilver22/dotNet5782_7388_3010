@@ -7,38 +7,168 @@ namespace IBL
 {
     public interface IBL
     {
-        // TODO: Add documentation
-
         // Add
+
+        /// <summary>
+        /// Add a new base station
+        /// </summary>
+        /// <param name="id">id of the new base station</param>
+        /// <param name="name">name of the new base station</param>
+        /// <param name="latitude">latitude of the new base station</param>
+        /// <param name="longitude">longitude of the new base station</param>
+        /// <param name="numChargingSlots">number of charging slots in the new base station</param>
         public void AddBaseStation(int id, string name, double latitude, double longitude, int numChargingSlots);
+
+        /// <summary>
+        /// Add a new drone
+        /// </summary>
+        /// <param name="id">id of the new drone</param>
+        /// <param name="model">model of the new drone</param>
+        /// <param name="maxWeight">max weight of the new drone</param>
+        /// <param name="startingStationId">the id of the station where the new drone will start</param>
         public void AddDrone(int id, string model, IDAL.DO.WeightCategory maxWeight, int startingStationId);
+
+        /// <summary>
+        /// Add a new customer
+        /// </summary>
+        /// <param name="id">id of the new customer</param>
+        /// <param name="name">name of the new customer</param>
+        /// <param name="phone">phone of the new customer</param>
+        /// <param name="longitude">longitude of the new customer</param>
+        /// <param name="latitude">latitude of the new customer</param>
         public void AddCustomer(int id, string name, string phone, double longitude, double latitude);
+
+        /// <summary>
+        /// Add a new package
+        /// </summary>
+        /// <param name="senderId">id of the sender of the new package</param>
+        /// <param name="receiverId">id of the receiver of the new package</param>
+        /// <param name="weight">weight of the new package</param>
+        /// <param name="priority">priority of the new package</param>
         public void AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
 
         // Update
+
+        /// <summary>
+        /// Update a base station
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="name">name</param>
+        /// <param name="numChargingStations">number of charging stations</param>
         public void UpdateBaseStation(int id, string? name = null, int? numChargingStations = null);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
         public void UpdateDrone(int id, string model);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
         public void UpdateCustomer(int id, string? name = null, string? phone = null);
 
+        /// <summary>
+        /// Send a drone to charge
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
         public void SendDroneToCharge(int id);
+
+        /// <summary>
+        /// Release a drone from charging
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
+        /// <param name="chargingTime">the time spent charging</param>
         public void ReleaseDroneFromCharge(int id, int chargingTime);
 
+        /// <summary>
+        /// Assign a package to a drone
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
         public void AssignPackageToDrone(int id);
+
+        /// <summary>
+        /// Have the drone collect its assigned package
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
         public void CollectPackageByDrone(int id);
+
+        /// <summary>
+        /// Have the drone collect its package
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
         public void DeliverPackageByDrone(int id);
 
         // Get
+
+        /// <summary>
+        /// Get a base station by id
+        /// </summary>
+        /// <param name="id">the id of the base station</param>
+        /// <returns>the base station with the given id</returns>
         public BO.BaseStation GetBaseStation(int id);
+
+        /// <summary>
+        /// Get a drone by id
+        /// </summary>
+        /// <param name="id">the id of the drone</param>
+        /// <returns>the drone with the given id</returns>
         public BO.Drone GetDrone(int id);
+
+        /// <summary>
+        /// Get a customer by id
+        /// </summary>
+        /// <param name="id">the id of the customer</param>
+        /// <returns>the customer with the given id</returns>
         public BO.Customer GetCustomer(int id);
+
+        /// <summary>
+        /// Get a package by id
+        /// </summary>
+        /// <param name="id">the id of the package</param>
+        /// <returns>the package with the given id</returns>
         public BO.Package GetPackage(int id);
 
         // Get List
+
+        /// <summary>
+        /// Get the list of base stations
+        /// </summary>
+        /// <returns>the list of base stations</returns>
         public IEnumerable<BO.BaseStationListing> GetBaseStationList();
+
+        /// <summary>
+        /// Get the list of drones
+        /// </summary>
+        /// <returns>the list of drones</returns>
         public IEnumerable<BO.DroneListing> GetDroneList();
+
+        /// <summary>
+        /// Get the list of customers
+        /// </summary>
+        /// <returns>the list of customers</returns>
         public IEnumerable<BO.CustomerListing> GetCustomerList();
+
+        /// <summary>
+        /// Get the list of packages
+        /// </summary>
+        /// <returns>the list of packages</returns>
         public IEnumerable<BO.PackageListing> GetPackageList();
+
+        /// <summary>
+        /// Get the list of unassigned packages
+        /// </summary>
+        /// <returns>the list of unassigned packages</returns>
         public IEnumerable<BO.PackageListing> GetUnassignedPackageList();
+
+        /// <summary>
+        /// Get the list of base stations
+        /// </summary>
+        /// <returns>the list of base stations</returns>
         public IEnumerable<BO.BaseStationListing> GetAvailableChargingStations();
     }
 }
