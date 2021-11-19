@@ -15,7 +15,7 @@ namespace ConsoleUI_BL
 		internal static void DisplayBaseStation(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Input station ID: ");
-			int id = Console.Read();
+			int id = ReadInt();
 
 			Console.WriteLine(logicLayer.GetBaseStation(id).ToString());
 		}
@@ -27,7 +27,7 @@ namespace ConsoleUI_BL
 		internal static void DisplayDrone(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Input drone ID: ");
-			int id = Console.Read();
+			int id = ReadInt();
 
 			Console.WriteLine(logicLayer.GetDrone(id).ToString());
 		}
@@ -39,7 +39,7 @@ namespace ConsoleUI_BL
 		internal static void DisplayCustomer(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Input customer ID: ");
-			int id = Console.Read();
+			int id = ReadInt();
 
 			Console.WriteLine(logicLayer.GetCustomer(id).ToString());
 		}
@@ -51,7 +51,7 @@ namespace ConsoleUI_BL
 		internal static void DisplayPackage(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Input customer ID: ");
-			int id = Console.Read();
+			int id = ReadInt();
 
 			Console.WriteLine(logicLayer.GetPackage(id).ToString());
 		}

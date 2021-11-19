@@ -4,6 +4,19 @@ namespace ConsoleUI_BL
 {
 	partial class ConsoleUI
 	{
+		internal static int ReadInt()
+		{
+			string input = Console.ReadLine();
+			int result;
+
+			if (!int.TryParse(input, out result))
+			{
+				result = -1;
+			}
+
+			return result;
+		}
+
 		static void Main(string[] args)
 		{
 			bool running = true;
@@ -12,7 +25,7 @@ namespace ConsoleUI_BL
 			while (running)
 			{
 				DisplayMainMenu();
-				int option = Console.Read();
+				int option = ReadInt();
 
 				try
 				{
@@ -20,7 +33,7 @@ namespace ConsoleUI_BL
 					{
 						case 1:
 							DisplayAddMenu();
-							option = Console.Read();
+							option = ReadInt();
 
 							switch (option)
 							{
@@ -46,7 +59,7 @@ namespace ConsoleUI_BL
 
 						case 2:
 							DisplayUpdateMenu();
-							option = Console.Read();
+							option = ReadInt();
 
 							switch (option)
 							{
@@ -87,7 +100,7 @@ namespace ConsoleUI_BL
 
 						case 3:
 							DisplayDisplayMenu();
-							option = Console.Read();
+							option = ReadInt();
 
 							switch (option)
 							{
@@ -113,7 +126,7 @@ namespace ConsoleUI_BL
 
 						case 4:
 							DisplayListMenu();
-							option = Console.Read();
+							option = ReadInt();
 
 							switch (option)
 							{
@@ -173,8 +186,8 @@ namespace ConsoleUI_BL
 			Console.WriteLine(
 				"Options:\n" +
 				"1. Base Station\n" +
-				"2. Drone" +
-				"3. New Customer" +
+				"2. Drone\n" +
+				"3. New Customer\n" +
 				"4. Package\n");
 		}
 

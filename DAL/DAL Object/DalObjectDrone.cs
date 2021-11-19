@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using IDAL.DO;
@@ -19,12 +21,13 @@ namespace DalObject
                 throw new InvalidIdException(drone.Id);
             }
 
-            if (DataSource.drones.Count < DataSource.MaxDrones)
+            if (DataSource.drones.Count >= DataSource.MaxDrones)
             {
-                DataSource.drones.Add(drone);
+                throw new MaximumCapacityException("Drone list is at maximum capacity.");
             }
 
-            throw new MaximumCapacityException("Drone list is at maximum capacity.");
+            DataSource.drones.Add(drone);
+
         }
 
         /// <summary>

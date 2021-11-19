@@ -77,7 +77,7 @@ namespace IBL
                 }
                 else
                 {
-                    if ((rand.Next() & 1) == 0)
+                    if (packages.Count(p => p.Delivered is not null) > 0 && (rand.Next() & 1) == 0)
                     {
                         status = DroneStatus.free;
                         var deliveredPackages = packages.FindAll(p => p.Delivered is not null);

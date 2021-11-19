@@ -31,8 +31,8 @@ namespace IBL.BO
                 $"weight category: {WeightCategory}\n" +
                 $"battery status: {BatteryStatus * 100:F2}\n" +
                 $"status: {Status}\n" +
-                $"location: {Location}" +
-                PackageId is not null ? $"\npackage: {PackageId!}" : "";
+                $"location: {Location}\n" +
+                (PackageId is not null ? $"\npackage: {PackageId}" : "");
         }
     }
 }

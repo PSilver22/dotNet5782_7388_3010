@@ -17,11 +17,11 @@ namespace ConsoleUI_BL
 		{
 			Console.WriteLine("Enter station ID, name, longitude, latitude, and number of available charging stations: ");
 			
-			int id = Console.Read();
+			int id = ReadInt();
 			string name = Console.ReadLine();
 			double longitude = Convert.ToDouble(Console.ReadLine());
 			double latitude = Convert.ToDouble(Console.ReadLine());
-			int numChargingSlots = Console.Read();
+			int numChargingSlots = ReadInt();
 
 			logicLayer.AddBaseStation(id, name, latitude, longitude, numChargingSlots);
 		}
@@ -33,10 +33,10 @@ namespace ConsoleUI_BL
 		internal static void AddDrone(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Enter manufacture ID, drone model, max weight <sub menu>, starting station ID: ");
-			int id = Console.Read();
+			int id = ReadInt();
 			string model = Console.ReadLine();
-			IDAL.DO.WeightCategory maxWeight = (IDAL.DO.WeightCategory) Console.Read();
-			int startingStationId = Console.Read();
+			IDAL.DO.WeightCategory maxWeight = (IDAL.DO.WeightCategory) ReadInt();
+			int startingStationId = ReadInt();
 
 			logicLayer.AddDrone(id, model, maxWeight, startingStationId);
 		}
@@ -48,7 +48,7 @@ namespace ConsoleUI_BL
 		internal static void AddCustomer(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Enter customer ID, name, phone, longitude, and latitude: ");
-			int id = Console.Read();
+			int id = ReadInt();
 			string name = Console.ReadLine();
 			string phone = Console.ReadLine();
 			double longitude = Convert.ToDouble(Console.ReadLine());
@@ -64,10 +64,10 @@ namespace ConsoleUI_BL
 		internal static void AddPackage(IBL.IBL logicLayer)
 		{
 			Console.WriteLine("Enter sending customer ID, receiving customer ID, weight <sub menu>, and priority <sub menu>: ");
-			int senderId = Console.Read();
-			int receiverId = Console.Read();
-			IDAL.DO.WeightCategory weight = (IDAL.DO.WeightCategory) Console.Read();
-			IDAL.DO.Priority priority = (IDAL.DO.Priority) Console.Read();
+			int senderId = ReadInt();
+			int receiverId = ReadInt();
+			IDAL.DO.WeightCategory weight = (IDAL.DO.WeightCategory) ReadInt();
+			IDAL.DO.Priority priority = (IDAL.DO.Priority) ReadInt();
 
 			logicLayer.AddPackage(senderId, receiverId, weight, priority);
 		}
