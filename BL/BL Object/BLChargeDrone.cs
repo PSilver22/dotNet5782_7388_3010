@@ -10,21 +10,14 @@ namespace IBL
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
-            {
-                // TODO: throw DroneNotFound
-            }
-
+            { throw new DroneNotFoundException(id); }
 
             var drone = drones[droneIndex];
-            if (drone.Status != DroneStatus.maintenance)
-            {
-                // TODO: throw DroneNotInMaintenance
-            }
 
             DroneCharge droneCharge;
             try { droneCharge = dal.GetDroneCharge(id); }
-            catch
-            { /* TODO: throw DroneNotCharging */ throw new Exception(); }
+            catch (IdNotFoundException)
+            { throw new DroneNotChargingException(); }
 
             var station = dal.GetStation(droneCharge.StationId);
 
@@ -42,19 +35,19 @@ namespace IBL
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
             {
-                // TODO: throw DroneNotFound
+                throw new DroneNotFoundException(id);
             }
 
             var drone = drones[droneIndex];
             if (drone.Status != DroneStatus.free)
             {
-                // TODO: throw DroneNotFree
+                throw new DroneNotFreeException("send drone to charge");
             }
 
             var maxDistance = drone.BatteryStatus / powerConsumption.Free;
             var reachableStations = dal.GetStationList().FindAll(s => Utils.DistanceBetween(drone.Location, new(s.Latitude, s.Longitude)) < maxDistance && s.ChargeSlots > 0);
             if (reachableStations.Count == 0)
-            { /* TODO: throw NoStationInRange */ }
+            { throw new NoStationInRangeException(maxDistance); }
 
             var closestStation = Utils.ClosestStation(drone.Location, reachableStations);
 

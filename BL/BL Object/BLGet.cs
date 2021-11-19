@@ -17,10 +17,9 @@ namespace IBL
                     .ConvertAll(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery));
                 return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots, chargingDrones);
             }
-            catch
+            catch (IDAL.DO.IdNotFoundException)
             {
-                // TODO: throw StationNotFound
-                throw new Exception();
+                throw new StationNotFoundException(id);
             }
         }
 
@@ -60,8 +59,7 @@ namespace IBL
             }
             catch
             {
-                // TODO: throw CustomerNotFound
-                throw new Exception();
+                throw new CustomerNotFoundException(id);
             }
         }
 
@@ -69,8 +67,10 @@ namespace IBL
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
-            { /* TODO: throw DroneNotFound */ }
+            { throw new DroneNotFoundException(id); }
+
             var drone = drones[droneIndex];
+
             PackageInTransfer? pkg = null;
             if (drone.PackageId is not null)
             {
@@ -117,8 +117,7 @@ namespace IBL
             }
             catch
             {
-                // TODO: throw PackageNotFound
-                throw new Exception();
+                throw new PackageNotFoundException(id);
             }
         }
     }

@@ -7,19 +7,19 @@ namespace IBL
         public void UpdateBaseStation(int id, string? name = null, int? numChargingSlots = null)
         {
             try { dal.UpdateStation(id, name: name, chargeSlots: numChargingSlots); }
-            catch { /* TODO: throw StationNotFound */ }
+            catch { throw new StationNotFoundException(id); }
         }
 
         public void UpdateCustomer(int id, string? name = null, string? phone = null)
         {
             try { dal.UpdateCustomer(id, name: name, phone: phone); }
-            catch { /* TODO: throw CustomerNotFound */ }
+            catch { throw new CustomerNotFoundException(id); }
         }
 
         public void UpdateDrone(int id, string model)
         {
             try { dal.UpdateDrone(id, model: model); }
-            catch { /* TODO: throw DroneNotFound */ }
+            catch { throw new DroneNotFoundException(id); }
         }
     }
 }
