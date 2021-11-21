@@ -13,17 +13,11 @@ namespace DalObject
         /// Adds a customer to the list of customers
         /// </summary>
         /// <param name="customer">The customer to add</param>
-        /// <returns>true if the customer was successfully added, false otherwise</returns>
         public void AddCustomer(Customer customer)
         {
             if (customer.Id < 0)
             {
                 throw new InvalidIdException(customer.Id);
-            }
-
-            if (DataSource.customers.Count >= DataSource.MaxCustomers)
-            {
-                throw new MaximumCapacityException("Customer list is at max capacity.");
             }
 
             DataSource.customers.Add(customer);

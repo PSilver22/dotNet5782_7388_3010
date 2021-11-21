@@ -21,11 +21,6 @@ namespace DalObject
                 throw new InvalidIdException(station.Id);
             }
 
-            if (DataSource.stations.Count >= DataSource.MaxStations)
-            {
-                throw new MaximumCapacityException("Station list is at max capacity.");
-            }
-
             DataSource.stations.Add(station);
         }
 

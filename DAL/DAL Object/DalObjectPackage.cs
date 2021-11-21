@@ -22,11 +22,6 @@ namespace DalObject
                 throw new InvalidIdException((senderId < 0) ? senderId : targetId);
             }
 
-            if (DataSource.packages.Count >= DataSource.MaxPackages)
-            {
-                throw new MaximumCapacityException("Package list is at max capacity.");
-            }
-
             DataSource.packages.Add(new Package(
                     id: DataSource.Config.CurrentPackageId + 1,
                     senderId,

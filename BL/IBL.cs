@@ -140,36 +140,36 @@ namespace IBL
         /// Get the list of base stations
         /// </summary>
         /// <returns>the list of base stations</returns>
-        public IEnumerable<BO.BaseStationListing> GetBaseStationList();
+        public List<BO.BaseStationListing> GetBaseStationList();
 
         /// <summary>
         /// Get the list of drones
         /// </summary>
         /// <returns>the list of drones</returns>
-        public IEnumerable<BO.DroneListing> GetDroneList();
+        public List<BO.DroneListing> GetDroneList();
 
         /// <summary>
         /// Get the list of customers
         /// </summary>
         /// <returns>the list of customers</returns>
-        public IEnumerable<BO.CustomerListing> GetCustomerList();
+        public List<BO.CustomerListing> GetCustomerList();
 
         /// <summary>
         /// Get the list of packages
         /// </summary>
         /// <returns>the list of packages</returns>
-        public IEnumerable<BO.PackageListing> GetPackageList();
+        public List<BO.PackageListing> GetPackageList();
 
         /// <summary>
         /// Get the list of unassigned packages
         /// </summary>
         /// <returns>the list of unassigned packages</returns>
-        public IEnumerable<BO.PackageListing> GetUnassignedPackageList();
+        public List<BO.PackageListing> GetUnassignedPackageList();
 
         /// <summary>
         /// Get the list of base stations
         /// </summary>
         /// <returns>the list of base stations</returns>
-        public IEnumerable<BO.BaseStationListing> GetAvailableChargingStations();
+        public List<BO.BaseStationListing> GetAvailableChargingStations();
     }
 }

@@ -7,7 +7,7 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public IEnumerable<BaseStationListing> GetAvailableChargingStations()
+        public List<BaseStationListing> GetAvailableChargingStations()
         {
             var charging = dal.GetDroneChargeList();
             return dal.GetUnoccupiedStationsList().ConvertAll(s =>
@@ -17,7 +17,7 @@ namespace IBL
             });
         }
 
-        public IEnumerable<BaseStationListing> GetBaseStationList()
+        public List<BaseStationListing> GetBaseStationList()
         {
             var charging = dal.GetDroneChargeList();
             return dal.GetStationList().ConvertAll(s =>
@@ -27,7 +27,7 @@ namespace IBL
             });
         }
 
-        public IEnumerable<CustomerListing> GetCustomerList()
+        public List<CustomerListing> GetCustomerList()
         {
             var packages = dal.GetPackageList();
             return dal.GetCustomerList().ConvertAll(c => new CustomerListing(
@@ -40,12 +40,12 @@ namespace IBL
                 packages.Count(p => p.TargetId == c.Id && p.Delivered is null)));
         }
 
-        public IEnumerable<DroneListing> GetDroneList()
+        public List<DroneListing> GetDroneList()
         {
             return drones;
         }
 
-        public IEnumerable<PackageListing> GetPackageList()
+        public List<PackageListing> GetPackageList()
         {
             return dal.GetPackageList().ConvertAll(p => new PackageListing(
                 p.Id,
@@ -59,7 +59,7 @@ namespace IBL
                 : PackageStatus.created));
         }
 
-        public IEnumerable<PackageListing> GetUnassignedPackageList()
+        public List<PackageListing> GetUnassignedPackageList()
         {
             return dal.GetUnassignedPackageList().ConvertAll(p => new PackageListing(
                 p.Id,

@@ -81,7 +81,12 @@ namespace DalObject
                 // create a randomized package
                 packages.Add(new Package()
                 {
-                    Id = count
+                    Id = count,
+                    SenderId = customers[randomGenerator.Next(customers.Count)].Id,
+                    TargetId = customers[randomGenerator.Next(customers.Count)].Id,
+                    Requested = DateTime.UtcNow,
+                    Weight = (WeightCategory) randomGenerator.Next(3),
+                    Priority = (Priority) randomGenerator.Next(3)
                 });
             }
 
@@ -92,12 +97,12 @@ namespace DalObject
         {
             internal static int CurrentPackageId = 0;
 
-            internal static readonly double free = 4;
-            internal static readonly double lightWeight = 6;
-            internal static readonly double midWeight = 8;
-            internal static readonly double heavyWeight = 10;
+            internal static readonly double free = 1;
+            internal static readonly double lightWeight = 2;
+            internal static readonly double midWeight = 3;
+            internal static readonly double heavyWeight = 4;
 
-            internal static readonly double chargeRate = 40;
+            internal static readonly double chargeRate = 20;
         }
     }
 }

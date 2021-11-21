@@ -13,17 +13,11 @@ namespace DalObject
         /// Adds a drone to the list of drones
         /// </summary>
         /// <param name="drone">The drone to add</param>
-        /// <returns>true if the drone was successfully added, false otherwise</returns>
         public void AddDrone(Drone drone)
         {
             if (drone.Id < 0)
             {
                 throw new InvalidIdException(drone.Id);
-            }
-
-            if (DataSource.drones.Count >= DataSource.MaxDrones)
-            {
-                throw new MaximumCapacityException("Drone list is at maximum capacity.");
             }
 
             DataSource.drones.Add(drone);
@@ -34,7 +28,6 @@ namespace DalObject
         /// Assigns a package to a drone
         /// </summary>
         /// <param name="packageId">The ID of the package</param>
-        /// <returns>true if the package was successfully assigned to a drone, false otherwise</returns>
         public void AssignPackage(int packageId)
         {
             if (packageId < 0)
