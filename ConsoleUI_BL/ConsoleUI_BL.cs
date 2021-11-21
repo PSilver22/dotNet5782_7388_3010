@@ -11,16 +11,16 @@ namespace ConsoleUI_BL
 
 			while (running)
 			{
-				DisplayMainMenu();
-				int option = ReadInt();
+				Utils.DisplayMainMenu();
+				int option = Utils.ReadInt();
 
 				try
 				{
 					switch (option)
 					{
 						case 1:
-							DisplayAddMenu();
-							option = ReadInt();
+							Utils.DisplayAddMenu();
+							option = Utils.ReadInt();
 
 							switch (option)
 							{
@@ -45,8 +45,8 @@ namespace ConsoleUI_BL
 							break;
 
 						case 2:
-							DisplayUpdateMenu();
-							option = ReadInt();
+							Utils.DisplayUpdateMenu();
+							option = Utils.ReadInt();
 
 							switch (option)
 							{
@@ -86,8 +86,8 @@ namespace ConsoleUI_BL
 							break;
 
 						case 3:
-							DisplayDisplayMenu();
-							option = ReadInt();
+							Utils.DisplayDisplayMenu();
+							option = Utils.ReadInt();
 
 							switch (option)
 							{
@@ -112,8 +112,8 @@ namespace ConsoleUI_BL
 							break;
 
 						case 4:
-							DisplayListMenu();
-							option = ReadInt();
+							Utils.DisplayListMenu();
+							option = Utils.ReadInt();
 
 							switch (option)
 							{
@@ -155,75 +155,6 @@ namespace ConsoleUI_BL
 					Console.WriteLine(error.Message + "\n");
 				}
 			}
-		}
-
-		internal static int ReadInt()
-		{
-			string input = Console.ReadLine();
-			int result;
-
-			if (!int.TryParse(input, out result))
-			{
-				result = -1;
-			}
-
-			return result;
-		}
-		static void DisplayMainMenu()
-		{
-			Console.WriteLine(
-				"Options:\n" +
-				"1. Add to the data\n" +
-				"2. Update the data\n" +
-				"3. Display data\n" +
-				"4. Display lists\n" +
-				"5. Exit\n");
-		}
-
-		static void DisplayAddMenu()
-		{
-			Console.WriteLine(
-				"Options:\n" +
-				"1. Base Station\n" +
-				"2. Drone\n" +
-				"3. New Customer\n" +
-				"4. Package\n");
-		}
-
-		static void DisplayUpdateMenu()
-		{
-			Console.WriteLine(
-				"Options:\n" +
-				"1. Drone name\n" +
-				"2. Station\n" +
-				"3. Customer\n" +
-				"4. Send drone to charge\n" +
-				"5. Release drone from charge\n" +
-				"6. Assign package to drone\n" +
-				"7. Collect package by drone\n" +
-				"8. deliver package from drone\n");
-		}
-
-		static void DisplayDisplayMenu()
-		{
-			Console.WriteLine(
-				"Options:\n" +
-				"1. Display base station\n" +
-				"2. Display drone\n" +
-				"3. Display customer\n" +
-				"4. display package\n");
-		}
-
-		static void DisplayListMenu()
-		{
-			Console.WriteLine(
-				"Options:\n" +
-				"1. Base stations list\n" +
-				"2. Drones list\n" +
-				"3. Customers list\n" +
-				"4. Packages list\n" +
-				"5. Unassigned packages\n" +
-				"6. Available base stations\n");
 		}
 	}
 }
