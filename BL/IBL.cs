@@ -45,7 +45,8 @@ namespace IBL
         /// <param name="receiverId">id of the receiver of the new package</param>
         /// <param name="weight">weight of the new package</param>
         /// <param name="priority">priority of the new package</param>
-        public void AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
+        /// <returns>ID of the new package</returns>
+        public int AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
 
         // Update
 

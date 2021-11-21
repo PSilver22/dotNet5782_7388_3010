@@ -1,7 +1,9 @@
 ﻿#nullable enable
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using IBL;
 using IBL.BO;
 using IDAL.DO;
 
@@ -32,7 +34,7 @@ namespace IBL
                 int? packageId = null;
 
                 var packageIndex = packages.FindIndex(p => p.Delivered is null && p.DroneId == d.Id);
-
+                
                 if (packageIndex != -1)
                 {
                     var package = packages[packageIndex];
@@ -76,7 +78,7 @@ namespace IBL
                 }
                 else
                 {
-                    if (packages.Count(p => p.Delivered is not null) > 0 && (rand.Next() & 1) == 0)
+                    if (packages?.Count(p => p.Delivered is not null) > 0 && (rand.Next() & 1) == 0)
                     {
                         status = DroneStatus.free;
                         var deliveredPackages = packages.FindAll(p => p.Delivered is not null);
@@ -88,6 +90,7 @@ namespace IBL
 
                         // Randomize battery
                         var minBattery = powerConsumption.Free * distToStation;
+
                         batteryStatus = minBattery + (rand.NextDouble() * (100.0 - minBattery));
                     }
                     else

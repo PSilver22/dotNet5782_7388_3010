@@ -50,7 +50,7 @@ namespace ConsoleUI_BL
 		/// <param name="logicLayer">The instance of the logic layer</param>
 		internal static void DisplayPackage(IBL.IBL logicLayer)
 		{
-			Console.WriteLine("Input customer ID: ");
+			Console.WriteLine("Input package ID: ");
 			int id = ReadInt();
 
 			Console.WriteLine(logicLayer.GetPackage(id).ToString());

@@ -13,7 +13,7 @@ namespace IBL
         /// </summary>
         /// <param name="weight">the weight category</param>
         /// <returns>the power consumption/km for the given weight</returns>
-        private double getPowerConsumption(WeightCategory weight)
+        private double GetPowerConsumption(WeightCategory weight)
         {
             return weight switch
             {

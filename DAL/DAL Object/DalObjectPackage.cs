@@ -14,17 +14,20 @@ namespace DalObject
         /// <param name="targetId">The ID of the package's target</param>
         /// <param name="weight">The package's weight category</param>
         /// <param name="priority">The package's priority</param>
-        /// <returns>true if the package was successfully added, false otherwise</returns>
-        public void AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
+        /// <returns>The new package's ID</returns>
+        public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
         {
             if (senderId < 0 || targetId < 0)
             {
                 throw new InvalidIdException((senderId < 0) ? senderId : targetId);
             }
 
-            if (DataSource.packages.Count < DataSource.MaxPackages)
+            if (DataSource.packages.Count >= DataSource.MaxPackages)
             {
-                DataSource.packages.Add(new Package(
+                throw new MaximumCapacityException("Package list is at max capacity.");
+            }
+
+            DataSource.packages.Add(new Package(
                     id: DataSource.Config.CurrentPackageId + 1,
                     senderId,
                     targetId,
@@ -32,14 +35,11 @@ namespace DalObject
                     priority,
                     // Use UtcNow instead of Now to avoid portability issues
                     DateTime.UtcNow,
-                    0,
+                    null,
                     null,
                     null,
                     null));
-                ++DataSource.Config.CurrentPackageId;
-            }
-
-            throw new MaximumCapacityException("Package list is at max capacity.");
+            return ++DataSource.Config.CurrentPackageId;
         }
 
         /// <summary>

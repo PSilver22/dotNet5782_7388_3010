@@ -25,23 +25,30 @@ namespace IBL
 
         public void AddDrone(int id, string model, WeightCategory maxWeight, int startingStationId)
         {
-            var battery = 20.0 + rand.NextDouble() * 20.0;
-            dal.AddDrone(new(id, model, maxWeight, battery));
-
             Station station;
             try { station = dal.GetStation(startingStationId); }
             catch (IdNotFoundException)
             { throw new StationNotFoundException(startingStationId); }
 
+            if (station.ChargeSlots == 0)
+            { throw new NoAvailableChargingSlotsException(startingStationId); }
+
+            if (maxWeight < 0 || maxWeight > WeightCategory.heavy)
+            { throw new InvalidWeightException(); }
+
             try
             {
-                drones.Add(new(id, model, maxWeight, battery, DroneStatus.maintenance, new(station.Latitude, station.Longitude), null));
+                var battery = 20.0 + rand.NextDouble() * 20.0;
+                drones.Add(new(id, model, maxWeight, battery, DroneStatus.free, new(station.Latitude, station.Longitude), null));
+                dal.AddDrone(new(id, model, maxWeight, battery));
             }
             catch (IDAL.DO.DuplicatedIdException)
             { throw new DuplicatedIdException(id, "drone"); }
+
+            SendDroneToCharge(id);
         }
 
-        public void AddPackage(int senderId, int receiverId, WeightCategory weight, Priority priority)
+        public int AddPackage(int senderId, int receiverId, WeightCategory weight, Priority priority)
         {
             try { dal.GetCustomer(senderId); }
             catch (IdNotFoundException)
@@ -51,7 +58,13 @@ namespace IBL
             catch (IdNotFoundException)
             { throw new CustomerNotFoundException(receiverId); }
 
-            dal.AddPackage(senderId, receiverId, weight, priority);
+            if (weight < 0 || weight > WeightCategory.heavy)
+            { throw new InvalidWeightException(); }
+
+            if (priority < 0 || priority > Priority.emergency)
+            { throw new InvalidPriorityException(); }
+
+            return dal.AddPackage(senderId, receiverId, weight, priority);
         }
     }
 }

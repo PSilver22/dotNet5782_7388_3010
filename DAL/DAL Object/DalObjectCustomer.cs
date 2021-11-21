@@ -21,12 +21,12 @@ namespace DalObject
                 throw new InvalidIdException(customer.Id);
             }
 
-            if (DataSource.customers.Count < DataSource.MaxCustomers)
+            if (DataSource.customers.Count >= DataSource.MaxCustomers)
             {
-                DataSource.customers.Add(customer);
+                throw new MaximumCapacityException("Customer list is at max capacity.");
             }
 
-            throw new MaximumCapacityException("Customer list is at max capacity.");
+            DataSource.customers.Add(customer);
         }
 
         /// <summary>

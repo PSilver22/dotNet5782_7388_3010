@@ -16,7 +16,7 @@ namespace DalObject
         /// </summary>
         public DalObject()
         {
-            DataSource.Initialize();
+            //DataSource.Initialize();
         }
 
         /// <summary>

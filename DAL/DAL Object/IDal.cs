@@ -14,7 +14,7 @@ namespace IDAL
 
         public void AddCustomer(Customer customer);
 
-        public void AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority);
+        public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority);
 
         public void AddDroneCharge(int stationId, int droneId);
 

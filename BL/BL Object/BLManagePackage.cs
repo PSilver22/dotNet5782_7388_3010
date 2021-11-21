@@ -18,7 +18,7 @@ namespace IBL
             if (drone.Status != DroneStatus.free)
             { throw new DroneNotFreeException("assign package"); }
 
-            IDAL.DO.Package? package = dal.GetPackageList()
+            IDAL.DO.Package package = dal.GetPackageList()
                 .Where(p => p.DroneId is null)
                 .Where(p => p.Weight <= drone.WeightCategory)
                 .OrderByDescending(p => p.Weight)
@@ -40,20 +40,22 @@ namespace IBL
                     var distToRecip = Utils.DistanceBetween(senderLoc, recipLoc);
                     var distToStation = Utils.DistanceBetween(recipLoc, new(station.Latitude, station.Longitude));
 
-                    var reqBattery = powerConsumption.Free * (distToSender + distToStation) + (getPowerConsumption(p.Weight) * distToRecip);
+                    var reqBattery = powerConsumption.Free * (distToSender + distToStation) + (GetPowerConsumption(p.Weight) * distToRecip);
+
+                    Console.WriteLine(reqBattery);
 
                     return drone.BatteryStatus >= reqBattery;
                 })
                 .FirstOrDefault();
 
-            if (package is not null)
+            if (package.Requested != default)
             {
                 drone.Status = DroneStatus.delivering;
-                drone.PackageId = package?.Id;
+                drone.PackageId = package.Id;
 
                 drones[droneIndex] = drone;
 
-                dal.UpdatePackage(package!.Value.Id, droneId: drone.Id, scheduled: DateTime.UtcNow);
+                dal.UpdatePackage(package.Id, droneId: drone.Id, scheduled: DateTime.UtcNow);
             }
             else
             {
@@ -78,7 +80,9 @@ namespace IBL
 
             var sender = dal.GetCustomer(package.SenderId);
             Location senderLoc = new(sender.Latitude, sender.Longitude);
-            drone.BatteryStatus -= powerConsumption.Free * Utils.DistanceBetween(drone.Location, senderLoc);
+            var batteryUsage = powerConsumption.Free * Utils.DistanceBetween(drone.Location, senderLoc);
+
+            drone.BatteryStatus -= batteryUsage;
             drone.Location = senderLoc;
             drones[droneIndex] = drone;
 
@@ -104,7 +108,7 @@ namespace IBL
 
             var recip = dal.GetCustomer(package.TargetId);
             Location recipLoc = new(recip.Latitude, recip.Longitude);
-            drone.BatteryStatus -= getPowerConsumption(package.Weight) * Utils.DistanceBetween(drone.Location, recipLoc);
+            drone.BatteryStatus -= GetPowerConsumption(package.Weight) * Utils.DistanceBetween(drone.Location, recipLoc);
             drone.Location = recipLoc;
             drone.Status = DroneStatus.free;
             drone.PackageId = null;

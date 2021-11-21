@@ -29,7 +29,7 @@ namespace IBL.BO
             return $"id: {Id}\n" +
                 $"model: {Model}\n" +
                 $"weight category: {WeightCategory}\n" +
-                $"battery status: {BatteryStatus * 100:F2}\n" +
+                $"battery status: {BatteryStatus:F2}\n" +
                 $"status: {Status}\n" +
                 (Package is not null ? $"package:\n{Package!}\n" : "") +
                 $"location: {Location}";

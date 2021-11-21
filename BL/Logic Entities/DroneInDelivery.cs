@@ -17,7 +17,7 @@ namespace IBL.BO
         public override string ToString()
         {
             return $"  id: {Id}\n" +
-                $"  battery status: {BatteryStatus * 100:F2}\n" +
+                $"  battery status: {BatteryStatus:F2}\n" +
                 $"  location: {CurrentLocation}";
         }
     }

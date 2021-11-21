@@ -29,7 +29,7 @@ namespace IBL.BO
                 $"phone number: {Phone}\n" +
                 $"location: {Location}\n" +
                 $"sent packages: " + String.Join("\n", SentPackages) + "\n" +
-                $"expected packages: " + String.Join("\n", ReceivingPackages);
+                $"expected/received packages: " + String.Join("\n", ReceivingPackages);
         }
     }
 }

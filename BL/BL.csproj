@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic Entities\" />
-    <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />

@@ -21,12 +21,12 @@ namespace DalObject
                 throw new InvalidIdException(station.Id);
             }
 
-            if (DataSource.stations.Count < DataSource.MaxStations)
+            if (DataSource.stations.Count >= DataSource.MaxStations)
             {
-                DataSource.stations.Add(station);
+                throw new MaximumCapacityException("Station list is at max capacity.");
             }
 
-            throw new MaximumCapacityException("Station list is at max capacity.");
+            DataSource.stations.Add(station);
         }
 
         /// <summary>

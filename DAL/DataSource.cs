@@ -92,12 +92,12 @@ namespace DalObject
         {
             internal static int CurrentPackageId = 0;
 
-            internal static readonly double free = 5;
-            internal static readonly double lightWeight = 10;
-            internal static readonly double midWeight = 15;
-            internal static readonly double heavyWeight = 20;
+            internal static readonly double free = 4;
+            internal static readonly double lightWeight = 6;
+            internal static readonly double midWeight = 8;
+            internal static readonly double heavyWeight = 10;
 
-            internal static readonly double chargeRate = 80;
+            internal static readonly double chargeRate = 40;
         }
     }
 }

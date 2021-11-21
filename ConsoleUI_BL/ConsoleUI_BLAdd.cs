@@ -69,7 +69,8 @@ namespace ConsoleUI_BL
 			IDAL.DO.WeightCategory weight = (IDAL.DO.WeightCategory) ReadInt();
 			IDAL.DO.Priority priority = (IDAL.DO.Priority) ReadInt();
 
-			logicLayer.AddPackage(senderId, receiverId, weight, priority);
+			int newPackageId = logicLayer.AddPackage(senderId, receiverId, weight, priority);
+			Console.WriteLine($"The new package's ID is: {newPackageId}");
 		}
 	}
 }

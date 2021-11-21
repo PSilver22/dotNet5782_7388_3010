@@ -4,19 +4,6 @@ namespace ConsoleUI_BL
 {
 	partial class ConsoleUI
 	{
-		internal static int ReadInt()
-		{
-			string input = Console.ReadLine();
-			int result;
-
-			if (!int.TryParse(input, out result))
-			{
-				result = -1;
-			}
-
-			return result;
-		}
-
 		static void Main(string[] args)
 		{
 			bool running = true;
@@ -170,6 +157,18 @@ namespace ConsoleUI_BL
 			}
 		}
 
+		internal static int ReadInt()
+		{
+			string input = Console.ReadLine();
+			int result;
+
+			if (!int.TryParse(input, out result))
+			{
+				result = -1;
+			}
+
+			return result;
+		}
 		static void DisplayMainMenu()
 		{
 			Console.WriteLine(
