@@ -7,8 +7,8 @@ using IDAL.DO;
 
 namespace DalObject
 {
-	public partial class DalObject
-	{
+    public partial class DalObject
+    {
         /// <summary>
         /// Adds a station to the list of base stations
         /// </summary>
@@ -19,6 +19,11 @@ namespace DalObject
             if (station.Id < 0)
             {
                 throw new InvalidIdException(station.Id);
+            }
+
+            if (DataSource.drones.Exists(s => s.Id == station.Id))
+            {
+                throw new DuplicatedIdException(station.Id, "station");
             }
 
             DataSource.stations.Add(station);
@@ -53,7 +58,7 @@ namespace DalObject
         /// </returns>
         public List<Station> GetUnoccupiedStationsList()
         {
-            return (List<Station>) DataSource.stations.Where(x => x.ChargeSlots > 0);
+            return (List<Station>)DataSource.stations.Where(x => x.ChargeSlots > 0);
         }
 
         /// <summary>

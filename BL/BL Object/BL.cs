@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using IBL;
 using IBL.BO;
 using IDAL.DO;
 
@@ -34,7 +33,7 @@ namespace IBL
                 int? packageId = null;
 
                 var packageIndex = packages.FindIndex(p => p.Delivered is null && p.DroneId == d.Id);
-                
+
                 if (packageIndex != -1)
                 {
                     var package = packages[packageIndex];

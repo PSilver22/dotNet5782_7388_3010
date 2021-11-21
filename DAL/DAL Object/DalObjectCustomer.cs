@@ -7,8 +7,8 @@ using IDAL.DO;
 
 namespace DalObject
 {
-	public partial class DalObject
-	{
+    public partial class DalObject
+    {
         /// <summary>
         /// Adds a customer to the list of customers
         /// </summary>
@@ -18,6 +18,11 @@ namespace DalObject
             if (customer.Id < 0)
             {
                 throw new InvalidIdException(customer.Id);
+            }
+
+            if (DataSource.customers.Exists(c => c.Id == customer.Id))
+            {
+                throw new DuplicatedIdException(customer.Id, "customer");
             }
 
             DataSource.customers.Add(customer);

@@ -20,6 +20,11 @@ namespace DalObject
                 throw new InvalidIdException(drone.Id);
             }
 
+            if (DataSource.drones.Exists(d => d.Id == drone.Id))
+            {
+                throw new DuplicatedIdException(drone.Id, "drone");
+            }
+
             DataSource.drones.Add(drone);
 
         }
@@ -43,7 +48,7 @@ namespace DalObject
             for (var i = 0; i < DataSource.drones.Count; i++)
             {
                 var d = DataSource.drones[i];
-                
+
                 if (d.MaxWeight == package.Weight)
                 {
                     droneIndex = i;
