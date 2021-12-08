@@ -177,21 +177,23 @@ namespace DalObject
         /// <summary>
         /// Creates a string with the information for every drone in the drones list
         /// </summary>
+        /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>
         /// Drone list
         /// </returns>
-        public List<Drone> GetDroneList()
+        public List<Drone> GetDroneList(Predicate<Drone>? filter = null)
         {
-            return DataSource.drones;
+            return DataSource.drones.Where(new Func<Drone, bool>(filter ?? (x=> true))).ToList();
         }
 
         /// <summary>
         /// Returns the list of drone charges
         /// </summary>
+        /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>Drone charge list</returns>
-        public List<DroneCharge> GetDroneChargeList()
+        public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
         {
-            return DataSource.droneCharges;
+            return DataSource.droneCharges.Where(new Func<DroneCharge, bool>(filter ?? (x => true))).ToList();
         }
 
         /// <summary>

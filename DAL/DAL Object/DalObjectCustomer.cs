@@ -41,12 +41,13 @@ namespace DalObject
         /// <summary>
         /// Returns a list with the information for every customer in the customers list
         /// </summary>
+        /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>
         /// Customer list
         /// </returns>
-        public List<Customer> GetCustomerList()
+        public List<Customer> GetCustomerList(Predicate<Customer>? filter = null)
         {
-            return DataSource.customers;
+            return DataSource.customers.Where(new Func<Customer, bool>(filter ?? (x => true))).ToList();
         }
 
         /// <summary>

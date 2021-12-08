@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IBL.BO;
 
 namespace ConsoleUI_BL
 {
@@ -118,7 +119,7 @@ namespace ConsoleUI_BL
 		/// <param name="logicLayer">The instance of the logic layer</param>
 		internal static void DisplayUnassignedPackages(IBL.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.PackageListing> packageList = logicLayer.GetUnassignedPackageList();
+			IEnumerable<IBL.BO.PackageListing> packageList = logicLayer.GetPackageList(x => x.Status == IBL.BO.PackageStatus.created);
 
 			foreach (var package in packageList)
 			{

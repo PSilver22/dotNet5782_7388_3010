@@ -7,8 +7,6 @@ namespace IBL
 {
     public interface IBL
     {
-        // Add
-
         /// <summary>
         /// Add a new base station
         /// </summary>
@@ -139,37 +137,29 @@ namespace IBL
         /// <summary>
         /// Get the list of base stations
         /// </summary>
+        /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of base stations</returns>
-        public List<BO.BaseStationListing> GetBaseStationList();
+        public List<BO.BaseStationListing> GetBaseStationList(Predicate<BO.BaseStationListing>? filter = null);
 
         /// <summary>
         /// Get the list of drones
         /// </summary>
+        /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of drones</returns>
-        public List<BO.DroneListing> GetDroneList();
+        public List<BO.DroneListing> GetDroneList(Predicate<BO.DroneListing>? filter = null);
 
         /// <summary>
         /// Get the list of customers
         /// </summary>
+        /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of customers</returns>
-        public List<BO.CustomerListing> GetCustomerList();
+        public List<BO.CustomerListing> GetCustomerList(Predicate<BO.CustomerListing>? filter = null);
 
         /// <summary>
         /// Get the list of packages
         /// </summary>
+        /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of packages</returns>
-        public List<BO.PackageListing> GetPackageList();
-
-        /// <summary>
-        /// Get the list of unassigned packages
-        /// </summary>
-        /// <returns>the list of unassigned packages</returns>
-        public List<BO.PackageListing> GetUnassignedPackageList();
-
-        /// <summary>
-        /// Get the list of base stations
-        /// </summary>
-        /// <returns>the list of base stations</returns>
-        public List<BO.BaseStationListing> GetAvailableChargingStations();
+        public List<BO.PackageListing> GetPackageList(Predicate<BO.PackageListing>? filter = null);
     }
 }

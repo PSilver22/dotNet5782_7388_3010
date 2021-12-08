@@ -70,19 +70,17 @@ namespace IDAL
 
         public void DeleteDroneCharge(int droneId);
 
-        public List<Station> GetStationList();
+        public List<Station> GetStationList(Predicate<Station>? filter = null);
 
-        public List<Station> GetUnoccupiedStationsList();
+        //public List<Station> GetUnoccupiedStationsList();
 
-        public List<Drone> GetDroneList();
+        public List<Drone> GetDroneList(Predicate<Drone>? filter = null);
 
-        public List<Package> GetPackageList();
+        public List<Package> GetPackageList(Predicate<Package>? filter = null);
 
-        public List<Package> GetUnassignedPackageList();
+        public List<Customer> GetCustomerList(Predicate<Customer>? filter = null);
 
-        public List<Customer> GetCustomerList();
-
-        public List<DroneCharge> GetDroneChargeList();
+        public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null);
 
         public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) GetPowerConsumption();
     }

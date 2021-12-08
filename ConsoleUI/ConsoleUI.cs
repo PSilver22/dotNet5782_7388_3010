@@ -242,7 +242,7 @@ e[x]it                          Quit the program
             var droneId = Utils.PromptInt("drone id: ");
 
             Console.WriteLine("Choose a charging station:");
-            Console.WriteLine(dalObject.GetUnoccupiedStationsList());
+            Console.WriteLine(dalObject.GetStationList(x => x.ChargeSlots > 0));
 
             dalObject.ChargeDrone(droneId, Utils.PromptInt("station id: "));
         }
@@ -268,7 +268,7 @@ e[x]it                          Quit the program
             Console.WriteLine(dalObject.GetStationList());
 
         static void ListUnoccupiedBaseStations() =>
-            Console.WriteLine(dalObject.GetUnoccupiedStationsList());
+            Console.WriteLine(dalObject.GetStationList(x => x.ChargeSlots > 0));
 
         static void ListDrones() =>
             Console.WriteLine(dalObject.GetDroneList());
@@ -280,6 +280,6 @@ e[x]it                          Quit the program
             Console.WriteLine(dalObject.GetPackageList());
 
         static void ListUnassignedPackages() =>
-            Console.WriteLine(dalObject.GetUnassignedPackageList());
+            Console.WriteLine(dalObject.GetPackageList(x => x.DroneId == 0));
     }
 }

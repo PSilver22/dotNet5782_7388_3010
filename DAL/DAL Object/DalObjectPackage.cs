@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using IDAL.DO;
@@ -50,23 +52,13 @@ namespace DalObject
         /// <summary>
         /// Returns a list with the information for every package in the packages list
         /// </summary>
+        /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>
         /// Packages list
         /// </returns>
-        public List<Package> GetPackageList()
+        public List<Package> GetPackageList(Predicate<Package>? filter = null)
         {
-            return DataSource.packages;
-        }
-
-        /// <summary>
-        /// Creates a string with the information for every unassigned package in the packages list
-        /// </summary>
-        /// <returns>
-        /// string with the information for every unassigned package
-        /// </returns>
-        public List<Package> GetUnassignedPackageList()
-        {
-            return (List<Package>) DataSource.packages.Where(x => x.DroneId == 0);
+            return DataSource.packages.Where(new Func<Package, bool>(filter ?? (x => true))).ToList();
         }
 
         /// <summary>

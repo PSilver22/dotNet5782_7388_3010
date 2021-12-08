@@ -32,12 +32,13 @@ namespace DalObject
         /// <summary>
         /// Returns the station list with information for every station in the stations list
         /// </summary>
+        /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>
         /// Station list
         /// </returns>
-        public List<Station> GetStationList()
+        public List<Station> GetStationList(Predicate<Station>? filter = null)
         {
-            return DataSource.stations;
+            return DataSource.stations.Where(new Func<Station, bool>(filter ?? (x => true))).ToList();
         }
 
         /// <summary>
@@ -48,17 +49,6 @@ namespace DalObject
         public Station GetStation(int id)
         {
             return GetItemByKey<Station>(id, DataSource.stations);
-        }
-
-        /// <summary>
-        /// Creates a string with the information for every unoccupied station in the stations list
-        /// </summary>
-        /// <returns>
-        /// string with the information for every unoccupied station
-        /// </returns>
-        public List<Station> GetUnoccupiedStationsList()
-        {
-            return (List<Station>)DataSource.stations.Where(x => x.ChargeSlots > 0);
         }
 
         /// <summary>
