@@ -246,7 +246,7 @@ namespace DalObject
         {
             int index = GetDroneIndex(id);
 
-            Drone updatedDrone = DataSource.drones[id];
+            Drone updatedDrone = DataSource.drones[index];
 
             updatedDrone.Model = model ?? updatedDrone.Model;
             updatedDrone.MaxWeight = maxWeight ?? updatedDrone.MaxWeight;

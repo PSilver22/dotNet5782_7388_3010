@@ -16,10 +16,13 @@ namespace IBL
             catch { throw new CustomerNotFoundException(id); }
         }
 
-        public void UpdateDrone(int id, string model)
+        public void UpdateDrone(int id, string? model = null)
         {
-            try { dal.UpdateDrone(id, model: model); }
-            catch { throw new DroneNotFoundException(id); }
+            if (model is null)
+            {
+                try { dal.UpdateDrone(id, model: model); }
+                catch { throw new DroneNotFoundException(id); }
+            }
         }
     }
 }

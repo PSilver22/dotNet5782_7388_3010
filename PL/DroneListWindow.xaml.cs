@@ -9,7 +9,7 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        static IBL.IBL bl = new BL();
+        internal static IBL.IBL bl = new BL();
 
         public DroneListWindow()
         {
@@ -20,12 +20,25 @@ namespace PL
 
         private void NewDrone_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("test");
+            AddDroneWindow.GetInstance(this).ShowDialog();
         }
 
         private void NewDrone_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
+        }
+
+        private void DronesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (DronesListView.SelectedItems is not null)
+            {
+                PageDisplay.Content = new UpdateDronePage(this, (IBL.BO.DroneListing)DronesListView.SelectedItem);
+            }
+
+            else
+            {
+                PageDisplay.Content = null;
+            }
         }
     }
 }

@@ -20,12 +20,12 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="1" HorizontalAlignment="Stretch" Stroke="Black" VerticalAlignment="Stretch" Fill="#FFC61818"/>
-            <ListView x:Name="DronesListView">
+            <Frame Name="PageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
+            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
-                        <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status}"/>
+                        <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Path=Id}"/>
+                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Path=Status}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
