@@ -37,7 +37,7 @@ namespace PL
             idLabel.Content = drone.Id;
             modelTextBox.Text = drone.Model;
             weightLabel.Content = drone.WeightCategory;
-            batteryLabel.Content = drone.BatteryStatus;
+            batteryLabel.Content = string.Format("{0:0.00}%", drone.BatteryStatus);
             statusLabel.Content = drone.Status;
             locationLabel.Content = drone.Location;
 
