@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#nullable enable
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL
 {
@@ -19,24 +9,22 @@ namespace PL
     /// </summary>
     public partial class AddDroneWindow : Window
     {
-        static AddDroneWindow currentInstance = null;
-        DroneListWindow itsWindow;
+        private static AddDroneWindow? currentInstance;
+        public DroneAdderDelegate? Delegate;
 
-        internal static AddDroneWindow GetInstance(DroneListWindow itsWindow)
+        internal static AddDroneWindow GetInstance(DroneAdderDelegate adderDelegate)
         {
             if (currentInstance == null)
             {
-                currentInstance = new AddDroneWindow(itsWindow);
+                currentInstance = new AddDroneWindow();
             }
-
+            currentInstance.Delegate = adderDelegate;
             return currentInstance;
         }
 
-        private AddDroneWindow(DroneListWindow itsWindow)
+        private AddDroneWindow()
         {
             InitializeComponent();
-
-            this.itsWindow = itsWindow;
 
             InitializeWeightSelector();
             InitializeStationSelector();
@@ -51,7 +39,7 @@ namespace PL
 
         private void InitializeStationSelector()
         {
-            foreach (IBL.BO.BaseStationListing station in DroneListWindow.bl.GetBaseStationList())
+            foreach (IBL.BO.BaseStationListing station in Delegate!.GetBaseStationList())
             {
                 StationMenu.Items.Add(new ComboBoxItem() { Content = station.Name, Tag = (object)station });
             }
@@ -67,21 +55,19 @@ namespace PL
 
             else
             {
-                DroneListWindow.bl.AddDrone(
+               Delegate!.AddDrone(
                     id,
                     ModelTextBox.Text,
                     (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
                     ((IBL.BO.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
 
-                itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-                this.Close();
+                Close();
             }
         }
 
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

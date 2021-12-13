@@ -9,13 +9,19 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        internal static IBL.IBL bl = new BL();
+        private IBL.IBL bl;
 
         public DroneListWindow()
         {
             InitializeComponent();
-            
+            bl = new BL();
+            ReloadDrones();
+        }
+
+        public void ReloadDrones()
+        {
             DronesListView.ItemsSource = bl.GetDroneList();
+            UpdateDroneDisplay();
         }
 
         private void NewDrone_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -30,11 +36,22 @@ namespace PL
 
         private void DronesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (DronesListView.SelectedItems is not null)
-            {
-                PageDisplay.Content = new UpdateDronePage(this, (IBL.BO.DroneListing)DronesListView.SelectedItem);
-            }
+            UpdateDroneDisplay();
+        }
 
+        private void UpdateDroneDisplay()
+        {
+            if (DronesListView.SelectedItem is not null)
+            {
+                if (PageDisplay.Content is null)
+                {
+                    PageDisplay.Content = new UpdateDronePage(this, (IBL.BO.DroneListing)DronesListView.SelectedItem);
+                }
+                else
+                {
+                    ((UpdateDronePage)PageDisplay.Content).Drone = (IBL.BO.DroneListing)DronesListView.SelectedItem;
+                }
+            }
             else
             {
                 PageDisplay.Content = null;

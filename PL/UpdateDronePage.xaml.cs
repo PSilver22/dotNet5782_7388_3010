@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#nullable enable
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PL
 {
@@ -20,174 +11,121 @@ namespace PL
     /// </summary>
     public partial class UpdateDronePage : Page
     {
-        DroneListWindow itsWindow;
-        IBL.BO.DroneListing droneListing;
+        public DroneEditorDelegate Delegate;
+        IBL.BO.DroneListing drone;
+        public IBL.BO.DroneListing Drone
+        {
+            get => drone;
+            set
+            {
+                drone = value;
+                UpdateDroneInfo();
+            }
+        }
 
-        public UpdateDronePage(DroneListWindow itsWindow, IBL.BO.DroneListing drone)
+        public UpdateDronePage(DroneEditorDelegate editorDelegate, IBL.BO.DroneListing drone)
         {
             InitializeComponent();
 
-            this.droneListing = drone;
-            this.itsWindow = itsWindow;
-
-            DroneTextBlock.Text = droneListing.ToString();
-
-            UpdateChangeDroneStateButton();
+            Delegate = editorDelegate;
+            this.drone = drone;
+            UpdateDroneInfo();
         }
 
-        private void UpdateDroneInfo() {
-            DroneTextBlock.Text = droneListing.ToString();
-        }
-
-        private void Unplug_Click(object sender, RoutedEventArgs e)
+        private void UpdateDroneInfo()
         {
-            int chargingTime;
+            idLabel.Content = drone.Id;
+            modelTextBox.Text = drone.Model;
+            weightLabel.Content = drone.WeightCategory;
+            batteryLabel.Content = drone.BatteryStatus;
+            statusLabel.Content = drone.Status;
+            locationLabel.Content = drone.Location;
 
-            if (int.TryParse(ChargeTimeTextBox.Text, out chargingTime))
+            applyButton.IsEnabled = false;
+
+            actionButtons.Visibility = Visibility.Visible;
+            releaseConfirmStack.Visibility = Visibility.Hidden;
+
+            chargeButton.Content = drone.Status == IBL.BO.DroneStatus.maintenance ? "Release" : "Charge";
+            chargeButton.IsEnabled = drone.Status != IBL.BO.DroneStatus.delivering;
+
+
+            if (drone.PackageId is null)
+                packageButton.Content = "Assign Package";
+            else
             {
-                DroneListWindow.bl.ReleaseDroneFromCharge(droneListing.Id, chargingTime);
-
-                ChargeTimeLabel.Visibility = Visibility.Hidden;
-                ChargeTimeTextBox.Visibility = Visibility.Hidden;
-                ChargeTimeTextBox.Text = "";
-
-                itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-                UpdateDroneInfo();
-                UpdateChangeDroneStateButton();
+                var package = Delegate.GetPackage(drone.PackageId.Value);
+                packageButton.Content =
+                    package.CollectionTime is null ? "Collect Package" : "Deliver Package";
             }
 
+            packageButton.IsEnabled = drone.Status != IBL.BO.DroneStatus.maintenance;
+        }
+
+        private void ChargeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (drone.Status == IBL.BO.DroneStatus.maintenance)
+            {
+                chargeTimeBox.Clear();
+                actionButtons.Visibility = Visibility.Hidden;
+                releaseConfirmStack.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Delegate.SendDroneToCharge(drone.Id);
+            }
+        }
+
+        private void UpdateDroneButton_Click(object sender, RoutedEventArgs e)
+        {
+            Delegate.UpdateDrone(drone.Id, modelTextBox.Text);
+        }
+
+        private void ModelTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            applyButton.IsEnabled = modelTextBox.Text != drone.Model;
+        }
+
+        private void CancelRelease_Click(object sender, RoutedEventArgs e)
+        {
+            actionButtons.Visibility = Visibility.Visible;
+            releaseConfirmStack.Visibility = Visibility.Hidden;
+        }
+
+        private void Release_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(chargeTimeBox.Text, out int chargingTime))
+            {
+                Delegate.ReleaseDroneFromCharge(drone.Id, chargingTime);
+            }
             else
             {
                 MessageBox.Show("The given charge time is invalid.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void PlugIn_Click(object sender, RoutedEventArgs e)
-        {
-            DroneListWindow.bl.SendDroneToCharge(droneListing.Id);
-
-            PlugInDroneButton.Visibility = Visibility.Hidden;
-
-            itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-            UpdateDroneInfo();
-            UpdateChangeDroneStateButton();
-        }
-
-        private void AssignDronePackage_Click(object sender, RoutedEventArgs e)
+        private void PackageButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                DroneListWindow.bl.AssignPackageToDrone(droneListing.Id);
-
-                itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-                UpdateDroneInfo();
-                UpdateChangeDroneStateButton();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void CollectDronePackage_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                DroneListWindow.bl.CollectPackageByDrone(droneListing.Id);
-
-                itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-                UpdateDroneInfo();
-                UpdateChangeDroneStateButton();
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void DeliverDronePackage_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                DroneListWindow.bl.DeliverPackageByDrone(droneListing.Id);
-
-                itsWindow.DronesListView.ItemsSource = DroneListWindow.bl.GetDroneList();
-
-                UpdateDroneInfo();
-                UpdateChangeDroneStateButton();
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private RoutedEventHandler lastAction = null;
-        private void UpdateChangeDroneStateButton() 
-        {
-            if (lastAction is not null)
-            {
-                ChangeDroneStateButton.Click -= lastAction;
-            }
-
-            if (droneListing.Status == IBL.BO.DroneStatus.maintenance)
-            {
-                lastAction = new RoutedEventHandler(Unplug_Click);
-                ChangeDroneStateButton.Click += lastAction;
-
-                ChargeTimeLabel.Visibility = Visibility.Visible;
-                ChargeTimeTextBox.Visibility = Visibility.Visible;
-
-                ChangeDroneStateButton.Content = "Unplug Drone";
-            }
-
-            else if (droneListing.Status == IBL.BO.DroneStatus.free)
-            {
-                PlugInDroneButton.Visibility = Visibility.Visible;
-
-                lastAction = new RoutedEventHandler(AssignDronePackage_Click);
-                ChangeDroneStateButton.Click += lastAction;
-
-                ChangeDroneStateButton.Content = "Assign Package";
-            }
-
-            else
-            {
-                IBL.BO.Package package = DroneListWindow.bl.GetPackage(droneListing.PackageId ?? -1);
-
-                if (package.CollectionTime is null)
+                if (drone.PackageId is null)
                 {
-                    lastAction = new RoutedEventHandler(CollectDronePackage_Click);
-                    ChangeDroneStateButton.Click += lastAction;
-
-                    ChangeDroneStateButton.Content = "Collect Package";
+                    Delegate.AssignPackageToDrone(drone.Id);
                 }
-
                 else
                 {
-                    lastAction = new RoutedEventHandler(DeliverDronePackage_Click);
-                    ChangeDroneStateButton.Click += new RoutedEventHandler(DeliverDronePackage_Click);
-
-                    ChangeDroneStateButton.Content = "Deliver Package";
+                    var package = Delegate.GetPackage(drone.PackageId.Value);
+                    if (package.CollectionTime is null)
+                        Delegate.CollectPackageByDrone(drone.Id);
+                    else
+                        Delegate.DeliverPackageByDrone(drone.Id);
                 }
             }
-        }
-
-        private void UpdateDroneButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (NewModelTextBox.Text != "") {
-                droneListing.Model = NewModelTextBox.Text;
-
-                NewModelTextBox.Text = "";
-
-                UpdateDroneInfo();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            UpdateDroneInfo();
         }
     }
 }

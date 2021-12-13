@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Drones" Height="500" Width="800">
+        Title="Drones" Height="385" Width="595">
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewDrone_Executed" CanExecute="NewDrone_CanExecute"/>
     </Window.CommandBindings>
@@ -15,13 +15,7 @@
                 <MenuItem Header="_Add Drone" Command="New"/>
             </MenuItem>
         </Menu>
-        <Grid Name="MainGrid" DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-            <Frame Name="PageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged">
+            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" DockPanel.Dock="Left">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Path=Id}"/>
@@ -29,7 +23,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <GridSplitter Width="5"/>
-        </Grid>
+            <Frame Name="PageDisplay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" DockPanel.Dock="Right"/>
+        
     </DockPanel>
 </Window>
