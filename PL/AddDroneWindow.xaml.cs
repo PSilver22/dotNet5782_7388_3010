@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -46,13 +47,21 @@ namespace PL
 
             else
             {
-               Delegate.AddDrone(
-                    id,
-                    ModelTextBox.Text,
-                    (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
-                    ((IBL.BO.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
+                try
+                {
 
-                Close();
+                    Delegate.AddDrone(
+                         id,
+                         ModelTextBox.Text,
+                         (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
+                         ((IBL.BO.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
+
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

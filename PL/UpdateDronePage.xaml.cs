@@ -72,7 +72,15 @@ namespace PL
             }
             else
             {
-                Delegate.SendDroneToCharge(drone.Id);
+                try
+                {
+
+                    Delegate.SendDroneToCharge(drone.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

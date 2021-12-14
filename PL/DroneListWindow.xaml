@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Drones" Height="385" Width="595">
+        Title="Drones" Height="385" Width="595" MinWidth="520">
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewDrone_Executed" CanExecute="NewDrone_CanExecute"/>
     </Window.CommandBindings>
