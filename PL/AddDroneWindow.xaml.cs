@@ -9,25 +9,16 @@ namespace PL
     /// </summary>
     public partial class AddDroneWindow : Window
     {
-        private static AddDroneWindow? currentInstance;
-        public DroneAdderDelegate? Delegate;
+        public DroneAdderDelegate Delegate { get; set; }
 
-        internal static AddDroneWindow GetInstance(DroneAdderDelegate adderDelegate)
-        {
-            if (currentInstance == null)
-            {
-                currentInstance = new AddDroneWindow();
-            }
-            currentInstance.Delegate = adderDelegate;
-            return currentInstance;
-        }
-
-        private AddDroneWindow()
+        public AddDroneWindow(DroneAdderDelegate adderDelegate)
         {
             InitializeComponent();
 
+            Delegate = adderDelegate;
             InitializeWeightSelector();
             InitializeStationSelector();
+            InitializeComponent();
         }
 
         private void InitializeWeightSelector()
@@ -39,7 +30,7 @@ namespace PL
 
         private void InitializeStationSelector()
         {
-            foreach (IBL.BO.BaseStationListing station in Delegate!.GetBaseStationList())
+            foreach (IBL.BO.BaseStationListing station in Delegate.GetBaseStationList())
             {
                 StationMenu.Items.Add(new ComboBoxItem() { Content = station.Name, Tag = (object)station });
             }
@@ -55,7 +46,7 @@ namespace PL
 
             else
             {
-               Delegate!.AddDrone(
+               Delegate.AddDrone(
                     id,
                     ModelTextBox.Text,
                     (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
@@ -63,11 +54,6 @@ namespace PL
 
                 Close();
             }
-        }
-
-        private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

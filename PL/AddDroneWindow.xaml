@@ -5,39 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="AddDroneWindow" Height="450" Width="600">
-    <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height=".2*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            <RowDefinition Height=".5*"/>
-            <RowDefinition Height="*"/>
-                <RowDefinition Height="2.5*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Inputs needed: ID, Model, weight category, battery status, status starts in maintenance at the nearest base station, location will be gotten by whichever base station is chosen-->
-            <Label Content="ID:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="13"/>
-            <TextBox Name="IDTextBox" Grid.Column="1" Grid.Row="1" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="13"/>
-
-            <Label Content="Model:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="13"/>
-            <TextBox Name="ModelTextBox" Grid.Column="1" Grid.Row="2" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="13"/>
-
-            <Label Content="Weight:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="13"/>
-            <ComboBox Name="WeightCategoryMenu" Grid.Column="1" Height="30" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="13"/>
-
-            <Label Content="Starting Station:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="13"/>
-            <ComboBox Name="StationMenu" Grid.Column="1" Grid.Row="4" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="13"/>
-
-        <Button Name="AddDroneButton" Content="Add Drone" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="15" Click="AddDroneButton_Click"/>
-        <Button Name="CloseWindowButton" Content="Close Window" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="15" Click="CloseWindowButton_Click"/>
+        Title="New Drone" Height="210" Width="274" MinHeight="210" MinWidth="250" SizeToContent="WidthAndHeight">
+    <Grid Background="#FFF0F0F0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <StackPanel Background="White" Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0" Margin="8">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,4,8,4"/>
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="Margin" Value="0,4,8,4"/>
+                </Style>
+            </StackPanel.Resources>
+            <Grid Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Key"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">ID:</Label>
+                <TextBox x:Name="IDTextBox" Grid.Column="1"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Model:</Label>
+                <TextBox x:Name="ModelTextBox" Grid.Column="1"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Weight:</Label>
+                <ComboBox x:Name="WeightCategoryMenu" Grid.Column="1" HorizontalAlignment="Stretch"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Station:</Label>
+                <ComboBox x:Name="StationMenu" Grid.Column="1" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" FlowDirection="RightToLeft" Margin="8,8,8,8">
+            <Button Name="AddDroneButton" Content="Add Drone" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="AddDroneButton_Click" Margin="0,0,8,0" Width="90"/>
+            <Button Name="CloseWindowButton" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCancel="True" Margin="0,0,8,0" Width="90"/>
+        </StackPanel>
     </Grid>
 </Window>

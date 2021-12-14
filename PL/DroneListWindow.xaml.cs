@@ -26,7 +26,7 @@ namespace PL
 
         private void NewDrone_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AddDroneWindow.GetInstance(this).ShowDialog();
+            new AddDroneWindow(this).ShowDialog();
         }
 
         private void NewDrone_CanExecute(object sender, CanExecuteRoutedEventArgs e)
