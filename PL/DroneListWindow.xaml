@@ -15,7 +15,13 @@
                 <MenuItem Header="_Add Drone" Command="New"/>
             </MenuItem>
         </Menu>
-            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" DockPanel.Dock="Left">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ComboBox x:Name="FilterComboBox" Grid.Row="0" SelectionChanged="FilterComboBox_SelectionChanged" SelectedValuePath="Tag"/>
+            <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" DockPanel.Dock="Left" SelectionMode="Single">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Path=Id}"/>
@@ -23,7 +29,8 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Frame Name="PageDisplay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" DockPanel.Dock="Right"/>
-        
+        </Grid>
+        <Frame Name="PageDisplay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" DockPanel.Dock="Right"/>
+
     </DockPanel>
 </Window>

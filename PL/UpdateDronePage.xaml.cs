@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using PL.Utilities;
 
 namespace PL
 {
@@ -11,8 +12,8 @@ namespace PL
     /// </summary>
     public partial class UpdateDronePage : Page
     {
-        public DroneEditorDelegate Delegate;
-        IBL.BO.DroneListing drone;
+        public DroneEditorDelegate Delegate { get; set; }
+        private IBL.BO.DroneListing drone;
         public IBL.BO.DroneListing Drone
         {
             get => drone;
@@ -23,6 +24,9 @@ namespace PL
             }
         }
 
+        public DelegateCommand ReleaseDroneCommand { get; }
+        public DelegateCommand UpdateDroneCommand { get; }
+
         public UpdateDronePage(DroneEditorDelegate editorDelegate, IBL.BO.DroneListing drone)
         {
             InitializeComponent();
@@ -30,6 +34,9 @@ namespace PL
             Delegate = editorDelegate;
             this.drone = drone;
             UpdateDroneInfo();
+
+            ReleaseDroneCommand = new DelegateCommand((_) => releaseDrone());
+            UpdateDroneCommand = new DelegateCommand((_) => Delegate.UpdateDrone(drone.Id, modelTextBox.Text));
         }
 
         private void UpdateDroneInfo()
@@ -74,7 +81,6 @@ namespace PL
             {
                 try
                 {
-
                     Delegate.SendDroneToCharge(drone.Id);
                 }
                 catch (Exception ex)
@@ -101,6 +107,11 @@ namespace PL
         }
 
         private void Release_Click(object sender, RoutedEventArgs e)
+        {
+            releaseDrone();
+        }
+
+        private void releaseDrone()
         {
             if (int.TryParse(chargeTimeBox.Text, out int chargingTime))
             {

@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 using IBL;
 
 namespace PL
@@ -9,18 +13,32 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        private IBL.IBL bl;
+        private readonly IBL.IBL bl;
 
-        public DroneListWindow()
+        public DroneListWindow(IBL.IBL bl)
         {
             InitializeComponent();
-            bl = new BL();
+            
+            this.bl = bl;
+            
+            FilterComboBox.ItemsSource = Enumerable.Prepend(
+                ((IEnumerable<IBL.BO.DroneStatus>)Enum.GetValues(typeof(IBL.BO.DroneStatus)))
+                .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
+                new ComboBoxItem() { Content = "all drones", Tag = -1 });
+            FilterComboBox.SelectedValue = -1;
+
             ReloadDrones();
         }
 
         public void ReloadDrones()
         {
-            DronesListView.ItemsSource = bl.GetDroneList();
+            var drones = bl.GetDroneList();
+
+            int tag = (int)(FilterComboBox.SelectedValue ?? -1);
+
+            DronesListView.ItemsSource = tag == -1
+                ? drones
+                : drones.FindAll(d => d.Status == (IBL.BO.DroneStatus)tag);
             UpdateDroneDisplay();
         }
 
@@ -56,6 +74,11 @@ namespace PL
             {
                 PageDisplay.Content = null;
             }
+        }
+
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadDrones();
         }
     }
 }

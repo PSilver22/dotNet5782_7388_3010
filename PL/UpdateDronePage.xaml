@@ -38,7 +38,11 @@
                     <ColumnDefinition  SharedSizeGroup="Value"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0">Model</Label>
-                <TextBox Grid.Column="1" x:Name="modelTextBox" VerticalContentAlignment="Center" TextChanged="ModelTextBox_TextChanged"/>
+                <TextBox Grid.Column="1" x:Name="modelTextBox" VerticalContentAlignment="Center" TextChanged="ModelTextBox_TextChanged">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=UpdateDroneCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -80,8 +84,12 @@
             <Button Width="110" Margin="8" x:Name="packageButton" VerticalAlignment="Bottom" Click="PackageButton_Click">Collect Package</Button>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" x:Name="releaseConfirmStack" Visibility="Hidden">
-            <Label VerticalAlignment="Bottom" Margin="0,0,0,4">Charge Time: </Label>
-            <TextBox Width="40" Height="24" Text="123" VerticalContentAlignment="Bottom" x:Name="chargeTimeBox" Margin="0,0,8,8" VerticalAlignment="Bottom"/>
+            <Label VerticalAlignment="Bottom" Margin="0,0,0,4">Charge Time:</Label>
+            <TextBox Width="40" Height="24" Text="123" VerticalContentAlignment="Bottom" x:Name="chargeTimeBox" Margin="0,0,8,8" VerticalAlignment="Bottom">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ReleaseDroneCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
             <Button Width="90" Margin="8,8,4,8" VerticalAlignment="Bottom" Click="CancelRelease_Click">Cancel</Button>
             <Button Width="90" Margin="4,8,8,8" VerticalAlignment="Bottom" Click="Release_Click">Release</Button>
         </StackPanel>

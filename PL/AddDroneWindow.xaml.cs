@@ -49,7 +49,6 @@ namespace PL
             {
                 try
                 {
-
                     Delegate.AddDrone(
                          id,
                          ModelTextBox.Text,

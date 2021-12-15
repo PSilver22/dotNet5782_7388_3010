@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="New Drone" Height="210" Width="274" MinHeight="210" MinWidth="250" SizeToContent="WidthAndHeight">
+        Title="New Drone" Height="210" Width="274" MinHeight="210" MinWidth="250" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
     <Grid Background="#FFF0F0F0">
         <Grid.RowDefinitions>
             <RowDefinition/>
