@@ -21,11 +21,17 @@ namespace PL
             
             this.bl = bl;
             
-            FilterComboBox.ItemsSource = Enumerable.Prepend(
+            StatusFilterComboBox.ItemsSource = Enumerable.Prepend(
                 ((IEnumerable<IBL.BO.DroneStatus>)Enum.GetValues(typeof(IBL.BO.DroneStatus)))
                 .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
-                new ComboBoxItem() { Content = "all drones", Tag = -1 });
-            FilterComboBox.SelectedValue = -1;
+                new ComboBoxItem() { Content = "all statuses", Tag = -1 });
+            StatusFilterComboBox.SelectedValue = -1;
+            
+            WeightFilterComboBox.ItemsSource = Enumerable.Prepend(
+                ((IEnumerable<IDAL.DO.WeightCategory>)Enum.GetValues(typeof(IDAL.DO.WeightCategory)))
+                .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
+                new ComboBoxItem() { Content = "all weights", Tag = -1 });
+            WeightFilterComboBox.SelectedValue = -1;
             
             ReloadDrones();
         }
@@ -37,11 +43,20 @@ namespace PL
         {
             var drones = bl.GetDroneList();
 
-            int tag = (int)(FilterComboBox.SelectedValue ?? -1);
+            int statusTag = (int)(StatusFilterComboBox.SelectedValue ?? -1);
 
-            DronesListView.ItemsSource = tag == -1
+            drones = statusTag == -1
                 ? drones
-                : drones.FindAll(d => d.Status == (IBL.BO.DroneStatus)tag);
+                : drones.FindAll(d => d.Status == (IBL.BO.DroneStatus)statusTag);
+
+            int weightTag = (int)(WeightFilterComboBox.SelectedValue ?? -1);
+
+            drones = weightTag == -1
+                ? drones
+                : drones.FindAll(d => d.WeightCategory == (IDAL.DO.WeightCategory)weightTag);
+
+            DronesListView.ItemsSource = drones;
+
             UpdateDroneDisplay();
         }
 
