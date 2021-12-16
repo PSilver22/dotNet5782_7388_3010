@@ -26,10 +26,13 @@ namespace PL
                 .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
                 new ComboBoxItem() { Content = "all drones", Tag = -1 });
             FilterComboBox.SelectedValue = -1;
-
+            
             ReloadDrones();
         }
 
+        /// <summary>
+        /// Updates the drone list graphics to match the IBL drone list
+        /// </summary>
         public void ReloadDrones()
         {
             var drones = bl.GetDroneList();
@@ -57,6 +60,9 @@ namespace PL
             UpdateDroneDisplay();
         }
 
+        /// <summary>
+        /// Updates the drone display to show the UpdateDronePage for the current drone
+        /// </summary>
         private void UpdateDroneDisplay()
         {
             if (DronesListView.SelectedItem is not null)

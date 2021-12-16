@@ -8,7 +8,7 @@ using IBL.BO;
 
 namespace PL
 {
-    public interface DroneEditorDelegate
+    public interface IDroneEditor
     {
         public void UpdateDrone(int id, string model);
         public void ReleaseDroneFromCharge(int id, int chargingTime);

@@ -10,9 +10,9 @@ namespace PL
     /// </summary>
     public partial class AddDroneWindow : Window
     {
-        public DroneAdderDelegate Delegate { get; set; }
+        public IDroneAdder Delegate { get; set; }
 
-        public AddDroneWindow(DroneAdderDelegate adderDelegate)
+        public AddDroneWindow(IDroneAdder adderDelegate)
         {
             InitializeComponent();
 

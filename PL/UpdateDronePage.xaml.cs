@@ -12,8 +12,9 @@ namespace PL
     /// </summary>
     public partial class UpdateDronePage : Page
     {
-        public DroneEditorDelegate Delegate { get; set; }
+        public IDroneEditor Delegate { get; set; }
         private IBL.BO.DroneListing drone;
+
         public IBL.BO.DroneListing Drone
         {
             get => drone;
@@ -24,10 +25,16 @@ namespace PL
             }
         }
 
+
         public DelegateCommand ReleaseDroneCommand { get; }
         public DelegateCommand UpdateDroneCommand { get; }
 
-        public UpdateDronePage(DroneEditorDelegate editorDelegate, IBL.BO.DroneListing drone)
+        /// <summary>
+        /// Updates the displayed options on the page
+        /// </summary>
+        /// <param name="editorDelegate"></param>
+        /// <param name="drone"></param>
+        public UpdateDronePage(IDroneEditor editorDelegate, IBL.BO.DroneListing drone)
         {
             InitializeComponent();
 
@@ -35,10 +42,13 @@ namespace PL
             this.drone = drone;
             UpdateDroneInfo();
 
-            ReleaseDroneCommand = new DelegateCommand((_) => releaseDrone());
+            ReleaseDroneCommand = new DelegateCommand((_) => ReleaseDrone());
             UpdateDroneCommand = new DelegateCommand((_) => Delegate.UpdateDrone(drone.Id, modelTextBox.Text));
         }
 
+        /// <summary>
+        /// Updates drone info to content of inputs on page
+        /// </summary>
         private void UpdateDroneInfo()
         {
             idLabel.Content = drone.Id;
@@ -108,10 +118,13 @@ namespace PL
 
         private void Release_Click(object sender, RoutedEventArgs e)
         {
-            releaseDrone();
+            ReleaseDrone();
         }
 
-        private void releaseDrone()
+        /// <summary>
+        /// Releases drone from charge
+        /// </summary>
+        private void ReleaseDrone()
         {
             if (int.TryParse(chargeTimeBox.Text, out int chargingTime))
             {
