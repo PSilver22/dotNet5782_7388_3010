@@ -63,7 +63,7 @@ namespace BlApi
             }
         }
 
-        public BL.Drone GetDrone(int id)
+        public Drone GetDrone(int id)
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)

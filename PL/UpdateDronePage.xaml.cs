@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using PL.Utilities;
+using BL;
 
 namespace PL
 {
@@ -34,7 +35,7 @@ namespace PL
         /// </summary>
         /// <param name="editorDelegate"></param>
         /// <param name="drone"></param>
-        public UpdateDronePage(IDroneEditor editorDelegate, BL.DroneListing drone)
+        public UpdateDronePage(IDroneEditor editorDelegate, DroneListing drone)
         {
             InitializeComponent();
 

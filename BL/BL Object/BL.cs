@@ -13,7 +13,7 @@ namespace BlApi
         private List<DroneListing> drones;
         private IDAL.IDAL dal;
         private (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) powerConsumption;
-        private static readonly Lazy<BL> instance = new();
+        private static readonly Lazy<BL> instance = new(() => new BL());
 
         private readonly Random rand = new();
 

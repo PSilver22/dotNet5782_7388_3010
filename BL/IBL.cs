@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using BL;
 
 namespace BlApi
 {
@@ -109,28 +110,28 @@ namespace BlApi
         /// </summary>
         /// <param name="id">the id of the base station</param>
         /// <returns>the base station with the given id</returns>
-        public BL.BaseStation GetBaseStation(int id);
+        public BaseStation GetBaseStation(int id);
 
         /// <summary>
         /// Get a drone by id
         /// </summary>
         /// <param name="id">the id of the drone</param>
         /// <returns>the drone with the given id</returns>
-        public BL.Drone GetDrone(int id);
+        public Drone GetDrone(int id);
 
         /// <summary>
         /// Get a customer by id
         /// </summary>
         /// <param name="id">the id of the customer</param>
         /// <returns>the customer with the given id</returns>
-        public BL.Customer GetCustomer(int id);
+        public Customer GetCustomer(int id);
 
         /// <summary>
         /// Get a package by id
         /// </summary>
         /// <param name="id">the id of the package</param>
         /// <returns>the package with the given id</returns>
-        public BL.Package GetPackage(int id);
+        public Package GetPackage(int id);
 
         // Get List
 
@@ -139,27 +140,27 @@ namespace BlApi
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of base stations</returns>
-        public List<BL.BaseStationListing> GetBaseStationList(Predicate<BL.BaseStationListing>? filter = null);
+        public List<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null);
 
         /// <summary>
         /// Get the list of drones
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of drones</returns>
-        public List<BL.DroneListing> GetDroneList(Predicate<BL.DroneListing>? filter = null);
+        public List<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null);
 
         /// <summary>
         /// Get the list of customers
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of customers</returns>
-        public List<BL.CustomerListing> GetCustomerList(Predicate<BL.CustomerListing>? filter = null);
+        public List<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null);
 
         /// <summary>
         /// Get the list of packages
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of packages</returns>
-        public List<BL.PackageListing> GetPackageList(Predicate<BL.PackageListing>? filter = null);
+        public List<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null);
     }
 }
