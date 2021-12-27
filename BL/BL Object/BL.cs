@@ -3,20 +3,28 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using IBL.BO;
+using BL;
 using IDAL.DO;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
         private List<DroneListing> drones;
         private IDAL.IDAL dal;
         private (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) powerConsumption;
+        private static readonly Lazy<BL> instance = new();
 
-        private Random rand = new();
+        private readonly Random rand = new();
 
-        public BL()
+        internal static BL Instance {
+            get 
+            {
+                return instance.Value;
+            }
+        }
+
+        private BL()
         {
             dal = new DalObject.DalObject();
 

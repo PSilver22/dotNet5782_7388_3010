@@ -2,7 +2,7 @@
 
 using System;
 
-namespace IBL
+namespace BlApi
 {
     class DuplicatedIdException : Exception
     {

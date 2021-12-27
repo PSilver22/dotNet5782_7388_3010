@@ -1,7 +1,7 @@
 ﻿using System;
 using IDAL.DO;
 
-namespace IBL.BO
+namespace BL
 {
     public class PackageInTransfer
     {

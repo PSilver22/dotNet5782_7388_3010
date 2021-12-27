@@ -21,8 +21,15 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ComboBox x:Name="StatusFilterComboBox" Grid.Row="0" SelectionChanged="FilterComboBox_SelectionChanged" SelectedValuePath="Tag"/>
-            <ComboBox x:Name="WeightFilterComboBox" Grid.Row="1" SelectionChanged="FilterComboBox_SelectionChanged" SelectedValuePath="Tag"/>
+            <ComboBox x:Name="FilterComboBox" Grid.Row="0" SelectionChanged="FilterComboBox_SelectionChanged" SelectedValuePath="Tag">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Menu Name="WeightFilterMenu">
+                            
+                        </Menu>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <ListView x:Name="DronesListView" Grid.Row="2" SelectionChanged="DronesListView_SelectionChanged" DockPanel.Dock="Left" SelectionMode="Single">
                 <ListView.View>
                     <GridView>

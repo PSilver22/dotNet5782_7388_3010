@@ -31,7 +31,7 @@ namespace PL
 
         private void InitializeStationSelector()
         {
-            foreach (IBL.BO.BaseStationListing station in Delegate.GetBaseStationList())
+            foreach (BL.BaseStationListing station in Delegate.GetBaseStationList())
             {
                 StationMenu.Items.Add(new ComboBoxItem() { Content = station.Name, Tag = (object)station });
             }
@@ -53,7 +53,7 @@ namespace PL
                          id,
                          ModelTextBox.Text,
                          (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
-                         ((IBL.BO.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
+                         ((BL.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
 
                     Close();
                 }

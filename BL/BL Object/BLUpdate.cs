@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {

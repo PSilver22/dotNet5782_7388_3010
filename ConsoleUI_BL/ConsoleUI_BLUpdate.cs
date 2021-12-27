@@ -14,7 +14,7 @@ namespace ConsoleUI_BL
 		/// Update the data of a drone with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void UpdateDrone(IBL.IBL logicLayer)
+		internal static void UpdateDrone(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the current drone ID: ");
 			int oldDroneId = Utils.ReadInt();
@@ -29,7 +29,7 @@ namespace ConsoleUI_BL
 		/// Update the data of a station with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void UpdateStation(IBL.IBL logicLayer)
+		internal static void UpdateStation(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the current station id: ");
 			int id = Utils.ReadInt();
@@ -45,7 +45,7 @@ namespace ConsoleUI_BL
 		/// Update the data of a customer with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void UpdateCustomer(IBL.IBL logicLayer)
+		internal static void UpdateCustomer(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the current customer id: ");
 			int id = Utils.ReadInt();
@@ -61,7 +61,7 @@ namespace ConsoleUI_BL
 		/// Charge the drone with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void ChargeDrone(IBL.IBL logicLayer)
+		internal static void ChargeDrone(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the drone ID: ");
 			int id = Utils.ReadInt();
@@ -73,7 +73,7 @@ namespace ConsoleUI_BL
 		/// Release the drone with the inputted id from charging
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void ReleaseDroneCharge(IBL.IBL logicLayer)
+		internal static void ReleaseDroneCharge(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the drone ID and charging time: ");
 			int id = Utils.ReadInt();
@@ -86,7 +86,7 @@ namespace ConsoleUI_BL
 		/// Assign a package to a drone
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void AssignDronePackage(IBL.IBL logicLayer)
+		internal static void AssignDronePackage(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the drone ID: ");
 			int id = Utils.ReadInt();
@@ -98,7 +98,7 @@ namespace ConsoleUI_BL
 		/// Collect package of the drone with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void CollectPackage(IBL.IBL logicLayer)
+		internal static void CollectPackage(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the drone ID: ");
 			int id = Utils.ReadInt();
@@ -110,7 +110,7 @@ namespace ConsoleUI_BL
 		/// Deliver package from the drone with the inputted id
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void DeliverPackage(IBL.IBL logicLayer)
+		internal static void DeliverPackage(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter the drone ID: ");
 			int id = Utils.ReadInt();

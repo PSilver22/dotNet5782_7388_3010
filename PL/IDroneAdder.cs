@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using IBL.BO;
+using BL;
 
 namespace PL
 {

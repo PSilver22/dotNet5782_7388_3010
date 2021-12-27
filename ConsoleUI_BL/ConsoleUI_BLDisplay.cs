@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BL;
 
 namespace ConsoleUI_BL
 {
@@ -13,7 +13,7 @@ namespace ConsoleUI_BL
 		/// Get an id and display the base station with that id
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayBaseStation(IBL.IBL logicLayer)
+		internal static void DisplayBaseStation(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Input station ID: ");
 			int id = Utils.ReadInt();
@@ -25,7 +25,7 @@ namespace ConsoleUI_BL
 		/// Get an id and display the drone with that id
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayDrone(IBL.IBL logicLayer)
+		internal static void DisplayDrone(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Input drone ID: ");
 			int id = Utils.ReadInt();
@@ -37,7 +37,7 @@ namespace ConsoleUI_BL
 		/// Get an id and display the customer with that id
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayCustomer(IBL.IBL logicLayer)
+		internal static void DisplayCustomer(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Input customer ID: ");
 			int id = Utils.ReadInt();
@@ -49,7 +49,7 @@ namespace ConsoleUI_BL
 		/// Get an id and display the package with that id
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayPackage(IBL.IBL logicLayer)
+		internal static void DisplayPackage(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Input package ID: ");
 			int id = Utils.ReadInt();
@@ -61,9 +61,9 @@ namespace ConsoleUI_BL
 		/// Display all base stations
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayBaseStationList(IBL.IBL logicLayer)
+		internal static void DisplayBaseStationList(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.BaseStationListing> stationList = logicLayer.GetBaseStationList();
+			IEnumerable<BL.BaseStationListing> stationList = logicLayer.GetBaseStationList();
 
 			foreach (var station in stationList)
 			{
@@ -75,9 +75,9 @@ namespace ConsoleUI_BL
 		/// Display all drones
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayDroneList(IBL.IBL logicLayer)
+		internal static void DisplayDroneList(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.DroneListing> droneList = logicLayer.GetDroneList();
+			IEnumerable<BL.DroneListing> droneList = logicLayer.GetDroneList();
 
 			foreach (var drone in droneList)
 			{
@@ -89,9 +89,9 @@ namespace ConsoleUI_BL
 		/// Display all customers
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayCustomerList(IBL.IBL logicLayer)
+		internal static void DisplayCustomerList(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.CustomerListing> customerList = logicLayer.GetCustomerList();
+			IEnumerable<BL.CustomerListing> customerList = logicLayer.GetCustomerList();
 
 			foreach (var customer in customerList)
 			{
@@ -103,9 +103,9 @@ namespace ConsoleUI_BL
 		/// Display all packages
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayPackageList(IBL.IBL logicLayer)
+		internal static void DisplayPackageList(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.PackageListing> packageList = logicLayer.GetPackageList();
+			IEnumerable<BL.PackageListing> packageList = logicLayer.GetPackageList();
 
 			foreach (var package in packageList)
 			{
@@ -117,9 +117,9 @@ namespace ConsoleUI_BL
 		/// Display all packages that are not assigned
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayUnassignedPackages(IBL.IBL logicLayer)
+		internal static void DisplayUnassignedPackages(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.PackageListing> packageList = logicLayer.GetPackageList(x => x.Status == IBL.BO.PackageStatus.created);
+			IEnumerable<BL.PackageListing> packageList = logicLayer.GetPackageList(x => x.Status == BL.PackageStatus.created);
 
 			foreach (var package in packageList)
 			{
@@ -131,9 +131,9 @@ namespace ConsoleUI_BL
 		/// Display all base stations with available charging slots
 		/// </summary>
 		/// <param name="logicLayer">The instance of the logic layer</param>
-		internal static void DisplayAvailableBaseStations(IBL.IBL logicLayer)
+		internal static void DisplayAvailableBaseStations(BlApi.IBL logicLayer)
 		{
-			IEnumerable<IBL.BO.BaseStationListing> baseStationList = logicLayer.GetBaseStationList();
+			IEnumerable<BL.BaseStationListing> baseStationList = logicLayer.GetBaseStationList();
 
 			foreach (var station in baseStationList)
 			{

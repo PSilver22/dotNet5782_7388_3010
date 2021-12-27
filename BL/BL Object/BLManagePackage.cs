@@ -2,9 +2,9 @@
 
 using System;
 using System.Linq;
-using IBL.BO;
+using BL;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {

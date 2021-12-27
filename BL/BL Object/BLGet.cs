@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
 using System;
-using IBL.BO;
+using BL;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
@@ -63,7 +63,7 @@ namespace IBL
             }
         }
 
-        public BO.Drone GetDrone(int id)
+        public BL.Drone GetDrone(int id)
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)

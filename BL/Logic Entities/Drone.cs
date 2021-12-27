@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System;
-namespace IBL.BO
+namespace BL
 {
     public class Drone
     {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using 
+	;
 
 namespace ConsoleUI_BL
 {
@@ -13,7 +14,7 @@ namespace ConsoleUI_BL
 		/// Input the data for a base station to be added to the data layer
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void AddBaseStation(IBL.IBL logicLayer)
+		internal static void AddBaseStation(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter station ID, name, longitude, latitude, and number of available charging stations: ");
 			
@@ -30,7 +31,7 @@ namespace ConsoleUI_BL
 		/// Input the data for a drone to be added to the data layer
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void AddDrone(IBL.IBL logicLayer)
+		internal static void AddDrone(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter manufacture ID, drone model, starting station ID: ");
 			int id = Utils.ReadInt();
@@ -46,7 +47,7 @@ namespace ConsoleUI_BL
 		/// Input the data for a customer to be added to the data layer
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void AddCustomer(IBL.IBL logicLayer)
+		internal static void AddCustomer(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter customer ID, name, phone, longitude, and latitude: ");
 			int id = Utils.ReadInt();
@@ -62,7 +63,7 @@ namespace ConsoleUI_BL
 		/// Input the data for a package to be added to the data layer
 		/// </summary>
 		/// <param name="logicLayer">Instance of the logic layer</param>
-		internal static void AddPackage(IBL.IBL logicLayer)
+		internal static void AddPackage(BlApi.IBL logicLayer)
 		{
 			Console.WriteLine("Enter sending customer ID, receiving customer ID, weight <sub menu>, and priority <sub menu>: ");
 			int senderId = Utils.ReadInt();

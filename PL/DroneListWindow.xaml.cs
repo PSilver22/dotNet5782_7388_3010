@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
-using IBL;
+using BlApi;
 
 namespace PL
 {
@@ -13,16 +13,16 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        private readonly IBL.IBL bl;
+        private readonly BlApi.IBL bl;
 
-        public DroneListWindow(IBL.IBL bl)
+        public DroneListWindow(BlApi.IBL bl)
         {
             InitializeComponent();
             
             this.bl = bl;
             
             StatusFilterComboBox.ItemsSource = Enumerable.Prepend(
-                ((IEnumerable<IBL.BO.DroneStatus>)Enum.GetValues(typeof(IBL.BO.DroneStatus)))
+                ((IEnumerable<BL.DroneStatus>)Enum.GetValues(typeof(BL.DroneStatus)))
                 .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
                 new ComboBoxItem() { Content = "all statuses", Tag = -1 });
             StatusFilterComboBox.SelectedValue = -1;
@@ -47,7 +47,7 @@ namespace PL
 
             drones = statusTag == -1
                 ? drones
-                : drones.FindAll(d => d.Status == (IBL.BO.DroneStatus)statusTag);
+                : drones.FindAll(d => d.Status == (BL.DroneStatus)statusTag);
 
             int weightTag = (int)(WeightFilterComboBox.SelectedValue ?? -1);
 
@@ -84,11 +84,11 @@ namespace PL
             {
                 if (PageDisplay.Content is null)
                 {
-                    PageDisplay.Content = new UpdateDronePage(this, (IBL.BO.DroneListing)DronesListView.SelectedItem);
+                    PageDisplay.Content = new UpdateDronePage(this, (BL.DroneListing)DronesListView.SelectedItem);
                 }
                 else
                 {
-                    ((UpdateDronePage)PageDisplay.Content).Drone = (IBL.BO.DroneListing)DronesListView.SelectedItem;
+                    ((UpdateDronePage)PageDisplay.Content).Drone = (BL.DroneListing)DronesListView.SelectedItem;
                 }
             }
             else

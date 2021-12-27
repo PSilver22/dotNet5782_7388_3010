@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IBL
+namespace BlApi
 {
     class DroneNotChargingException : Exception
     {

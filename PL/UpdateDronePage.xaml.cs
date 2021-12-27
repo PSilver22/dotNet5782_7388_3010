@@ -13,9 +13,9 @@ namespace PL
     public partial class UpdateDronePage : Page
     {
         public IDroneEditor Delegate { get; set; }
-        private IBL.BO.DroneListing drone;
+        private BL.DroneListing drone;
 
-        public IBL.BO.DroneListing Drone
+        public BL.DroneListing Drone
         {
             get => drone;
             set
@@ -34,7 +34,7 @@ namespace PL
         /// </summary>
         /// <param name="editorDelegate"></param>
         /// <param name="drone"></param>
-        public UpdateDronePage(IDroneEditor editorDelegate, IBL.BO.DroneListing drone)
+        public UpdateDronePage(IDroneEditor editorDelegate, BL.DroneListing drone)
         {
             InitializeComponent();
 
@@ -63,8 +63,8 @@ namespace PL
             actionButtons.Visibility = Visibility.Visible;
             releaseConfirmStack.Visibility = Visibility.Hidden;
 
-            chargeButton.Content = drone.Status == IBL.BO.DroneStatus.maintenance ? "Release" : "Charge";
-            chargeButton.IsEnabled = drone.Status != IBL.BO.DroneStatus.delivering;
+            chargeButton.Content = drone.Status == BL.DroneStatus.maintenance ? "Release" : "Charge";
+            chargeButton.IsEnabled = drone.Status != BL.DroneStatus.delivering;
 
 
             if (drone.PackageId is null)
@@ -76,12 +76,12 @@ namespace PL
                     package.CollectionTime is null ? "Collect Package" : "Deliver Package";
             }
 
-            packageButton.IsEnabled = drone.Status != IBL.BO.DroneStatus.maintenance;
+            packageButton.IsEnabled = drone.Status != BL.DroneStatus.maintenance;
         }
 
         private void ChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (drone.Status == IBL.BO.DroneStatus.maintenance)
+            if (drone.Status == BL.DroneStatus.maintenance)
             {
                 chargeTimeBox.Clear();
                 actionButtons.Visibility = Visibility.Hidden;

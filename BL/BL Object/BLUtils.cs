@@ -3,7 +3,7 @@
 using System;
 using IDAL.DO;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL
     {
