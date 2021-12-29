@@ -14,9 +14,9 @@ namespace PL
     public partial class UpdateDronePage : Page
     {
         public IDroneEditor Delegate { get; set; }
-        private BL.DroneListing drone;
+        private DroneListing drone;
 
-        public BL.DroneListing Drone
+        public DroneListing Drone
         {
             get => drone;
             set
@@ -64,8 +64,8 @@ namespace PL
             actionButtons.Visibility = Visibility.Visible;
             releaseConfirmStack.Visibility = Visibility.Hidden;
 
-            chargeButton.Content = drone.Status == BL.DroneStatus.maintenance ? "Release" : "Charge";
-            chargeButton.IsEnabled = drone.Status != BL.DroneStatus.delivering;
+            chargeButton.Content = drone.Status == DroneStatus.maintenance ? "Release" : "Charge";
+            chargeButton.IsEnabled = drone.Status != DroneStatus.delivering;
 
 
             if (drone.PackageId is null)
@@ -77,12 +77,12 @@ namespace PL
                     package.CollectionTime is null ? "Collect Package" : "Deliver Package";
             }
 
-            packageButton.IsEnabled = drone.Status != BL.DroneStatus.maintenance;
+            packageButton.IsEnabled = drone.Status != DroneStatus.maintenance;
         }
 
         private void ChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (drone.Status == BL.DroneStatus.maintenance)
+            if (drone.Status == DroneStatus.maintenance)
             {
                 chargeTimeBox.Clear();
                 actionButtons.Visibility = Visibility.Hidden;
@@ -143,15 +143,26 @@ namespace PL
             {
                 if (drone.PackageId is null)
                 {
-                    Delegate.AssignPackageToDrone(drone.Id);
+                    try
+                    {
+                        Delegate.AssignPackageToDrone(drone.Id);
+                    }
+                    catch (BlApi.NoRelevantPackageException)
+                    {
+                        MessageBox.Show("There are no packages for this drone to pick up.\nNote: There may be packages out of range and/or too heavy for this drone.", "No Package to Pick Up", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
                 else
                 {
-                    var package = Delegate.GetPackage(drone.PackageId.Value);
+                    Package package = Delegate.GetPackage(drone.PackageId.Value);
                     if (package.CollectionTime is null)
+                    {
                         Delegate.CollectPackageByDrone(drone.Id);
+                    }
                     else
+                    {
                         Delegate.DeliverPackageByDrone(drone.Id);
+                    }
                 }
             }
             catch (Exception ex)

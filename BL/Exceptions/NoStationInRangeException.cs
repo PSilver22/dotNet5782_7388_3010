@@ -2,7 +2,7 @@
 
 namespace BlApi
 {
-    class NoStationInRangeException : Exception
+    public class NoStationInRangeException : Exception
     {
         public NoStationInRangeException() : base($"No station with available charging slot within flying range") { }
 

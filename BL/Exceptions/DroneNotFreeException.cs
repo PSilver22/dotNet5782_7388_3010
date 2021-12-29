@@ -2,7 +2,7 @@
 
 namespace BlApi
 {
-    class DroneNotFreeException : Exception
+    public class DroneNotFreeException : Exception
     {
         public DroneNotFreeException() : base("Drone is not free") { }
 
