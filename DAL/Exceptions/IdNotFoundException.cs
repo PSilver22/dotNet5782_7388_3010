@@ -1,18 +1,15 @@
 ﻿using System;
 
-namespace IDAL
+namespace DalApi
 {
-    namespace DO
+    public class IdNotFoundException : Exception
     {
-        public class IdNotFoundException : Exception
-        {
-            public IdNotFoundException() : base() { }
+        public IdNotFoundException() : base() { }
 
-            public IdNotFoundException(string message) : base("ID Not Found Exception: " + message) { }
+        public IdNotFoundException(string message) : base("ID Not Found Exception: " + message) { }
 
-            public IdNotFoundException(string message, Exception innerException) : base("ID Not Found Exception: " + message, innerException) { }
+        public IdNotFoundException(string message, Exception innerException) : base("ID Not Found Exception: " + message, innerException) { }
 
-            public IdNotFoundException(int id) : this($"The ID {id} was not found in the database.") { }
-        }
+        public IdNotFoundException(int id) : this($"The ID {id} was not found in the database.") { }
     }
 }

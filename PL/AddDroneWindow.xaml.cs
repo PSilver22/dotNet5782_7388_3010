@@ -24,9 +24,9 @@ namespace PL
 
         private void InitializeWeightSelector()
         {
-            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Heavy", Tag = (object)IDAL.DO.WeightCategory.heavy });
-            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Medium", Tag = (object)IDAL.DO.WeightCategory.medium });
-            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Light", Tag = (object)IDAL.DO.WeightCategory.light });
+            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Heavy", Tag = (object)DO.WeightCategory.heavy });
+            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Medium", Tag = (object)DO.WeightCategory.medium });
+            WeightCategoryMenu.Items.Add(new ComboBoxItem() { Content = "Light", Tag = (object)DO.WeightCategory.light });
         }
 
         private void InitializeStationSelector()
@@ -52,7 +52,7 @@ namespace PL
                     Delegate.AddDrone(
                          id,
                          ModelTextBox.Text,
-                         (IDAL.DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
+                         (DO.WeightCategory)((ComboBoxItem)WeightCategoryMenu.SelectedItem).Tag,
                          ((BL.BaseStationListing)((ComboBoxItem)StationMenu.SelectedItem).Tag).Id);
 
                     Close();

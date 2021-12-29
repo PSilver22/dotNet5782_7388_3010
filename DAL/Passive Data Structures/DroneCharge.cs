@@ -1,37 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IDAL
+﻿namespace DO
 {
-    namespace DO
+    /// <summary>
+    /// A struct with the charging information between a drone and a station
+    /// </summary>
+    public struct DroneCharge
     {
-        /// <summary>
-        /// A struct with the charging information between a drone and a station
-        /// </summary>
-        public struct DroneCharge
+        public int StationId { get; set; }
+        public int DroneId { get; set; }
+
+        public DroneCharge(int stationId, int droneId)
         {
-            public int StationId { get; set; }
-            public int DroneId { get; set; }
+            StationId = stationId;
+            DroneId = droneId;
+        }
 
-            public DroneCharge(int stationId, int droneId)
-            {
-                StationId = stationId;
-                DroneId = droneId;
-            }
-
-            /// <summary>
-            /// Creates a string with the charge information
-            /// </summary>
-            /// <returns>
-            /// The string with the charge information
-            /// </returns>
-            public override string ToString()
-            {
-                return $"Drone {DroneId} is charging from station {StationId}";
-            }
+        /// <summary>
+        /// Creates a string with the charge information
+        /// </summary>
+        /// <returns>
+        /// The string with the charge information
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Drone {DroneId} is charging from station {StationId}";
         }
     }
 }

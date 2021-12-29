@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using BL;
-using IDAL.DO;
+using DO;
+using DalApi;
 
 namespace BlApi
 {
@@ -11,7 +12,7 @@ namespace BlApi
         {
             try
             { dal.AddStation(new(id, name, longitude, latitude, numChargeSlots)); }
-            catch (IDAL.DO.DuplicatedIdException)
+            catch (DO.DuplicatedIdException)
             { throw new DuplicatedIdException(id, "base station"); }
         }
 
@@ -19,7 +20,7 @@ namespace BlApi
         {
             try
             { dal.AddCustomer(new(id, name, phone, longitude, latitude)); }
-            catch (IDAL.DO.DuplicatedIdException)
+            catch (DO.DuplicatedIdException)
             { throw new DuplicatedIdException(id, "customer"); }
         }
 
@@ -42,7 +43,7 @@ namespace BlApi
                 drones.Add(new(id, model, maxWeight, battery, DroneStatus.free, new(station.Latitude, station.Longitude), null));
                 dal.AddDrone(new(id, model, maxWeight, battery));
             }
-            catch (IDAL.DO.DuplicatedIdException)
+            catch (DO.DuplicatedIdException)
             { throw new DuplicatedIdException(id, "drone"); }
 
             SendDroneToCharge(id);

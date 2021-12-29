@@ -25,7 +25,7 @@ namespace BlApi
         /// <param name="model">model of the new drone</param>
         /// <param name="maxWeight">max weight of the new drone</param>
         /// <param name="startingStationId">the id of the station where the new drone will start</param>
-        public void AddDrone(int id, string model, IDAL.DO.WeightCategory maxWeight, int startingStationId);
+        public void AddDrone(int id, string model, DO.WeightCategory maxWeight, int startingStationId);
 
         /// <summary>
         /// Add a new customer
@@ -45,7 +45,7 @@ namespace BlApi
         /// <param name="weight">weight of the new package</param>
         /// <param name="priority">priority of the new package</param>
         /// <returns>ID of the new package</returns>
-        public int AddPackage(int senderId, int receiverId, IDAL.DO.WeightCategory weight, IDAL.DO.Priority priority);
+        public int AddPackage(int senderId, int receiverId, DO.WeightCategory weight, DO.Priority priority);
 
         // Update
 

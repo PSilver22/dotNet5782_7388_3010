@@ -4,14 +4,14 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using BL;
-using IDAL.DO;
+using DO;
 
 namespace BlApi
 {
     public partial class BL : IBL
     {
         private List<DroneListing> drones;
-        private IDAL.IDAL dal;
+        private DalApi.IDAL dal;
         private (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) powerConsumption;
         private static readonly Lazy<BL> instance = new(() => new BL());
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using BL;
-using IDAL.DO;
+using DO;
+using DalApi;
 
 namespace BlApi
 {

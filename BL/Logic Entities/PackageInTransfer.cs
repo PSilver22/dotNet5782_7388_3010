@@ -1,13 +1,13 @@
 ﻿using System;
-using IDAL.DO;
+using DO;
 
 namespace BL
 {
     public class PackageInTransfer
     {
         public int Id { get; init; }
-        public IDAL.DO.WeightCategory Weight { get; init; }
-        public IDAL.DO.Priority Priority { get; init; }
+        public DO.WeightCategory Weight { get; init; }
+        public DO.Priority Priority { get; init; }
         public bool OutForDelivery { get; init; }
         public PackageCustomer Sender { get; init; }
         public PackageCustomer Receiver { get; init; }

@@ -23,9 +23,9 @@ namespace BlApi
         /// <param name="location">the location</param>
         /// <param name="stations">the stations to search through</param>
         /// <returns></returns>
-        public static IDAL.DO.Station ClosestStation(Location location, IEnumerable<IDAL.DO.Station> stations)
+        public static DO.Station ClosestStation(Location location, IEnumerable<DO.Station> stations)
         {
-            return stations.Select<IDAL.DO.Station, (IDAL.DO.Station station, double dist)>(s =>
+            return stations.Select<DO.Station, (DO.Station station, double dist)>(s =>
             {
                 Location sLoc = new(s.Latitude, s.Longitude);
                 return (s, Utils.DistanceBetween(location, sLoc));

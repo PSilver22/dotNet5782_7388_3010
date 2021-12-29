@@ -2,6 +2,7 @@
 
 using System;
 using BL;
+using DalApi;
 
 namespace BlApi
 {
@@ -17,7 +18,7 @@ namespace BlApi
                     .ConvertAll(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery));
                 return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots, chargingDrones);
             }
-            catch (IDAL.DO.IdNotFoundException)
+            catch (IdNotFoundException)
             {
                 throw new StationNotFoundException(id);
             }

@@ -18,7 +18,7 @@ namespace BlApi
             if (drone.Status != DroneStatus.free)
             { throw new DroneNotFreeException("assign package"); }
 
-            IDAL.DO.Package package = dal.GetPackageList()
+            DO.Package package = dal.GetPackageList()
                 .Where(p => p.DroneId is null)
                 .Where(p => p.Weight <= drone.WeightCategory)
                 .OrderByDescending(p => p.Weight)

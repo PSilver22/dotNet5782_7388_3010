@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using 
-	;
 
 namespace ConsoleUI_BL
 {
-	partial class ConsoleUI
+    internal partial class ConsoleUI
 	{
 		/// <summary>
 		/// Input the data for a base station to be added to the data layer
@@ -38,7 +32,7 @@ namespace ConsoleUI_BL
 			string model = Console.ReadLine();
 			int startingStationId = Utils.ReadInt();
 
-			IDAL.DO.WeightCategory maxWeight = Utils.PromptWeightCategory();
+			DO.WeightCategory maxWeight = Utils.PromptWeightCategory();
 
 			logicLayer.AddDrone(id, model, maxWeight, startingStationId);
 		}
@@ -68,8 +62,8 @@ namespace ConsoleUI_BL
 			Console.WriteLine("Enter sending customer ID, receiving customer ID, weight <sub menu>, and priority <sub menu>: ");
 			int senderId = Utils.ReadInt();
 			int receiverId = Utils.ReadInt();
-			IDAL.DO.WeightCategory weight = Utils.PromptWeightCategory();
-			IDAL.DO.Priority priority = Utils.PromptPriority();
+			DO.WeightCategory weight = Utils.PromptWeightCategory();
+			DO.Priority priority = Utils.PromptPriority();
 
 			int newPackageId = logicLayer.AddPackage(senderId, receiverId, weight, priority);
 			Console.WriteLine($"The new package's ID is: {newPackageId}");

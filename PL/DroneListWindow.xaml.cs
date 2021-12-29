@@ -28,7 +28,7 @@ namespace PL
             StatusFilterComboBox.SelectedValue = -1;
             
             WeightFilterComboBox.ItemsSource = Enumerable.Prepend(
-                ((IEnumerable<IDAL.DO.WeightCategory>)Enum.GetValues(typeof(IDAL.DO.WeightCategory)))
+                ((IEnumerable<DO.WeightCategory>)Enum.GetValues(typeof(DO.WeightCategory)))
                 .Select(s => new ComboBoxItem() { Content = s.ToString(), Tag = s }),
                 new ComboBoxItem() { Content = "all weights", Tag = -1 });
             WeightFilterComboBox.SelectedValue = -1;
@@ -53,7 +53,7 @@ namespace PL
 
             drones = weightTag == -1
                 ? drones
-                : drones.FindAll(d => d.WeightCategory == (IDAL.DO.WeightCategory)weightTag);
+                : drones.FindAll(d => d.WeightCategory == (DO.WeightCategory)weightTag);
 
             DronesListView.ItemsSource = drones;
 

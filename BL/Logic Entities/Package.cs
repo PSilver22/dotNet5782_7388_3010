@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System;
-using IDAL.DO;
+using DO;
 
 namespace BL
 {
@@ -10,8 +10,8 @@ namespace BL
         public int Id { get; init; }
         public PackageCustomer Sender { get; init; }
         public PackageCustomer Receiver { get; init; }
-        public IDAL.DO.WeightCategory Weight { get; init; }
-        public IDAL.DO.Priority Priority { get; init; }
+        public DO.WeightCategory Weight { get; init; }
+        public DO.Priority Priority { get; init; }
         public DroneInDelivery? Drone { get; init; }
         public DateTime CreationTime { get; init; }
         public DateTime? AssignmentTime { get; init; }

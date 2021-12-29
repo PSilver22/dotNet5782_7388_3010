@@ -1,7 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
-using IDAL.DO;
+using DO;
+using DalApi;
 
 namespace DalObject
 {
@@ -9,8 +11,17 @@ namespace DalObject
     /// A class that interacts with and performs operations
     /// on the data source class
     /// </summary>
-    public partial class DalObject : IDAL.IDAL
+    public partial class DalObject : DalApi.IDAL
     {
+        private static readonly Lazy<DalObject> instance = new(() => new DalObject());
+        internal static DalObject Instance
+        {
+            get
+            {
+                return instance.Value;
+            }
+        }
+
         /// <summary>
         /// Initializes DataSource
         /// </summary>
@@ -56,7 +67,7 @@ namespace DalObject
         /// <returns>element with ID equal to key. throws if key isn't found</returns>
         private static T GetItemByKey<T>(int key, List<T> list) where T : IIdentifiable
         {
-            return list[GetItemIndexByKey<T>(key, list)];
+            return list[GetItemIndexByKey(key, list)];
         }
 
         /// <summary>

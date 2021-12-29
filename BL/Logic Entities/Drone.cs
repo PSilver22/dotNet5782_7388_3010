@@ -7,13 +7,13 @@ namespace BL
     {
         public int Id { get; init; }
         public string Model { get; init; }
-        public IDAL.DO.WeightCategory WeightCategory { get; init; }
+        public DO.WeightCategory WeightCategory { get; init; }
         public double BatteryStatus { get; init; }
         public DroneStatus Status { get; init; }
         public PackageInTransfer? Package { get; init; }
         public Location Location { get; init; }
 
-        public Drone(int id, string model, IDAL.DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, PackageInTransfer? package, Location location)
+        public Drone(int id, string model, DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, PackageInTransfer? package, Location location)
         {
             Id = id;
             Model = model;
