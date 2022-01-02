@@ -4,7 +4,7 @@ namespace ConsoleUI
 {
     public class ConsoleUI
     {
-        static DalObject.DalObject dalObject = new DalObject.DalObject();
+        static DalApi.IDAL dalObject = DalApi.DalFactory.GetDAL("Object");
 
         const string helpText =
 @"Available commands:
@@ -35,6 +35,7 @@ char[g]e-drone                  Send a drone to the charging station
 e[x]it                          Quit the program
 ";
 
+        #region Main
         static void Main()
         {
             Console.WriteLine("Welcome to the Drone Delivery Manager!\n\n");
@@ -181,8 +182,10 @@ e[x]it                          Quit the program
             } while (command != "x" && command != "exit");
         }
 
-        static void ShowHelp() => Console.WriteLine(helpText);
+        #endregion
 
+        #region HelperFunctions
+        static void ShowHelp() => Console.WriteLine(helpText);
 
         static void AddBaseStation()
         {
@@ -281,5 +284,7 @@ e[x]it                          Quit the program
 
         static void ListUnassignedPackages() =>
             Console.WriteLine(dalObject.GetPackageList(x => x.DroneId == 0));
+
+        #endregion
     }
 }

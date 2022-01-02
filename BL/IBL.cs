@@ -8,6 +8,7 @@ namespace BlApi
 {
     public interface IBL
     {
+        #region AddMethods
         /// <summary>
         /// Add a new base station
         /// </summary>
@@ -47,7 +48,9 @@ namespace BlApi
         /// <returns>ID of the new package</returns>
         public int AddPackage(int senderId, int receiverId, DO.WeightCategory weight, DO.Priority priority);
 
-        // Update
+        #endregion
+
+        #region UpdateMethods
 
         /// <summary>
         /// Update a base station
@@ -103,7 +106,9 @@ namespace BlApi
         /// <param name="id">the id of the drone</param>
         public void DeliverPackageByDrone(int id);
 
-        // Get
+        #endregion
+
+        #region GetMethods
 
         /// <summary>
         /// Get a base station by id
@@ -133,7 +138,9 @@ namespace BlApi
         /// <returns>the package with the given id</returns>
         public Package GetPackage(int id);
 
-        // Get List
+        #endregion
+
+        #region GetListMethods
 
         /// <summary>
         /// Get the list of base stations
@@ -162,5 +169,7 @@ namespace BlApi
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of packages</returns>
         public List<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null);
+
+        #endregion
     }
 }

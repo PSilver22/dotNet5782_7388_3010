@@ -7,7 +7,7 @@ namespace ConsoleUI_BL
 		static void Main(string[] args)
 		{
 			bool running = true;
-			BlApi.IBL logicLayer = new BL();
+			BlApi.IBL logicLayer = BlApi.BLFactory.GetBl();
 
 			while (running)
 			{

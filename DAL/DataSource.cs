@@ -9,6 +9,8 @@ namespace DalObject
     /// </summary>
     public class DataSource
     {
+        #region DataMembers
+
         internal const int MaxDrones = 10;
         internal const int MaxStations = 5;
         internal const int MaxCustomers = 100;
@@ -22,6 +24,8 @@ namespace DalObject
         internal static List<DroneCharge> droneCharges = new();
 
         private static Random randomGenerator = new Random(DateTime.Now.Millisecond);
+
+        #endregion
 
         /// <summary>
         /// Randomly initializes all the arrays in DataSource
