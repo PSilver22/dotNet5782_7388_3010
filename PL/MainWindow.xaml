@@ -8,6 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid MouseUp="ShowDronesButton_Click">
         <Button Content="Show Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ShowDronesButton_Click"/>
+        <Button Content="Show Packages" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowPackagesButton_Click" Margin="0,232,0,0"/>
 
     </Grid>
 </Window>

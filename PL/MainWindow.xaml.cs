@@ -33,5 +33,9 @@ namespace PL
         {
             new DroneListWindow(bl).ShowDialog();
         }
+        private void ShowPackagesButton_Click(object sender, RoutedEventArgs e)
+        {
+            new PackagesListWindow(bl).ShowDialog();
+        }
     }
 }
