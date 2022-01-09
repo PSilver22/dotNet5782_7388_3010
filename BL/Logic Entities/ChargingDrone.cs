@@ -1,6 +1,7 @@
 ﻿using System;
 namespace BL
 {
+    // BUG: Battery status is wrong
     public class ChargingDrone
     {
         public int Id { get; init; }
