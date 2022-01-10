@@ -47,13 +47,13 @@ namespace PL
 
             drones = statusTag == -1
                 ? drones
-                : drones.FindAll(d => d.Status == (BL.DroneStatus)statusTag);
+                : drones.Where(d => d.Status == (BL.DroneStatus)statusTag);
 
             int weightTag = (int)(WeightFilterComboBox.SelectedValue ?? -1);
 
             drones = weightTag == -1
                 ? drones
-                : drones.FindAll(d => d.WeightCategory == (DO.WeightCategory)weightTag);
+                : drones.Where(d => d.WeightCategory == (DO.WeightCategory)weightTag);
 
             DronesListView.ItemsSource = drones;
 

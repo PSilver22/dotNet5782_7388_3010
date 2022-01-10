@@ -11,4 +11,16 @@
     <ProjectReference Include="..\FormatUtils\FormatUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="PackageList\PackagesListWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PackageList\PackagesListWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

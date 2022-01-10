@@ -27,7 +27,7 @@ namespace PL
         /// Gets the base station list from the logic layer
         /// </summary>
         /// <returns> the base station list form the logic layer</returns>
-        public List<BaseStationListing> GetBaseStationList()
+        public IEnumerable<BaseStationListing> GetBaseStationList()
         {
             return bl.GetBaseStationList();
         }

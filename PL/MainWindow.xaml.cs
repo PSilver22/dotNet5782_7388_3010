@@ -20,5 +20,9 @@ namespace PL
         {
             new CustomerListWindow(bl).Show();
         }
+        private void ShowPackagesButton_Click(object sender, RoutedEventArgs e)
+        {
+            new PackagesListWindow(bl).ShowDialog();
+        }
     }
 }

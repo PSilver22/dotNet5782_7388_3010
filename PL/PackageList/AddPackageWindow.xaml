@@ -1,0 +1,107 @@
+﻿<Window x:Class="PL.PackageList.AddPackageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:PL.PackageList"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:do="clr-namespace:DO;assembly=DAL"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="New Package" Height="210" Width="300" MinHeight="210" MinWidth="250" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="Weights" ObjectType="sys:Enum" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="do:WeightCategory" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Priorities" ObjectType="sys:Enum" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="do:Priority" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Background="#FFF0F0F0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <StackPanel Background="White" Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0" Margin="8">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,4,8,4" />
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="Margin" Value="0,4,8,4" />
+                </Style>
+            </StackPanel.Resources>
+            <Grid Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Sender:</Label>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Customers}"
+                          SelectedValuePath="Tag"
+                          SelectedValue="{Binding SenderId.Value}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Recipient:</Label>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Customers}"
+                          SelectedValuePath="Tag"
+                          SelectedValue="{Binding RecipientId.Value}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Weight:</Label>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Source={StaticResource Weights}}"
+                          SelectedValue="{Binding Weight.Value}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Key" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Margin="0,0,8,0">Priority:</Label>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Source={StaticResource Priorities}}"
+                          SelectedValue="{Binding Priority.Value}" />
+            </Grid>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" FlowDirection="RightToLeft" Margin="8,8,8,8">
+            <Button Name="AddDroneButton" Content="Add Package" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Click="AddPackageButton_Click" Margin="0,0,8,0" Width="100">
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SenderId.Value}" Value="{x:Null}">
+                                <Setter Property="Button.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding RecipientId.Value}" Value="{x:Null}">
+                                <Setter Property="Button.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Weight.Value}" Value="{x:Null}">
+                                <Setter Property="Button.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Priority.Value}" Value="{x:Null}">
+                                <Setter Property="Button.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Name="CloseWindowButton" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    IsCancel="True" Margin="0,0,8,0" Width="90" />
+        </StackPanel>
+    </Grid>
+</Window>
