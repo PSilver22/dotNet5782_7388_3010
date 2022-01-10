@@ -147,28 +147,28 @@ namespace BlApi
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of base stations</returns>
-        public List<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null);
+        public IEnumerable<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null);
 
         /// <summary>
         /// Get the list of drones
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of drones</returns>
-        public List<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null);
+        public IEnumerable<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null);
 
         /// <summary>
         /// Get the list of customers
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of customers</returns>
-        public List<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null);
+        public IEnumerable<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null);
 
         /// <summary>
         /// Get the list of packages
         /// </summary>
         /// <param name = "filter" > The filter applied to the objects in the list</param>
         /// <returns>the list of packages</returns>
-        public List<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null);
+        public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null);
 
         #endregion
     }

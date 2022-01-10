@@ -9,7 +9,7 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        public List<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null)
+        public IEnumerable<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null)
         {
             var charging = dal.GetDroneChargeList();
             return dal.GetStationList().ConvertAll(s =>
@@ -19,7 +19,7 @@ namespace BlApi
             }).Where(new Func<BaseStationListing, bool>(filter ?? (x => true))).ToList();
         }
 
-        public List<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null)
+        public IEnumerable<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null)
         {
             var packages = dal.GetPackageList();
             return dal.GetCustomerList().ConvertAll(c => new CustomerListing(
@@ -33,12 +33,12 @@ namespace BlApi
                 .Where(new Func<CustomerListing, bool>(filter ?? (x => true))).ToList();
         }
 
-        public List<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null)
+        public IEnumerable<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null)
         {
             return drones.Where(new Func<DroneListing, bool>(filter ?? (x => true))).ToList();
         }
 
-        public List<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)
+        public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)
         {
             return dal.GetPackageList().ConvertAll(p => new PackageListing(
                 p.Id,
