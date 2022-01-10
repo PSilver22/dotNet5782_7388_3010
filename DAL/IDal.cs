@@ -8,7 +8,7 @@ namespace DalApi
 {
     public interface IDAL
     {
-        #region AddMethods
+        #region Add Methods
        
         public void AddStation(Station station);
 
@@ -22,7 +22,7 @@ namespace DalApi
 
         #endregion
 
-        #region
+        #region Get Methods
         public Station GetStation(int id);
 
         public Drone GetDrone(int id);
@@ -34,7 +34,7 @@ namespace DalApi
         public DroneCharge GetDroneCharge(int droneId);
         #endregion
 
-        #region SetMethods
+        #region Set Methods
         public void SetStation(Station station);
 
         public void SetDrone(Drone drone);
@@ -44,7 +44,7 @@ namespace DalApi
         public void SetPackage(Package package);
         #endregion
 
-        #region UpdateMethods
+        #region Update Methods
         public void UpdateStation(int id, string? name = null, double? longitude = null, double? latitude = null, int? chargeSlots = null);
 
         public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null);
@@ -62,9 +62,9 @@ namespace DalApi
         /// <param name="priority"></param>
         /// <param name="requested"></param>
         /// <param name="droneId"></param>
-        /// <param name="scheduled">use DateTime(0) to set to null</param>
-        /// <param name="pickedUp">use DateTime(0) to set to null</param>
-        /// <param name="delivered">use DateTime(0) to set to null</param>
+        /// <param name="scheduled"></param>
+        /// <param name="pickedUp"></param>
+        /// <param name="delivered"></param>
         public void UpdatePackage(
                 int id,
                 int? senderId = null,
@@ -76,11 +76,21 @@ namespace DalApi
                 DateTime? scheduled = null,
                 DateTime? pickedUp = null,
                 DateTime? delivered = null);
-    
+
+        public void AssignPackage(int packageId);
+
+        public void CollectPackage(int packageId);
+
+        public void ProvidePackage(int packageId);
+
+        public void ChargeDrone(int droneId, int stationId);
+
+        public void ReleaseDrone(int droneId);
+
         public void DeleteDroneCharge(int droneId);
         #endregion
 
-        #region GetListMethods
+        #region Get List Methods
         public List<Station> GetStationList(Predicate<Station>? filter = null);
 
         //public List<Station> GetUnoccupiedStationsList();

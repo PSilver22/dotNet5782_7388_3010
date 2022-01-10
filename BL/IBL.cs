@@ -8,7 +8,7 @@ namespace BlApi
 {
     public interface IBL
     {
-        #region AddMethods
+        #region Add Methods
         /// <summary>
         /// Add a new base station
         /// </summary>
@@ -50,7 +50,7 @@ namespace BlApi
 
         #endregion
 
-        #region UpdateMethods
+        #region Update Methods
 
         /// <summary>
         /// Update a base station
@@ -108,7 +108,7 @@ namespace BlApi
 
         #endregion
 
-        #region GetMethods
+        #region Get Methods
 
         /// <summary>
         /// Get a base station by id
@@ -140,7 +140,7 @@ namespace BlApi
 
         #endregion
 
-        #region GetListMethods
+        #region Get List Methods
 
         /// <summary>
         /// Get the list of base stations

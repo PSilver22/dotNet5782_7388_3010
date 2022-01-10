@@ -15,17 +15,17 @@ using System.Windows.Shapes;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for AddStationWindow.xaml
+    /// Interaction logic for AddCustomerWindow.xaml
     /// </summary>
-    public partial class AddStationWindow : Window
+    public partial class AddCustomerWindow : Window
     {
-        public IStationAdder Delegate { get; set; }
+        public ICustomerAdder Delegate { get; set; }
 
         /// <summary>
         /// Constructor for the window
         /// </summary>
-        /// <param name="adderDelegate">Object through which to add stations</param>
-        public AddStationWindow(IStationAdder adderDelegate)
+        /// <param name="adderDelegate">Object through which to add customers</param>
+        public AddCustomerWindow(ICustomerAdder adderDelegate)
         {
             Delegate = adderDelegate;
 
@@ -33,47 +33,48 @@ namespace PL
         }
 
         /// <summary>
-        /// Logic for click of add station button
+        /// Logic for click of add customer button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddStationButton_Click(object sender, RoutedEventArgs e) {
+        private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
             string errorMessage = "ERROR: ";
             bool error = false;
 
-            if (!int.TryParse(IDTextBox.Text, out int id)) {
+            if (!int.TryParse(IDTextBox.Text, out int id))
+            {
                 errorMessage += "Invalid ID\n";
                 error = true;
             }
 
-            if (NameTextBox.Text == "") {
+            if (NameTextBox.Text == "")
+            {
                 errorMessage += "Invalid Name\n";
                 error = true;
             }
 
-            if (!double.TryParse(LatitudeTextBox.Text, out double latitude)) {
+            if (!double.TryParse(LatitudeTextBox.Text, out double latitude))
+            {
                 errorMessage += "Invalid Latitude\n";
                 error = true;
             }
 
-            if (!double.TryParse(LongitudeTextBox.Text, out double longitude)) {
+            if (!double.TryParse(LongitudeTextBox.Text, out double longitude))
+            {
                 errorMessage += "Invalid Longitude\n";
                 error = true;
             }
 
-            if (!int.TryParse(ChargingSlotsTextBox.Text, out int chargeSlots)) {
-                errorMessage += "Invalid # Charge Slots\n";
-                error = true;
-            }
-
             if (error) { MessageBox.Show(errorMessage, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error); }
-            else {
-                Delegate.AddStation(
+            else
+            {
+                Delegate.AddCustomer(
                     id,
                     NameTextBox.Text,
-                    latitude,
+                    PhoneTextBox.Text,
                     longitude,
-                    chargeSlots);
+                    latitude);
 
                 Close();
             }
