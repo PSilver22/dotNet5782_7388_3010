@@ -61,7 +61,7 @@ namespace BlApi
 
             dal.UpdateDrone(id, battery: drone.BatteryStatus);
             dal.UpdateStation(closestStation.Id, chargeSlots: closestStation.ChargeSlots - 1);
-            dal.AddDroneCharge(id, closestStation.Id);
+            dal.AddDroneCharge(closestStation.Id, id);
         }
     }
 }

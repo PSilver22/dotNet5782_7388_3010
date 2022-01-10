@@ -39,8 +39,7 @@ namespace PL
 
         private void AddDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            int id = -1;
-            if (!int.TryParse(IDTextBox.Text, out id) || ModelTextBox.Text == "" || WeightCategoryMenu.SelectedItem is null || StationMenu.SelectedItem is null)
+            if (!int.TryParse(IDTextBox.Text, out int id) || ModelTextBox.Text == "" || WeightCategoryMenu.SelectedItem is null || StationMenu.SelectedItem is null)
             {
                 MessageBox.Show("One or more input is invalid.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }

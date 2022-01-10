@@ -101,5 +101,18 @@ namespace PL
         {
             ReloadDrones();
         }
+
+        public void SelectDrone(int id) {
+            BL.Drone drone = bl.GetDrone(id);
+            foreach (var item in DronesListView.Items)
+            {
+                BL.DroneListing currentDrone = (BL.DroneListing)item;
+                if (currentDrone.Id == id) {
+                    DronesListView.SelectedItem = currentDrone;
+                }
+            }
+
+            UpdateDroneDisplay();
+        }
     }
 }

@@ -11,7 +11,6 @@ namespace DalObject
     {
         #region DataMembers
 
-        internal const int MaxDrones = 10;
         internal const int MaxStations = 5;
         internal const int MaxCustomers = 100;
         internal const int MaxPackages = 1000;
@@ -33,23 +32,11 @@ namespace DalObject
         public static void Initialize()
         {
             // Set the sizes of all arrays to a random number
-            int dronesSize = randomGenerator.Next(5, MaxDrones);
             int stationsSize = randomGenerator.Next(2, MaxStations);
             int customersSize = randomGenerator.Next(10, MaxCustomers);
             int packagesSize = randomGenerator.Next(5, MaxPackages);
 
-            // initialize drone array
-            for (int count = 0; count < dronesSize; ++count)
-            {
-                // create a randomized drone
-                drones.Add(new Drone()
-                {
-                    Id = count,
-                    Model = "Model " + count,
-                    MaxWeight = (WeightCategory)randomGenerator.Next(3),
-                    Battery = randomGenerator.NextDouble()
-                });
-            }
+            int maxDrones = 0;
 
             // initialize station array
             for (int count = 0; count < stationsSize; ++count)
@@ -61,7 +48,22 @@ namespace DalObject
                     Name = "Station " + count,
                     Longitude = (randomGenerator.NextDouble() * 360) - 180,
                     Latitude = (randomGenerator.NextDouble() * 180) - 90,
-                    ChargeSlots = randomGenerator.Next(1, 11)
+                    ChargeSlots = maxDrones += randomGenerator.Next(1, 11)
+                });
+            }
+
+            int dronesSize = randomGenerator.Next(0, maxDrones);
+
+            // initialize drone array
+            for (int count = 0; count < dronesSize; ++count)
+            {
+                // create a randomized drone
+                drones.Add(new Drone()
+                {
+                    Id = count,
+                    Model = "Model " + count,
+                    MaxWeight = (WeightCategory)randomGenerator.Next(3),
+                    Battery = randomGenerator.NextDouble()
                 });
             }
 
