@@ -1,23 +1,15 @@
 ﻿#nullable enable
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using PL.Utilities;
 using BL;
 using DO;
+using PL.PackageList;
 
 namespace PL
 {
@@ -26,24 +18,18 @@ namespace PL
     /// </summary>
     public partial class PackagesListWindow : Window
     {
-        private readonly BlApi.IBL bl;
+        private readonly BlApi.IBL _bl;
 
-        public ObservableCollection<PackageListing> Packages { get; }
+        public ObservableCollection<PackageListing> Packages { get; private set; }
         public Prop<BL.Package?> SelectedPackage { get; } = new();
 
         public PackageListing? SelectedPackageListing
         {
-            get
-            {
-                return SelectedPackage.Value == null
+            get =>
+                SelectedPackage.Value == null
                     ? null
                     : Packages.FirstOrDefault(p => p.Id == SelectedPackage.Value.Id);
-            }
-            set
-            {
-                SelectedPackage.Value = bl.GetPackage(value.Id);
-                //SelectedPackage.Value = value;
-            }
+            set => SelectedPackage.Value = value == null ? null : _bl.GetPackage(value.Id);
         }
 
         public WeightCategory? SelectedWeight { get; set; }
@@ -52,12 +38,12 @@ namespace PL
 
         public PackagesListWindow(BlApi.IBL bl)
         {
-            this.bl = bl;
+            _bl = bl;
 
             Packages = new ObservableCollection<PackageListing>(bl.GetPackageList());
 
             CollectionViewSource.GetDefaultView(Packages).Filter = ListFilter;
-            
+
             InitializeComponent();
         }
 
@@ -75,7 +61,13 @@ namespace PL
 
         private void NewPackage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //new AddPackageWindow(this).ShowDialog();
+            var apw = new AddPackageWindow(_bl);
+            apw.PackageAdded += id =>
+            {
+                var newPackage = _bl.GetPackageList().First(p => p.Id == id);
+                Packages.Add(newPackage);
+            };
+            apw.ShowDialog();
         }
 
         private void NewPackage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
