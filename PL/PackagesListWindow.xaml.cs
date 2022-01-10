@@ -1,6 +1,11 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using DO;
 
 namespace PL
 {
@@ -22,15 +28,49 @@ namespace PL
     {
         private readonly BlApi.IBL bl;
 
-        public IEnumerable<PackageListing> Packages { get; private set; }
+        public ObservableCollection<PackageListing> Packages { get; }
+        public Prop<BL.Package?> SelectedPackage { get; } = new();
+
+        public PackageListing? SelectedPackageListing
+        {
+            get
+            {
+                return SelectedPackage.Value == null
+                    ? null
+                    : Packages.FirstOrDefault(p => p.Id == SelectedPackage.Value.Id);
+            }
+            set
+            {
+                SelectedPackage.Value = bl.GetPackage(value.Id);
+                //SelectedPackage.Value = value;
+            }
+        }
+
+        public WeightCategory? SelectedWeight { get; set; }
+        public Priority? SelectedPriority { get; set; }
+        public PackageStatus? SelectedStatus { get; set; }
 
         public PackagesListWindow(BlApi.IBL bl)
         {
-            InitializeComponent();
-
             this.bl = bl;
 
-            Packages = bl.GetPackageList();
+            Packages = new ObservableCollection<PackageListing>(bl.GetPackageList());
+
+            CollectionViewSource.GetDefaultView(Packages).Filter = ListFilter;
+            
+            InitializeComponent();
+        }
+
+        private bool ListFilter(object item)
+        {
+            var incl = true;
+            if (SelectedWeight.HasValue)
+                incl &= (item as PackageListing)!.Weight == SelectedWeight.Value;
+            if (SelectedPriority.HasValue)
+                incl &= (item as PackageListing)!.Priority == SelectedPriority.Value;
+            if (SelectedStatus.HasValue)
+                incl &= (item as PackageListing)!.Status == SelectedStatus.Value;
+            return incl;
         }
 
         private void NewPackage_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -43,14 +83,9 @@ namespace PL
             e.CanExecute = true;
         }
 
-        private void PackagesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-           
-        }
-
         private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            CollectionViewSource.GetDefaultView(Packages).Refresh();
         }
     }
 }
