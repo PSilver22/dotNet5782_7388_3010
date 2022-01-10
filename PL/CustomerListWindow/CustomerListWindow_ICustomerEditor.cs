@@ -19,7 +19,7 @@ namespace PL
             {
                 var package = bl.GetPackage(p.Id);
                 return package.Receiver.Id == customer.Id;
-            });
+            }).ToList();
         }
 
         public List<BL.PackageListing> GetSentPackagesList(BL.Customer customer) {
@@ -27,7 +27,7 @@ namespace PL
             {
                 var package = bl.GetPackage(p.Id);
                 return package.Sender.Id == customer.Id;
-            });
+            }).ToList();
         }
     }
 }
