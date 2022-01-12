@@ -39,7 +39,6 @@
                 <TextBox Grid.Column="1" x:Name="IdTextBox"
                          Text="{Binding Id.Value, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-            <Label Content="{Binding Id.Value}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition SharedSizeGroup="Key"/>
