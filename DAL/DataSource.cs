@@ -46,13 +46,15 @@ namespace DalObject
                 {
                     Id = count,
                     Name = "Station " + count,
-                    Longitude = (randomGenerator.NextDouble() * 360) - 180,
-                    Latitude = (randomGenerator.NextDouble() * 180) - 90,
+                    // Longitude = (randomGenerator.NextDouble() * 360) - 180,
+                    // Latitude = (randomGenerator.NextDouble() * 180) - 90,
+                    Longitude = randomGenerator.NextDouble()/10 + 35,
+                    Latitude = randomGenerator.NextDouble()/10 + 31.7,
                     ChargeSlots = maxDrones += randomGenerator.Next(1, 11)
                 });
             }
 
-            int dronesSize = randomGenerator.Next(0, maxDrones);
+            int dronesSize = randomGenerator.Next(5, maxDrones);
 
             // initialize drone array
             for (int count = 0; count < dronesSize; ++count)
@@ -76,8 +78,10 @@ namespace DalObject
                     Id = count,
                     Name = "Customer " + count,
                     Phone = (randomGenerator.Next(1000000000)).ToString(),
-                    Longitude = (randomGenerator.NextDouble() * 360) - 180,
-                    Latitude = (randomGenerator.NextDouble() * 180) - 90
+                    // Longitude = (randomGenerator.NextDouble() * 360) - 180,
+                    // Latitude = (randomGenerator.NextDouble() * 180) - 90
+                    Longitude = randomGenerator.NextDouble()/10 + 35,
+                    Latitude = randomGenerator.NextDouble()/10 + 31.7,
                 });
             }
 
