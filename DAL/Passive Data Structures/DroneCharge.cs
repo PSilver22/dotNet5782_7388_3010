@@ -1,4 +1,6 @@
-﻿namespace DO
+﻿using System;
+
+namespace DO
 {
     /// <summary>
     /// A struct with the charging information between a drone and a station
@@ -7,11 +9,13 @@
     {
         public int StationId { get; set; }
         public int DroneId { get; set; }
+        public DateTime StartTime { get; set; }
 
-        public DroneCharge(int stationId, int droneId)
+        public DroneCharge(int stationId, int droneId, DateTime startTime)
         {
             StationId = stationId;
             DroneId = droneId;
+            StartTime = startTime;
         }
 
         /// <summary>

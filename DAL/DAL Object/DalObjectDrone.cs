@@ -136,7 +136,7 @@ namespace DalObject
 
             if (station.ChargeSlots > 0)
             {
-                var droneCharge = new DroneCharge(droneId, stationId);
+                var droneCharge = new DroneCharge(droneId, stationId, DateTime.UtcNow);
 
                 DataSource.droneCharges.Add(droneCharge);
 
@@ -223,7 +223,7 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void AddDroneCharge(int stationId, int droneId)
         {
-            DataSource.droneCharges.Add(new DroneCharge(stationId, droneId));
+            DataSource.droneCharges.Add(new DroneCharge(stationId, droneId, DateTime.UtcNow));
         }
 
         /// <summary>
