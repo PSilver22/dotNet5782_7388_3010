@@ -28,8 +28,8 @@ namespace BL
                 $"name: {Name}\n" +
                 $"phone number: {Phone}\n" +
                 $"location: {Location}\n" +
-                $"sent packages: " + String.Join("\n", SentPackages) + "\n" +
-                $"expected/received packages: " + String.Join("\n", ReceivingPackages);
+                $"sent packages: {string.Join("\n", SentPackages)}\n" +
+                $"expected/received packages: {string.Join("\n", ReceivingPackages)}";
         }
     }
 }
