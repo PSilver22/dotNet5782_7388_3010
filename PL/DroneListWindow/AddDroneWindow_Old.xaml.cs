@@ -8,11 +8,11 @@ namespace PL
     /// <summary>
     /// Interaction logic for AddDroneWindow.xaml
     /// </summary>
-    public partial class AddDroneWindow : Window
+    public partial class AddDroneWindow_Old : Window
     {
         public IDroneAdder Delegate { get; set; }
 
-        public AddDroneWindow(IDroneAdder adderDelegate)
+        public AddDroneWindow_Old(IDroneAdder adderDelegate)
         {
             InitializeComponent();
 

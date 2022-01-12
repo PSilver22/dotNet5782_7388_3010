@@ -8,21 +8,12 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IBL bl;
+        public IBL Bl { get; set; }
 
         public MainWindow()
         {
+            Bl = BLFactory.GetBl();
             InitializeComponent();
-            bl = BLFactory.GetBl();
-        }
-
-        private void ShowDronesButton_Click(object sender, RoutedEventArgs e)
-        {
-            new DroneListWindow(bl).Show();
-        }
-        private void ShowPackagesButton_Click(object sender, RoutedEventArgs e)
-        {
-            new PackagesListWindow(bl).ShowDialog();
         }
     }
 }

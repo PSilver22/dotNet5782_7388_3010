@@ -3,7 +3,7 @@ using DO;
 
 namespace BL
 {
-    public class PackageListing
+    public struct PackageListing
     {
         public int Id { get; init; }
         public string SenderName { get; init; }

@@ -56,7 +56,7 @@ namespace PL
         /// <param name="chargingTime">Time to charge in hours</param>
         public void ReleaseDroneFromCharge(int id, int chargingTime)
         {
-            bl.ReleaseDroneFromCharge(id, chargingTime);
+            bl.ReleaseDroneFromCharge(id);
             ReloadDrones();
         }
 

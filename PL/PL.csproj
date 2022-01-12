@@ -12,13 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="PackageList\PackagesListWindow.xaml">
+    <Page Update="PackageList\PackageListWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="PackageList\PackagesListWindow.xaml.cs">
+    <Compile Update="PackageList\PackageListWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

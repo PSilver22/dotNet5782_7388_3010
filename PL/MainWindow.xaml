@@ -5,10 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid MouseUp="ShowDronesButton_Click">
-        <Button Content="Show Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ShowDronesButton_Click"/>
-        <Button Content="Show Packages" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowPackagesButton_Click" Margin="0,232,0,0"/>
-
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <!-- <Button Content="Show Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ShowDronesButton_Click"/> -->
+        <!-- <Button Content="Show Packages" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowPackagesButton_Click" Margin="0,242,0,0"/> -->
+        <!-- <Button Content="Show Stations" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowStationsButton_Click" Margin="0,272,0,0"/> -->
+        <TabControl>
+            <TabItem Header="Drones">
+                <local:DroneList  Bl="{Binding Bl}"/>
+            </TabItem>
+            <TabItem Header="Packages">
+                <local:PackageList Bl="{Binding Bl}"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
