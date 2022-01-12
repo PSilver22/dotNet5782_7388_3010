@@ -75,7 +75,7 @@ namespace BlApi
             PackageInTransfer? pkg = null;
             if (drone.PackageId is not null)
             {
-                var dalPackage = dal.GetPackageList().Find(p => p.DroneId == id);
+                var dalPackage = dal.GetPackageList().Find(p => p.Id == drone.PackageId);
                 var dalSender = dal.GetCustomer(dalPackage.SenderId);
                 var dalRecipient = dal.GetCustomer(dalPackage.TargetId);
                 var sender = new PackageCustomer(dalSender.Id, dalSender.Name);

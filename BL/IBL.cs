@@ -85,8 +85,7 @@ namespace BlApi
         /// Release a drone from charging
         /// </summary>
         /// <param name="id">the id of the drone</param>
-        /// <param name="chargingTime">the time spent charging</param>
-        public void ReleaseDroneFromCharge(int id, int chargingTime);
+        public void ReleaseDroneFromCharge(int id);
 
         /// <summary>
         /// Assign a package to a drone

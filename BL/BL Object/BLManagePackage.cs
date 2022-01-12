@@ -18,16 +18,16 @@ namespace BlApi
             if (drone.Status != DroneStatus.free)
             { throw new DroneNotFreeException("assign package"); }
 
-            DO.Package package = dal.GetPackageList()
+            var package = dal.GetPackageList()
                 .Where(p => p.DroneId is null)
                 .Where(p => p.Weight <= drone.WeightCategory)
-                .OrderByDescending(p => p.Weight)
                 .OrderByDescending(p => p.Priority)
-                .OrderBy(p =>
+                .ThenByDescending(p =>
                 {
                     var sender = dal.GetCustomer(p.SenderId);
                     return Utils.DistanceBetween(drone.Location, new(sender.Latitude, sender.Longitude));
                 })
+                .ThenByDescending(p => p.Weight)
                 .Where(p =>
                 {
                     var sender = dal.GetCustomer(p.SenderId);
@@ -41,8 +41,6 @@ namespace BlApi
                     var distToStation = Utils.DistanceBetween(recipLoc, new(station.Latitude, station.Longitude));
 
                     var reqBattery = powerConsumption.Free * (distToSender + distToStation) + (GetPowerConsumption(p.Weight) * distToRecip);
-
-                    Console.WriteLine(reqBattery);
 
                     return drone.BatteryStatus >= reqBattery;
                 })

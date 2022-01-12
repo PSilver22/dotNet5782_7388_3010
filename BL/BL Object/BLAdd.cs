@@ -34,7 +34,7 @@ namespace BlApi
             if (station.ChargeSlots == 0)
             { throw new NoAvailableChargingSlotsException(startingStationId); }
 
-            if (maxWeight < 0 || maxWeight > WeightCategory.heavy)
+            if (maxWeight is < 0 or > WeightCategory.heavy)
             { throw new InvalidWeightException(); }
 
             try

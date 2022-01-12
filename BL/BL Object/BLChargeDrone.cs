@@ -7,7 +7,7 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        public void ReleaseDroneFromCharge(int id, int chargingTime)
+        public void ReleaseDroneFromCharge(int id)
         {
             var droneIndex = drones.FindIndex(d => d.Id == id);
             if (droneIndex == -1)
@@ -22,7 +22,9 @@ namespace BlApi
 
             var station = dal.GetStation(droneCharge.StationId);
 
-            drone.BatteryStatus = Math.Min(100, drone.BatteryStatus + powerConsumption.ChargeRate * chargingTime);
+            var chargingTime = DateTime.UtcNow - droneCharge.StartTime;
+
+            drone.BatteryStatus = Math.Min(100, drone.BatteryStatus + powerConsumption.ChargeRate * chargingTime.Seconds);
             drone.Status = DroneStatus.free;
             drones[droneIndex] = drone;
 
