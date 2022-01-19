@@ -4,6 +4,7 @@ using System;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using BL;
 using BlApi;
 using PL.Utilities;
@@ -68,6 +69,11 @@ namespace PL
             Bl.DeliverPackageByDrone(Package.Value!.Drone!.Id);
             Package.Value = Bl.GetPackage(Package.Value.Id);
             PackageUpdated?.Invoke(this, Package.Value.Id);
+        }
+
+        private void ShowDrone(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowDrone(Package.Value!.Drone!.Id);
         }
     }
 }

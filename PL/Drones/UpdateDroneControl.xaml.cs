@@ -134,5 +134,20 @@ namespace PL
             Bl.DeliverPackageByDrone(Drone.Value!.Id);
             DroneUpdated?.Invoke(this, Drone.Value.Id);
         }
+
+        private void ShowPackage(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowPackage(Drone.Value!.Package!.Id);
+        }
+
+        private void ShowPackageSender(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Sender.Id);
+        }
+
+        private void ShowPackageRecipient(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Receiver.Id);
+        }
     }
 }

@@ -28,8 +28,6 @@ namespace PL
         public ObservableCollection<PackageListing> Packages { get; } = new();
 
         public Prop<int?> SelectedPackage { get; } = new();
-        // public Prop<PackageListing?> SelectedPackageListing { get; } = new();
-        // public Prop<BL.Package?> SelectedPackage { get; } = new();
 
         public WeightCategory? SelectedWeight { get; set; }
         public Priority? SelectedPriority { get; set; }
@@ -77,11 +75,13 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             // Refresh
+            var pkgId = SelectedPackage.Value;
             Packages.Clear();
             foreach (var p in Bl.GetPackageList()) Packages.Add(p);
-            if (SelectedPackage.Value == null || Packages.All(p => p.Id != SelectedPackage.Value))
+            if (pkgId is null || Packages.All(p => p.Id != pkgId))
                 SelectedPackage.Value = Packages.Any() ? Packages.First().Id : null;
-            else SelectedPackage.Value = SelectedPackage.Value;
+            else SelectedPackage.Value = pkgId;
+            List.ScrollIntoView(List.SelectedItem);
         }
 
         private bool ListFilter(object item)

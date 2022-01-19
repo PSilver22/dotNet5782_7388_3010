@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PL"
              xmlns:bl="clr-namespace:BL;assembly=BL"
+             xmlns:pl="clr-namespace:PL"
+             xmlns:utilities="clr-namespace:PL.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Control">
@@ -13,161 +15,122 @@
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0">
-            <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <Trigger Property="Grid.Column" Value="0">
-                            <Setter Property="Foreground" Value="#FF484848" />
-                            <Setter Property="FontWeight" Value="SemiBold" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Resources>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">ID</Label>
-                <Label Grid.Column="1" Content="{Binding Path=Package.Value.Id}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Sender</Label>
-                <Label Grid.Column="1" Content="{Binding Path=Package.Value.Sender.Name}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Recipient</Label>
-                <Label Grid.Column="1" Content="{Binding Path=Package.Value.Receiver.Name}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Priority</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.Priority}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Weight Class</Label>
-                <Label Grid.Column="1" Content="{Binding Path=Package.Value.Weight}" />
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Package.Value.Drone}" Value="{x:Null}">
-                                <Setter Property="Grid.Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Drone</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.Drone.Id, FallbackValue='N/A'}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Created</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.CreationTime}" />
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Package.Value.AssignmentTime}" Value="{x:Null}">
-                                <Setter Property="Grid.Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Assigned</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.AssignmentTime}" />
-                <Button Grid.Column="2" Width="90" Height="20" Content="Collect" HorizontalAlignment="Left" Click="CollectPackage">
-                    <Button.Style>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0">
+                <utilities:InfoStackItem Key="ID">
+                    <Label Content="{Binding Path=Package.Value.Id}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Sender">
+                    <Label Content="{Binding Path=Package.Value.Sender.Name}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Recipient">
+                    <Label Content="{Binding Path=Package.Value.Receiver.Name}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Priority">
+                    <Label Content="{Binding Package.Value.Priority}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Weight Class">
+                    <Label Grid.Column="1" Content="{Binding Path=Package.Value.Weight}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Drone">
+                    <UserControl.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Status.Value, Mode=OneWay}"
-                                             Value="{x:Static bl:PackageStatus.assigned}">
-                                    <Setter Property="Button.Visibility" Value="Visible" />
+                                <DataTrigger Binding="{Binding Package.Value.Drone}" Value="{x:Null}">
+                                    <Setter Property="UserControl.Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Button.Visibility" Value="Collapsed"/>
                         </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Package.Value.CollectionTime}" Value="{x:Null}">
-                                <Setter Property="Grid.Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Collected</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.CollectionTime}" />
-                <Button Grid.Column="2" Width="90" Height="20" Content="Deliver" HorizontalAlignment="Left" Click="DeliverPackage">
-                    <Button.Style>
+                    </UserControl.Style>
+                    <Expander Header="Details">
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                            <Button Click="ShowDrone" Width="80" HorizontalAlignment="Left" Margin="4">Show</Button>
+                            <utilities:InfoStackItem Key="ID">
+                                <Label Content="{Binding Package.Value.Drone.Id, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                            <utilities:InfoStackItem Key="Battery">
+                                <Label
+                                    Content="{Binding Package.Value.Drone.BatteryStatus, FallbackValue=''}"
+                                    ContentStringFormat="{}{0:0.00}%" />
+                            </utilities:InfoStackItem>
+                            <utilities:InfoStackItem Key="Location">
+                                <Label Content="{Binding Package.Value.Drone.CurrentLocation, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                        </StackPanel>
+                    </Expander>
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Created">
+                    <Label Content="{Binding Package.Value.CreationTime}" />
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Assigned">
+                    <UserControl.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Status.Value, Mode=OneWay}"
-                                             Value="{x:Static bl:PackageStatus.collected}">
-                                    <Setter Property="Button.Visibility" Value="Visible" />
+                                <DataTrigger Binding="{Binding Package.Value.AssignmentTime}" Value="{x:Null}">
+                                    <Setter Property="UserControl.Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Button.Visibility" Value="Collapsed"/>
                         </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Package.Value.DeliveryTime}" Value="{x:Null}">
-                                <Setter Property="Grid.Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Delivered</Label>
-                <Label Grid.Column="1" Content="{Binding Package.Value.DeliveryTime}" />
-            </Grid>
-        </StackPanel>
+                    </UserControl.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Package.Value.AssignmentTime}" />
+                        <Button Width="90" Height="20" Content="Collect" HorizontalAlignment="Left"
+                                Click="CollectPackage">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status.Value, Mode=OneWay}"
+                                                     Value="{x:Static bl:PackageStatus.assigned}">
+                                            <Setter Property="Button.Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Button.Visibility" Value="Collapsed" />
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Collected">
+                    <UserControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Package.Value.CollectionTime}" Value="{x:Null}">
+                                    <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </UserControl.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Package.Value.CollectionTime}" />
+                        <Button Width="90" Height="20" Content="Deliver" HorizontalAlignment="Left"
+                                Click="DeliverPackage">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status.Value, Mode=OneWay}"
+                                                     Value="{x:Static bl:PackageStatus.collected}">
+                                            <Setter Property="Button.Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Button.Visibility" Value="Collapsed" />
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </utilities:InfoStackItem>
+                <utilities:InfoStackItem Key="Delivered">
+                    <UserControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Package.Value.DeliveryTime}" Value="{x:Null}">
+                                    <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </UserControl.Style>
+                    <Label Content="{Binding Package.Value.DeliveryTime}" />
+                </utilities:InfoStackItem>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

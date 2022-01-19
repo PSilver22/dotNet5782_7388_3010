@@ -72,7 +72,7 @@
                           ItemsSource="{Binding Source={StaticResource Groups}}"
                           SelectedValue="{Binding SelectedGrouping.Value, Mode=TwoWay}" />
             </Expander>
-            <ListView ItemsSource="{Binding Packages}"
+            <ListView x:Name="List" ItemsSource="{Binding Packages}"
                       Grid.Row="2"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding SelectedPackage.Value, Mode=TwoWay}"

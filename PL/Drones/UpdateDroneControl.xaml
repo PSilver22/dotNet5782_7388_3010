@@ -14,89 +14,109 @@
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0">
-            <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <Trigger Property="Grid.Column" Value="0">
-                            <Setter Property="Foreground" Value="#FF484848" />
-                            <Setter Property="FontWeight" Value="SemiBold" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Resources>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">ID</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.Id}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Model</Label>
-                <TextBox Grid.Column="1" VerticalContentAlignment="Center"
-                         Text="{Binding NewModel.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding UpdateDroneCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Weight Class</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.WeightCategory}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Battery</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.BatteryStatus}"
-                       ContentStringFormat="{}{0:#0.00}%" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Status</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.Status}" />
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Location</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.Location}" />
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Drone.Value.Package}" Value="{x:Null}">
-                                <Setter Property="Grid.Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Key" />
-                    <ColumnDefinition SharedSizeGroup="Value" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Package</Label>
-                <Label Grid.Column="1" Content="{Binding Drone.Value.Package.Id, FallbackValue={x:Null}}" />
-            </Grid>
-        </StackPanel>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0">
+                <utils:InfoStackItem Key="ID">
+                    <Label Content="{Binding Drone.Value.Id}" />
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Model">
+                    <TextBox VerticalContentAlignment="Center" Width="150" HorizontalAlignment="Left"
+                             Text="{Binding NewModel.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding UpdateDroneCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Weight Class">
+                    <Label Content="{Binding Drone.Value.WeightCategory}" />
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Battery">
+                    <Label Content="{Binding Drone.Value.BatteryStatus}"
+                           ContentStringFormat="{}{0:#0.00}%" />
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Status">
+                    <Label Content="{Binding Drone.Value.Status}" />
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Location">
+                    <Label Content="{Binding Drone.Value.Location}" />
+                </utils:InfoStackItem>
+                <utils:InfoStackItem Key="Package">
+                    <utils:InfoStackItem.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Drone.Value.Package}" Value="{x:Null}">
+                                    <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </utils:InfoStackItem.Style>
+                    <Expander Header="Details" Grid.IsSharedSizeScope="True">
+                        <StackPanel>
+                            <Button Width="80" HorizontalAlignment="Left" Margin="4"
+                                    Click="ShowPackage">
+                                Show
+                            </Button>
+                            <utils:InfoStackItem Key="ID">
+                                <Label Content="{Binding Drone.Value.Package.Id, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Weight">
+                                <Label Content="{Binding Drone.Value.Package.Weight, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Priority">
+                                <Label Content="{Binding Drone.Value.Package.Priority, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Out For Delivery">
+                                <Label Content="{Binding Drone.Value.Package.OutForDelivery, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Sender">
+                                <Expander Header="Details">
+                                    <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                                        <Button Width="80" HorizontalAlignment="Left" Margin="4"
+                                                Click="ShowPackageSender">
+                                            Show
+                                        </Button>
+                                        <utils:InfoStackItem Key="ID">
+                                            <Label Content="{Binding Drone.Value.Package.Sender.Id, FallbackValue=''}" />
+                                        </utils:InfoStackItem>
+                                        <utils:InfoStackItem Key="Name">
+                                            <Label
+                                                Content="{Binding Drone.Value.Package.Sender.Name, FallbackValue=''}" />
+                                        </utils:InfoStackItem>
+                                    </StackPanel>
+                                </Expander>
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Recipient">
+                                <Expander Header="Details">
+                                    <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                                        <Button Width="80" HorizontalAlignment="Left" Margin="4"
+                                                Click="ShowPackageRecipient">
+                                            Show
+                                        </Button>
+                                        <utils:InfoStackItem Key="ID">
+                                            <Label
+                                                Content="{Binding Drone.Value.Package.Receiver.Id, FallbackValue=''}" />
+                                        </utils:InfoStackItem>
+                                        <utils:InfoStackItem Key="Name">
+                                            <Label
+                                                Content="{Binding Drone.Value.Package.Receiver.Name, FallbackValue=''}" />
+                                        </utils:InfoStackItem>
+                                    </StackPanel>
+                                </Expander>
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Collection Location">
+                                <Label Content="{Binding Drone.Value.Package.CollectionLoc, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Delivery Location">
+                                <Label Content="{Binding Drone.Value.Package.DeliveryLoc, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                            <utils:InfoStackItem Key="Delivery Distance">
+                                <Label Content="{Binding Drone.Value.Package.DeliveryDistance, FallbackValue=''}" />
+                            </utils:InfoStackItem>
+                        </StackPanel>
+                    </Expander>
+                </utils:InfoStackItem>
+            </StackPanel>
+        </ScrollViewer>
         <Button VerticalAlignment="Bottom" Width="80" HorizontalAlignment="Right" Grid.Row="1" Margin="0,0,8,8"
                 Click="UpdateDroneButton_Click" Content="Apply">
             <Button.Style>

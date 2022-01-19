@@ -74,11 +74,13 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             // Refresh
+            var droneId = SelectedDrone.Value;
             Drones.Clear();
             foreach (var d in Bl.GetDroneList()) Drones.Add(d);
-            if (SelectedDrone.Value == null || Drones.All(d => d.Id != SelectedDrone.Value))
+            if (droneId == null || Drones.All(d => d.Id != droneId))
                 SelectedDrone.Value = Drones.Any() ? Drones.First().Id : null;
-            else SelectedDrone.Value = SelectedDrone.Value;
+            else SelectedDrone.Value = droneId;
+            List.ScrollIntoView(List.SelectedItem);
         }
         
         private bool ListFilter(object item)
