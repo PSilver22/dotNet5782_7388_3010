@@ -31,7 +31,7 @@ namespace PL
         }
 
         public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register("Bl", typeof(IBL), typeof(UpdateCustomerControl));
+            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(UpdateCustomerControl));
         
         public DelegateCommand UpdateCustomerCommand { get; }
         

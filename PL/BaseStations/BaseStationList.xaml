@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="PL.BaseStationList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PL"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="Control">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="New" Executed="NewStation_Executed" CanExecute="NewStation_CanExecute" />
+    </UserControl.CommandBindings>
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Groups" ObjectType="local:Utils" MethodName="NullableComboBoxItems">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:BaseStationList+Groups" />
+                <system:String>none</system:String>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <DockPanel DataContext="{Binding ElementName=Control}">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Add Station" Command="New" />
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Expander Grid.Row="0" Header="Group By">
+                <ComboBox SelectedValuePath="Tag"
+                          ItemsSource="{Binding Source={StaticResource Groups}}"
+                          SelectedValue="{Binding SelectedGrouping.Value, Mode=TwoWay}" />
+            </Expander>
+            <ListView x:Name="List" ItemsSource="{Binding Stations}"
+                      Grid.Row="1"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding SelectedStation.Value, Mode=TwoWay}"
+                      DockPanel.Dock="Left" SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" Width="40" DisplayMemberBinding="{Binding Path=Id}" />
+                        <GridViewColumn Header="Name" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
+                        <GridViewColumn Header="Avail. Charge Slots" Width="110"
+                                        DisplayMemberBinding="{Binding AvailableChargingSlotsCount}" />
+                        <GridViewColumn Header="Occ. Charge Slots" Width="110"
+                                        DisplayMemberBinding="{Binding OccupiedChargingSlotsCount}" />
+                    </GridView>
+                </ListView.View>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding }" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </Grid>
+        <local:UpdateBaseStationControl StationId="{Binding SelectedStation.Value}"
+                                        Bl="{Binding Bl}"
+                                        StationUpdated="StationUpdated"/>
+    </DockPanel>
+</UserControl>

@@ -23,7 +23,7 @@ namespace PL
         }
 
         public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register("Bl", typeof(IBL), typeof(PackageList));
+            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(PackageList));
 
         public ObservableCollection<PackageListing> Packages { get; } = new();
 

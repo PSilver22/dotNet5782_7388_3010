@@ -34,5 +34,11 @@ namespace PL
             TabControl.SelectedIndex = 2;
             CustomerList.SelectedCustomer.Value = id;
         }
+        
+        public void ShowStation(int id)
+        {
+            TabControl.SelectedIndex = 3;
+            StationList.SelectedStation.Value = id;
+        }
     }
 }

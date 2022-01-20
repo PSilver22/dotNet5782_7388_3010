@@ -18,6 +18,12 @@
             <TabItem Header="Customers">
                 <local:CustomerList x:Name="CustomerList" Bl="{Binding Bl}"/>
             </TabItem>
+            <TabItem Header="Base Stations">
+                <local:BaseStationList x:Name="StationList" Bl="{Binding Bl}"/>
+            </TabItem>
+            <TabItem Header="Map">
+                <local:EntityMap x:Name="EntityMap" Bl="{Binding Bl}"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
