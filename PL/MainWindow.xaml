@@ -8,15 +8,15 @@
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <!-- <Button Content="Show Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ShowDronesButton_Click"/> -->
-        <!-- <Button Content="Show Packages" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowPackagesButton_Click" Margin="0,242,0,0"/> -->
-        <!-- <Button Content="Show Stations" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ShowStationsButton_Click" Margin="0,272,0,0"/> -->
         <TabControl x:Name="TabControl">
             <TabItem Header="Drones">
                 <local:DroneList x:Name="DroneList" Bl="{Binding Bl}"/>
             </TabItem>
             <TabItem Header="Packages">
                 <local:PackageList x:Name="PackageList" Bl="{Binding Bl}"/>
+            </TabItem>
+            <TabItem Header="Customers">
+                <local:CustomerList x:Name="CustomerList" Bl="{Binding Bl}"/>
             </TabItem>
         </TabControl>
     </Grid>

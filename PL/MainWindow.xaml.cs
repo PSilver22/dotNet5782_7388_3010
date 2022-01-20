@@ -31,7 +31,8 @@ namespace PL
 
         public void ShowCustomer(int id)
         {
-            throw new NotImplementedException();
+            TabControl.SelectedIndex = 2;
+            CustomerList.SelectedCustomer.Value = id;
         }
     }
 }

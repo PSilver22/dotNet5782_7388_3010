@@ -17,7 +17,7 @@ namespace PL
     /// <summary>
     /// Interaction logic for AddCustomerWindow.xaml
     /// </summary>
-    public partial class AddCustomerWindow : Window
+    public partial class AddCustomerWindow_Old : Window
     {
         public ICustomerAdder Delegate { get; set; }
 
@@ -25,7 +25,7 @@ namespace PL
         /// Constructor for the window
         /// </summary>
         /// <param name="adderDelegate">Object through which to add customers</param>
-        public AddCustomerWindow(ICustomerAdder adderDelegate)
+        public AddCustomerWindow_Old(ICustomerAdder adderDelegate)
         {
             Delegate = adderDelegate;
 

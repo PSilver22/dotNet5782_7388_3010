@@ -39,7 +39,7 @@ namespace PL
         }
 
         private void NewCustomer_Executed(object sender, ExecutedRoutedEventArgs e) {
-            new AddCustomerWindow(this).ShowDialog();
+            new AddCustomerWindow_Old(this).ShowDialog();
         }
 
         private void NewCustomer_CanExecute(object sender, CanExecuteRoutedEventArgs e) {

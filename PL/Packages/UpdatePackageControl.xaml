@@ -21,10 +21,38 @@
                     <Label Content="{Binding Path=Package.Value.Id}" />
                 </utilities:InfoStackItem>
                 <utilities:InfoStackItem Key="Sender">
-                    <Label Content="{Binding Path=Package.Value.Sender.Name}" />
+                    <Expander Header="Details">
+                        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                            <Button Width="80" HorizontalAlignment="Left" Margin="4"
+                                    Click="ShowSender">
+                                Show
+                            </Button>
+                            <utilities:InfoStackItem Key="ID">
+                                <Label Content="{Binding Package.Value.Sender.Id, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                            <utilities:InfoStackItem Key="Name">
+                                <Label
+                                    Content="{Binding Package.Value.Sender.Name, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                        </StackPanel>
+                    </Expander>
                 </utilities:InfoStackItem>
                 <utilities:InfoStackItem Key="Recipient">
-                    <Label Content="{Binding Path=Package.Value.Receiver.Name}" />
+                    <Expander Header="Details">
+                        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                            <Button Width="80" HorizontalAlignment="Left" Margin="4"
+                                    Click="ShowRecipient">
+                                Show
+                            </Button>
+                            <utilities:InfoStackItem Key="ID">
+                                <Label Content="{Binding Package.Value.Receiver.Id, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                            <utilities:InfoStackItem Key="Name">
+                                <Label
+                                    Content="{Binding Package.Value.Receiver.Name, FallbackValue=''}" />
+                            </utilities:InfoStackItem>
+                        </StackPanel>
+                    </Expander>
                 </utilities:InfoStackItem>
                 <utilities:InfoStackItem Key="Priority">
                     <Label Content="{Binding Package.Value.Priority}" />

@@ -24,7 +24,7 @@ namespace PL
         public Prop<int?> StationId { get; set; } = new();
 
         /// <summary>
-        /// Called when a package is added
+        /// Called when a drone is added
         /// </summary>
         public event Action<int>? DroneAdded;
 

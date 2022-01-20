@@ -15,7 +15,7 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <ScrollViewer>
-            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" Grid.Row="0">
+            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
                 <utils:InfoStackItem Key="ID">
                     <Label Content="{Binding Drone.Value.Id}" />
                 </utils:InfoStackItem>

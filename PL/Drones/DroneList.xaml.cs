@@ -23,7 +23,7 @@ namespace PL
         }
 
         public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register("Bl", typeof(IBL), typeof(DroneList));
+            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(DroneList));
 
         public ObservableCollection<DroneListing> Drones { get; } = new();
         public Prop<int?> SelectedDrone { get; } = new();

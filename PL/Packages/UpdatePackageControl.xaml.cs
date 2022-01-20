@@ -75,5 +75,15 @@ namespace PL
         {
             ((MainWindow)Application.Current.MainWindow!).ShowDrone(Package.Value!.Drone!.Id);
         }
+
+        private void ShowSender(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Package.Value!.Sender.Id);
+        }
+        
+        private void ShowRecipient(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Package.Value!.Receiver.Id);
+        }
     }
 }

@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="PL.CustomerList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:PL"
+             xmlns:bl="clr-namespace:BL;assembly=BL"
+             xmlns:do="clr-namespace:DO;assembly=DAL"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="Control">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="New" Executed="NewCustomer_Executed" CanExecute="NewCustomer_CanExecute" />
+    </UserControl.CommandBindings>
+    <DockPanel DataContext="{Binding ElementName=Control}">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Add Customer" Command="New" />
+            </MenuItem>
+        </Menu>
+        <ListView x:Name="List" ItemsSource="{Binding Customers}"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding SelectedCustomer.Value, Mode=TwoWay}"
+                  DockPanel.Dock="Left" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="40" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Name" Width="80" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Phone" Width="80" DisplayMemberBinding="{Binding Phone}" />
+                    <GridViewColumn Header="# Delivered" Width="40"
+                                    DisplayMemberBinding="{Binding DeliveredPackageCount}" />
+                    <GridViewColumn Header="# Undelivered" Width="40"
+                                    DisplayMemberBinding="{Binding UndeliveredPackageCount}" />
+                    <GridViewColumn Header="# Received" Width="40"
+                                    DisplayMemberBinding="{Binding ReceivedPackageCount}" />
+                    <GridViewColumn Header="# Expected" Width="40"
+                                    DisplayMemberBinding="{Binding ExpectedPackageCount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <local:UpdateCustomerControl CustomerId="{Binding SelectedCustomer.Value}" Bl="{Binding Bl}"
+                                     CustomerUpdated="CustomerUpdated" />
+    </DockPanel>
+</UserControl>
