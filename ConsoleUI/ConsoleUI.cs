@@ -4,7 +4,7 @@ namespace ConsoleUI
 {
     public class ConsoleUI
     {
-        static DalApi.IDAL dalObject = DalApi.DalFactory.GetDAL("Object");
+        static DalApi.IDAL dalObject;
 
         const string helpText =
 @"Available commands:
@@ -38,6 +38,8 @@ e[x]it                          Quit the program
         #region Main
         static void Main()
         {
+            dalObject = DalApi.DalFactory.GetDAL("xml");
+
             Console.WriteLine("Welcome to the Drone Delivery Manager!\n\n");
             ShowHelp();
 

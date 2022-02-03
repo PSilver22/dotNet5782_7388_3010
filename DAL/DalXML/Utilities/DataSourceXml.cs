@@ -6,7 +6,7 @@ using DO;
 
 namespace DalXML.Utilities {
     internal class DataSourceXml {
-        private static string dataSourceFilePath = @"..\Data\DataSource.xml";
+        private static string dataSourceFilePath = @"..\..\..\..\DAL\Data\DataSource.xml";
         private static XElement dataSourceRoot;
 
         /// <summary>
@@ -70,11 +70,11 @@ namespace DalXML.Utilities {
         /// <param name="drone">Drone to add to the xml file</param>
         public static void AddDrone(Drone drone) {
             XElement droneListRoot = dataSourceRoot.Element("DroneList");
-            droneListRoot.Add(new XElement("Drone"),
+            droneListRoot.Add(new XElement("Drone", 
                 new XElement("Id", drone.Id),
                 new XElement("Model", drone.Model),
                 new XElement("Battery", drone.Battery),
-                new XElement("MaxWeight", drone.MaxWeight));
+                new XElement("MaxWeight", drone.MaxWeight)));
 
             SaveDataSource();
         }
@@ -85,12 +85,12 @@ namespace DalXML.Utilities {
         /// <param name="station">Station to add to the xml file</param>
         public static void AddStation(Station station) {
             XElement stationListRoot = dataSourceRoot.Element("StationList");
-            stationListRoot.Add(new XElement("Station"),
+            stationListRoot.Add(new XElement("Station",
                 new XElement("Id", station.Id),
                 new XElement("Name", station.Name),
                 new XElement("Latitude", station.Latitude),
                 new XElement("Longitude", station.Longitude),
-                new XElement("ChargeSlots", station.ChargeSlots));
+                new XElement("ChargeSlots", station.ChargeSlots)));
 
             SaveDataSource();
         }
@@ -186,15 +186,15 @@ namespace DalXML.Utilities {
         public static Package GetPackage(XElement package) {
             return new Package() {
                 Id = Int32.Parse(package.Element("Id").Value),
-                PickedUp = package.Element("PickedUp").IsEmpty ? null : DateTime.Parse(package.Element("PickedUp").Value),
+                PickedUp = package.Element("PickedUp").IsEmpty ? null : DateTimeOffset.Parse(package.Element("PickedUp").Value).DateTime,
                 Priority = (Priority)Enum.Parse(typeof(Priority), package.Element("Priority").Value),
                 Requested = DateTime.Parse(package.Element("Requested").Value),
-                Scheduled = package.Element("Scheduled").IsEmpty ? null : DateTime.Parse(package.Element("Scheduled").Value),
+                Scheduled = package.Element("Scheduled").IsEmpty ? null : DateTimeOffset.Parse(package.Element("Scheduled").Value).DateTime,
                 SenderId = Int32.Parse(package.Element("SenderId").Value),
                 TargetId = Int32.Parse(package.Element("TargetId").Value),
                 Weight = (WeightCategory)Enum.Parse(typeof(WeightCategory), package.Element("Weight").Value),
-                Delivered = package.Element("Delivered").IsEmpty ? null : DateTime.Parse(package.Element("Delivered").Value),
-                DroneId = Int32.Parse(package.Element("DroneId").Value)
+                Delivered = package.Element("Delivered").IsEmpty ? null : DateTimeOffset.Parse(package.Element("Delivered").Value).DateTime,
+                DroneId = package.Element("DroneId").IsEmpty ? null : Int32.Parse(package.Element("DroneId").Value)
             };
         }
 
@@ -220,7 +220,7 @@ namespace DalXML.Utilities {
         /// <returns>The DroneCharge saved inside the XML tag.</returns>
         public static DroneCharge GetDroneCharge(XElement droneCharge) {
             return new DroneCharge() {
-                StartTime = DateTime.Parse(droneCharge.Element("StartTime").Value),
+                StartTime = DateTimeOffset.Parse(droneCharge.Element("StartTime").Value).DateTime,
                 DroneId = Int32.Parse(droneCharge.Element("DroneId").Value),
                 StationId = Int32.Parse(droneCharge.Element("StationId").Value)
             };

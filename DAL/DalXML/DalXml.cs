@@ -1,7 +1,9 @@
-﻿using DalApi;
+﻿#nullable enable
+using DalApi;
 using System;
-using System.IO;
-using System.Xml.Linq;
+using System.Collections.Generic;
+using DO;
+using DalObject;
 
 namespace DalXML {
     public partial class DalXml : IDAL {
@@ -22,7 +24,5 @@ namespace DalXML {
         private DalXml() {
             Utilities.DataSourceXml.Initialize();
         }
-
-        
     }
 }

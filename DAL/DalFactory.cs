@@ -17,6 +17,7 @@ namespace DalApi
             return type switch
             {
                 "Object" => DalObject.DalObject.Instance,
+                "xml" => DalXML.DalXml.Instance,
                 _ => throw new InvalidDalTypeException(type),
             };
         }
