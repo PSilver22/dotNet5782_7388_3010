@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customers>
+  <customer>
+    <id>1</id>
+    <name>Guy</name>
+    <phone>123</phone>
+    <longitude>35.19124373016357</longitude>
+    <latitude>31.764936512171737</latitude>
+  </customer>
+  <customer>
+    <id>2</id>
+    <name>Gal</name>
+    <phone>456</phone>
+    <longitude>35.19137247619629</longitude>
+    <latitude>31.763592311377643</latitude>
+  </customer>
+</customers>

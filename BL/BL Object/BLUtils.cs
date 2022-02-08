@@ -2,6 +2,7 @@
 
 using System;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace BlApi
 {
@@ -13,6 +14,7 @@ namespace BlApi
         /// </summary>
         /// <param name="weight">the weight category</param>
         /// <returns>the power consumption/km for the given weight</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         internal double GetPowerConsumption(WeightCategory weight)
         {
             return weight switch

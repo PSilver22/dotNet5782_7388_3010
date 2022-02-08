@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Linq;
 using BL;
 using DalApi;
 using System.Runtime.CompilerServices;
@@ -12,35 +13,32 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public BaseStation GetBaseStation(int id)
         {
-            try
-            {
-                lock (dal) {
+            lock (dal) {
+                try {
                     var dalStation = dal.GetStation(id);
                     var chargingDrones = dal.GetDroneChargeList()
-                        .FindAll(cd => cd.StationId == id)
-                        .ConvertAll(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery));
-                    return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots, chargingDrones);
+                        .Where(cd => cd.StationId == id)
+                        .Select(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery)).ToList();
+                    return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots,
+                        chargingDrones);
+                } catch (IdNotFoundException) {
+                    throw new StationNotFoundException(id);
                 }
-            }
-            catch (IdNotFoundException)
-            {
-                throw new StationNotFoundException(id);
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int id)
         {
-            try
-            {
-                lock (dal) {
+            lock (dal) {
+                try {
                     var dalCustomer = dal.GetCustomer(id);
                     var packages = dal.GetPackageList();
                     var sentPackages = packages
-                        .FindAll(p => p.SenderId == id)
-                        .ConvertAll(p => {
+                        .Where(p => p.SenderId == id)
+                        .Select(p => {
                             var status =
-                                  p.Delivered is not null ? PackageStatus.delivered
+                                p.Delivered is not null ? PackageStatus.delivered
                                 : p.PickedUp is not null ? PackageStatus.collected
                                 : p.Scheduled is not null ? PackageStatus.assigned
                                 : PackageStatus.created;
@@ -49,64 +47,73 @@ namespace BlApi
                             return new PackageInCustomer(p.Id, p.Weight, p.Priority, status, recipient);
                         });
                     var receivingPackages = packages
-                        .FindAll(p => p.TargetId == id)
-                        .ConvertAll(p => {
+                        .Where(p => p.TargetId == id)
+                        .Select(p => {
                             var status =
-                              p.Delivered is not null ? PackageStatus.delivered
-                            : p.PickedUp is not null ? PackageStatus.collected
-                            : p.Scheduled is not null ? PackageStatus.assigned
-                            : PackageStatus.created;
+                                p.Delivered is not null ? PackageStatus.delivered
+                                : p.PickedUp is not null ? PackageStatus.collected
+                                : p.Scheduled is not null ? PackageStatus.assigned
+                                : PackageStatus.created;
                             var dalSender = dal.GetCustomer(p.SenderId);
                             var sender = new PackageCustomer(dalSender.Id, dalSender.Name);
                             return new PackageInCustomer(p.Id, p.Weight, p.Priority, status, sender);
                         });
-                    return new(id, dalCustomer.Name, dalCustomer.Phone, new(dalCustomer.Latitude, dalCustomer.Longitude), sentPackages, receivingPackages);
+                    return new(id, dalCustomer.Name, dalCustomer.Phone, new(dalCustomer.Latitude, dalCustomer.Longitude),
+                        sentPackages.ToList(), receivingPackages.ToList());
+                    ;
+                } catch {
+                    throw new CustomerNotFoundException(id);
                 }
-            }
-            catch
-            {
-                throw new CustomerNotFoundException(id);
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Drone GetDrone(int id) {
+        public Drone GetDrone(int id)
+        {
             lock (dal) {
-                var droneIndex = drones.FindIndex(d => d.Id == id);
-                if (droneIndex == -1) { throw new DroneNotFoundException(id); }
-
-                var drone = drones[droneIndex];
+                DO.Drone drone;
+                try {
+                    drone = dal.GetDrone(id);
+                } catch (IdNotFoundException e) {
+                    throw new DroneNotFoundException(id);
+                }
 
                 PackageInTransfer? pkg = null;
-                if (drone.PackageId is not null) {
-                    var dalPackage = dal.GetPackageList().Find(p => p.Id == drone.PackageId);
-                    var dalSender = dal.GetCustomer(dalPackage.SenderId);
-                    var dalRecipient = dal.GetCustomer(dalPackage.TargetId);
+                var package = dal.GetPackageList(p => p.DroneId == id).Cast<DO.Package?>().FirstOrDefault();
+                if (package is not null) {
+                    var dalSender = dal.GetCustomer(package.Value.SenderId);
+                    var dalRecipient = dal.GetCustomer(package.Value.TargetId);
                     var sender = new PackageCustomer(dalSender.Id, dalSender.Name);
                     var recipient = new PackageCustomer(dalRecipient.Id, dalRecipient.Name);
                     Location senderLoc = new(dalSender.Latitude, dalSender.Longitude);
                     Location recipLoc = new(dalRecipient.Latitude, dalRecipient.Longitude);
                     pkg = new(
-                        dalPackage.Id,
-                        dalPackage.Weight,
-                        dalPackage.Priority,
-                        dalPackage.PickedUp is not null,
+                        package.Value.Id,
+                        package.Value.Weight,
+                        package.Value.Priority,
+                        package.Value.PickedUp is not null,
                         sender,
                         recipient,
                         senderLoc,
                         recipLoc,
                         Utils.DistanceBetween(senderLoc, recipLoc));
                 }
-                return new Drone(id, drone.Model, drone.WeightCategory, drone.BatteryStatus, drone.Status, pkg, drone.Location);
 
+                var status = DroneStatus.free;
+                if (package is not null) status = DroneStatus.delivering;
+                else if (dal.GetDroneChargeList(dc => dc.DroneId == id).Any())
+                    status = DroneStatus.maintenance;
+
+                return new Drone(id, drone.Model, drone.MaxWeight, drone.Battery, status, pkg,
+                    new(drone.Latitude, drone.Longitude));
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id)
         {
-            try {
-                lock (dal) {
+            lock (dal) {
+                try {
                     var pkg = dal.GetPackage(id);
 
                     var dalSender = dal.GetCustomer(pkg.SenderId);
@@ -116,14 +123,15 @@ namespace BlApi
 
                     DroneInDelivery? droneInDelivery = null;
                     if (pkg.DroneId is not null) {
-                        DroneListing drone = drones.Find(d => d.Id == pkg.DroneId)!;
+                        DroneListing drone = GetDroneList(d => d.Id == pkg.DroneId).First();
                         droneInDelivery = new(drone.Id, drone.BatteryStatus, drone.Location);
                     }
 
-                    return new(id, sender, recipient, pkg.Weight, pkg.Priority, droneInDelivery, pkg.Requested, pkg.Scheduled, pkg.PickedUp, pkg.Delivered);
+                    return new(id, sender, recipient, pkg.Weight, pkg.Priority, droneInDelivery, pkg.Requested,
+                        pkg.Scheduled, pkg.PickedUp, pkg.Delivered);
+                } catch {
+                    throw new PackageNotFoundException(id);
                 }
-            } catch {
-                throw new PackageNotFoundException(id);
             }
         }
     }

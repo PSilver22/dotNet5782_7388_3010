@@ -13,11 +13,11 @@ namespace BlApi
         public void AssignPackageToDrone(int id)
         {
             lock (dal) {
-                var droneIndex = drones.FindIndex(d => d.Id == id);
-                if (droneIndex == -1) { throw new DroneNotFoundException(id); }
-                var drone = drones[droneIndex];
+                var drone = GetDrone(id);
 
-                if (drone.Status != DroneStatus.free) { throw new DroneNotFreeException("assign package"); }
+                if (drone.Status != DroneStatus.free) {
+                    throw new DroneNotFreeException("assign package");
+                }
 
                 var package = dal.GetPackageList()
                     .Where(p => p.DroneId is null)
@@ -39,18 +39,14 @@ namespace BlApi
                         var distToRecip = Utils.DistanceBetween(senderLoc, recipLoc);
                         var distToStation = Utils.DistanceBetween(recipLoc, new(station.Latitude, station.Longitude));
 
-                        var reqBattery = powerConsumption.Free * (distToSender + distToStation) + (GetPowerConsumption(p.Weight) * distToRecip);
+                        var reqBattery = powerConsumption.Free * (distToSender + distToStation) +
+                                        (GetPowerConsumption(p.Weight) * distToRecip);
 
                         return drone.BatteryStatus >= reqBattery;
                     })
                     .FirstOrDefault();
 
                 if (package.Requested != default) {
-                    drone.Status = DroneStatus.delivering;
-                    drone.PackageId = package.Id;
-
-                    drones[droneIndex] = drone;
-
                     dal.UpdatePackage(package.Id, droneId: drone.Id, scheduled: DateTime.UtcNow);
                 } else {
                     throw new NoRelevantPackageException();
@@ -62,53 +58,54 @@ namespace BlApi
         public void CollectPackageByDrone(int id)
         {
             lock (dal) {
-                var droneIndex = drones.FindIndex(d => d.Id == id);
-                if (droneIndex == -1) { throw new DroneNotFoundException(id); }
-                var drone = drones[droneIndex];
+                var drone = GetDrone(id);
 
-                if (drone.PackageId is null) { throw new DroneNotAssignedPackageException(); }
+                if (drone.Package is null) {
+                    throw new DroneNotAssignedPackageException();
+                }
 
-                var package = dal.GetPackage(drone.PackageId!.Value);
+                var package = dal.GetPackage(drone.Package.Id);
 
-                if (package.PickedUp is not null) { throw new PackageAlreadyPickedUpException(); }
+                if (package.PickedUp is not null) {
+                    throw new PackageAlreadyPickedUpException();
+                }
 
                 var sender = dal.GetCustomer(package.SenderId);
                 Location senderLoc = new(sender.Latitude, sender.Longitude);
                 var batteryUsage = powerConsumption.Free * Utils.DistanceBetween(drone.Location, senderLoc);
 
-                drone.BatteryStatus -= batteryUsage;
-                drone.Location = senderLoc;
-                drones[droneIndex] = drone;
-
-                dal.UpdateDrone(id, battery: drone.BatteryStatus);
+                dal.UpdateDrone(id,
+                    battery: drone.BatteryStatus - batteryUsage,
+                    longitude: sender.Longitude,
+                    latitude: sender.Latitude);
 
                 dal.UpdatePackage(package.Id, pickedUp: DateTime.UtcNow);
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void DeliverPackageByDrone(int id)
-        {
+        public void DeliverPackageByDrone(int id) {
             lock (dal) {
-                var droneIndex = drones.FindIndex(d => d.Id == id);
-                if (droneIndex == -1) { throw new DroneNotFoundException(id); }
-                var drone = drones[droneIndex];
+                var drone = GetDrone(id);
 
-                if (drone.PackageId is null) { throw new DroneNotAssignedPackageException(); }
+                if (drone.Package is null) {
+                    throw new DroneNotAssignedPackageException();
+                }
 
-                var package = dal.GetPackage(drone.PackageId!.Value);
+                var package = dal.GetPackage(drone.Package.Id);
 
-                if (package.PickedUp is null) { throw new PackageAlreadyPickedUpException(); }
+                if (package.PickedUp is null) {
+                    throw new PackageAlreadyPickedUpException();
+                }
 
                 var recip = dal.GetCustomer(package.TargetId);
                 Location recipLoc = new(recip.Latitude, recip.Longitude);
-                drone.BatteryStatus -= GetPowerConsumption(package.Weight) * Utils.DistanceBetween(drone.Location, recipLoc);
-                drone.Location = recipLoc;
-                drone.Status = DroneStatus.free;
-                drone.PackageId = null;
-                drones[droneIndex] = drone;
 
-                dal.UpdateDrone(id, battery: drone.BatteryStatus);
+                dal.UpdateDrone(id,
+                    battery: drone.BatteryStatus - GetPowerConsumption(package.Weight) *
+                    Utils.DistanceBetween(drone.Location, recipLoc),
+                    longitude: recip.Longitude,
+                    latitude: recip.Latitude);
 
                 dal.UpdatePackage(package.Id, delivered: DateTime.UtcNow);
             }

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <currentPackageId>1</currentPackageId>
+  <powerConsumption>
+    <free>1</free>
+    <light>2</light>
+    <mid>3</mid>
+    <heavy>4</heavy>
+  </powerConsumption>
+  <chargeRate>20</chargeRate>
+</config>

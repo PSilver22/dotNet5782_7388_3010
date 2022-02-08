@@ -9,13 +9,17 @@
         public string Model { get; set; }
         public WeightCategory MaxWeight { get; set; }
         public double Battery { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
 
-        public Drone(int id, string model, WeightCategory maxWeight, double battery)
+        public Drone(int id, string model, WeightCategory maxWeight, double battery, double longitude, double latitude)
         {
             Id = id;
             Model = model;
             MaxWeight = maxWeight;
             Battery = battery;
+            Longitude = longitude;
+            Latitude = latitude;
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using DO;
 
-namespace DalXML.Utilities {
+namespace DalXML.Utilities_ {
     internal class DataSourceXml {
         private static string dataSourceFilePath = @"..\..\..\..\DAL\Data\DataSource.xml";
         private static XElement dataSourceRoot;

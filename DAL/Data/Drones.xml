@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<drones>
+  <drone>
+    <id>1</id>
+    <model>a</model>
+    <maxWeight>heavy</maxWeight>
+    <battery>71.6710704231622</battery>
+    <longitude>35.19137247619629</longitude>
+    <latitude>31.763592311377643</latitude>
+  </drone>
+</drones>

@@ -40,7 +40,7 @@ namespace DalObject
         /// Station list
         /// </returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public List<Station> GetStationList(Predicate<Station>? filter = null)
+        public IEnumerable<Station> GetStationList(Predicate<Station>? filter = null)
         {
             return DataSource.stations.Where(new Func<Station, bool>(filter ?? (x => true))).ToList();
         }

@@ -189,9 +189,8 @@ namespace DalObject
         /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>
         /// Drone list
-        /// </returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public List<Drone> GetDroneList(Predicate<Drone>? filter = null)
+        public IEnumerable<Drone> GetDroneList(Predicate<Drone>? filter = null)
         {
             return DataSource.drones.Where(new Func<Drone, bool>(filter ?? (x=> true))).ToList();
         }
@@ -202,7 +201,7 @@ namespace DalObject
         /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>Drone charge list</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
+        public IEnumerable<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
         {
             return DataSource.droneCharges.Where(new Func<DroneCharge, bool>(filter ?? (x => true))).ToList();
         }
@@ -257,7 +256,7 @@ namespace DalObject
         /// <param name="maxWeight"></param>
         /// <param name="battery"></param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null)
+        public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null, double? longitude = null, double? latitude = null)
         {
             int index = GetDroneIndex(id);
 
@@ -266,6 +265,8 @@ namespace DalObject
             updatedDrone.Model = model ?? updatedDrone.Model;
             updatedDrone.MaxWeight = maxWeight ?? updatedDrone.MaxWeight;
             updatedDrone.Battery = battery ?? updatedDrone.Battery;
+            updatedDrone.Longitude = longitude ?? updatedDrone.Longitude;
+            updatedDrone.Latitude = latitude ?? updatedDrone.Latitude;
 
             SetDrone(updatedDrone);
         }

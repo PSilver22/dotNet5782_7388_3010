@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package>
+    <id>1</id>
+    <senderId>1</senderId>
+    <targetId>2</targetId>
+    <weight>heavy</weight>
+    <priority>fast</priority>
+    <requested>2022-02-08T19:43:45.4456752+02:00</requested>
+    <droneId>1</droneId>
+    <scheduled>2022-02-08T19:43:55.7528567+02:00</scheduled>
+    <pickedUp>2022-02-08T19:44:01.8758654+02:00</pickedUp>
+    <delivered>2022-02-08T17:44:05.7588021Z</delivered>
+  </package>
+</packages>
