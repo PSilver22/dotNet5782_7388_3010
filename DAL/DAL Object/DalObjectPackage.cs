@@ -57,7 +57,7 @@ namespace DalObject
         /// <returns>
         /// Packages list
         /// </returns>
-        public List<Package> GetPackageList(Predicate<Package>? filter = null)
+        public IEnumerable<Package> GetPackageList(Predicate<Package>? filter = null)
         {
             return DataSource.packages.Where(new Func<Package, bool>(filter ?? (x => true))).ToList();
         }

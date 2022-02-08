@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BL;
 using DO;
 using DalApi;
@@ -48,8 +49,9 @@ namespace BlApi
             }
 
             var maxDistance = drone.BatteryStatus / powerConsumption.Free;
-            var reachableStations = dal.GetStationList().FindAll(s => Utils.DistanceBetween(drone.Location, new(s.Latitude, s.Longitude)) < maxDistance && s.ChargeSlots > 0);
-            if (reachableStations.Count == 0)
+            var reachableStations = dal.GetStationList().Where(s => Utils.DistanceBetween(drone.Location, new(s.Latitude, s.Longitude)) < maxDistance && s.ChargeSlots > 0);
+            
+            if (reachableStations.Any())
             { throw new NoStationInRangeException(maxDistance); }
 
             var closestStation = Utils.ClosestStation(drone.Location, reachableStations);

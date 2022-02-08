@@ -91,17 +91,17 @@ namespace DalApi
         #endregion
 
         #region Get List Methods
-        public List<Station> GetStationList(Predicate<Station>? filter = null);
+        public IEnumerable<Station> GetStationList(Predicate<Station>? filter = null);
 
         //public List<Station> GetUnoccupiedStationsList();
 
-        public List<Drone> GetDroneList(Predicate<Drone>? filter = null);
+        public IEnumerable<Drone> GetDroneList(Predicate<Drone>? filter = null);
 
-        public List<Package> GetPackageList(Predicate<Package>? filter = null);
+        public IEnumerable<Package> GetPackageList(Predicate<Package>? filter = null);
 
-        public List<Customer> GetCustomerList(Predicate<Customer>? filter = null);
+        public IEnumerable<Customer> GetCustomerList(Predicate<Customer>? filter = null);
 
-        public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null);
+        public IEnumerable<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null);
         #endregion
 
         public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate) GetPowerConsumption();

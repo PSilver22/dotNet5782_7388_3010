@@ -46,7 +46,7 @@ namespace DalObject
         /// <returns>
         /// Customer list
         /// </returns>
-        public List<Customer> GetCustomerList(Predicate<Customer>? filter = null)
+        public IEnumerable<Customer> GetCustomerList(Predicate<Customer>? filter = null)
         {
             return DataSource.customers.Where(new Func<Customer, bool>(filter ?? (x => true))).ToList();
         }

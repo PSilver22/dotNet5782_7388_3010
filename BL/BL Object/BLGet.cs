@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Linq;
 using BL;
 using DalApi;
 
@@ -14,9 +15,9 @@ namespace BlApi
             {
                 var dalStation = dal.GetStation(id);
                 var chargingDrones = dal.GetDroneChargeList()
-                    .FindAll(cd => cd.StationId == id)
-                    .ConvertAll(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery));
-                return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots, chargingDrones);
+                    .Where(cd => cd.StationId == id)
+                    .Select(cd => new ChargingDrone(cd.DroneId, dal.GetDrone(cd.DroneId).Battery));
+                return new(id, dalStation.Name, new(dalStation.Latitude, dalStation.Longitude), dalStation.ChargeSlots, chargingDrones.ToList());
             }
             catch (IdNotFoundException)
             {
@@ -31,8 +32,8 @@ namespace BlApi
                 var dalCustomer = dal.GetCustomer(id);
                 var packages = dal.GetPackageList();
                 var sentPackages = packages
-                    .FindAll(p => p.SenderId == id)
-                    .ConvertAll(p =>
+                    .Where(p => p.SenderId == id)
+                    .Select(p =>
                     {
                         var status =
                               p.Delivered is not null ? PackageStatus.delivered
@@ -44,8 +45,8 @@ namespace BlApi
                         return new PackageInCustomer(p.Id, p.Weight, p.Priority, status, recipient);
                     });
                 var receivingPackages = packages
-                    .FindAll(p => p.TargetId == id)
-                    .ConvertAll(p =>
+                    .Where(p => p.TargetId == id)
+                    .Select(p =>
                      {
                          var status =
                                p.Delivered is not null ? PackageStatus.delivered
@@ -56,7 +57,7 @@ namespace BlApi
                          var sender = new PackageCustomer(dalSender.Id, dalSender.Name);
                          return new PackageInCustomer(p.Id, p.Weight, p.Priority, status, sender);
                      });
-                return new(id, dalCustomer.Name, dalCustomer.Phone, new(dalCustomer.Latitude, dalCustomer.Longitude), sentPackages, receivingPackages); ;
+                return new(id, dalCustomer.Name, dalCustomer.Phone, new(dalCustomer.Latitude, dalCustomer.Longitude), sentPackages.ToList(), receivingPackages.ToList()); ;
             }
             catch
             {
@@ -75,7 +76,7 @@ namespace BlApi
             PackageInTransfer? pkg = null;
             if (drone.PackageId is not null)
             {
-                var dalPackage = dal.GetPackageList().Find(p => p.Id == drone.PackageId);
+                var dalPackage = dal.GetPackageList().First(p => p.Id == drone.PackageId);
                 var dalSender = dal.GetCustomer(dalPackage.SenderId);
                 var dalRecipient = dal.GetCustomer(dalPackage.TargetId);
                 var sender = new PackageCustomer(dalSender.Id, dalSender.Name);

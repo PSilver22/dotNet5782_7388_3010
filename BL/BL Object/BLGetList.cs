@@ -12,7 +12,7 @@ namespace BlApi
         public IEnumerable<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null)
         {
             var charging = dal.GetDroneChargeList();
-            return dal.GetStationList().ConvertAll(s =>
+            return dal.GetStationList().Select(s =>
             {
                 var numOccSlots = charging.Count(c => c.StationId == s.Id);
                 return new BaseStationListing(s.Id, s.Name, s.ChargeSlots, numOccSlots);
@@ -22,7 +22,7 @@ namespace BlApi
         public IEnumerable<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null)
         {
             var packages = dal.GetPackageList();
-            return dal.GetCustomerList().ConvertAll(c => new CustomerListing(
+            return dal.GetCustomerList().Select(c => new CustomerListing(
                 c.Id,
                 c.Name,
                 c.Phone,
@@ -40,7 +40,7 @@ namespace BlApi
 
         public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)
         {
-            return dal.GetPackageList().ConvertAll(p => new PackageListing(
+            return dal.GetPackageList().Select(p => new PackageListing(
                 p.Id,
                 dal.GetCustomer(p.SenderId).Name,
                 dal.GetCustomer(p.TargetId).Name,

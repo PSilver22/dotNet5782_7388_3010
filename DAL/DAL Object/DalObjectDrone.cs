@@ -182,7 +182,7 @@ namespace DalObject
         /// <returns>
         /// Drone list
         /// </returns>
-        public List<Drone> GetDroneList(Predicate<Drone>? filter = null)
+        public IEnumerable<Drone> GetDroneList(Predicate<Drone>? filter = null)
         {
             return DataSource.drones.Where(new Func<Drone, bool>(filter ?? (x=> true))).ToList();
         }
@@ -192,7 +192,7 @@ namespace DalObject
         /// </summary>
         /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>Drone charge list</returns>
-        public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
+        public IEnumerable<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
         {
             return DataSource.droneCharges.Where(new Func<DroneCharge, bool>(filter ?? (x => true))).ToList();
         }
