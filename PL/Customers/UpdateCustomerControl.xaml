@@ -9,6 +9,15 @@
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Control">
     <Grid Background="White" DataContext="{Binding ElementName=Control}">
+        <Grid.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CustomerId}" Value="{x:Null}">
+                        <Setter Property="Grid.Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="40" />
