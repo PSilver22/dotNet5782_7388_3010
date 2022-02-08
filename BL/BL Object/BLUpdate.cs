@@ -21,10 +21,6 @@ namespace BlApi
             try
             {
                 dal.UpdateDrone(id, model: model);
-                var droneIndex = drones.FindIndex(d => d.Id == id);
-                var drone = drones[droneIndex];
-                drone.Model = model;
-                drones[droneIndex] = drone;
             }
             catch { throw new DroneNotFoundException(id); }
         }

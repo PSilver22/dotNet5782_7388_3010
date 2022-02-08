@@ -35,7 +35,27 @@ namespace BlApi
 
         public IEnumerable<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null)
         {
-            return drones.Where(new Func<DroneListing, bool>(filter ?? (x => true))).ToList();
+            // return drones.Where(new Func<DroneListing, bool>(filter ?? (x => true))).ToList();
+            var result = dal.GetDroneList().Select(d =>
+            {
+                var status = DroneStatus.free;
+
+                var packageId = dal.GetPackageList(p => p.DroneId == d.Id).Select(p => p.Id as int?).FirstOrDefault();
+                if (packageId is not null) status = DroneStatus.delivering;
+                else if (dal.GetDroneChargeList(dc => dc.DroneId == d.Id).Any())
+                    status = DroneStatus.maintenance;
+
+                return new DroneListing(
+                    d.Id,
+                    d.Model,
+                    d.MaxWeight,
+                    d.Battery,
+                    status,
+                    new Location(d.Latitude, d.Longitude),
+                    packageId
+                );
+            });
+            return filter is null ? result : result.Where(new Func<DroneListing, bool>(filter));
         }
 
         public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)

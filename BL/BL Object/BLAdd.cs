@@ -40,8 +40,7 @@ namespace BlApi
             try
             {
                 var battery = 20.0 + rand.NextDouble() * 20.0;
-                drones.Add(new(id, model, maxWeight, battery, DroneStatus.free, new(station.Latitude, station.Longitude), null));
-                dal.AddDrone(new(id, model, maxWeight, battery));
+                dal.AddDrone(new(id, model, maxWeight, battery, station.Longitude, station.Latitude));
             }
             catch (DO.DuplicatedIdException)
             { throw new DuplicatedIdException(id, "drone"); }
