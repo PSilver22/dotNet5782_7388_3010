@@ -5,11 +5,12 @@ namespace DO
     /// <summary>
     /// A struct with the charging information between a drone and a station
     /// </summary>
-    public struct DroneCharge
+    public struct DroneCharge : IIdentifiable
     {
         public int StationId { get; set; }
         public int DroneId { get; set; }
         public DateTime StartTime { get; set; }
+        public int Id => DroneId;
 
         public DroneCharge(int stationId, int droneId, DateTime startTime)
         {
