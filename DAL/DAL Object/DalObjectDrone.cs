@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace DalObject
 {
@@ -14,6 +15,7 @@ namespace DalObject
         /// Adds a drone to the list of drones
         /// </summary>
         /// <param name="drone">The drone to add</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(Drone drone)
         {
             if (drone.Id < 0)
@@ -34,6 +36,7 @@ namespace DalObject
         /// Assigns a package to a drone
         /// </summary>
         /// <param name="packageId">The ID of the package</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AssignPackage(int packageId)
         {
             if (packageId < 0)
@@ -82,6 +85,7 @@ namespace DalObject
         /// Collects a package that's been assigned to a drone
         /// </summary>
         /// <param name="packageId">The ID of the package to collect</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void CollectPackage(int packageId)
         {
             if (packageId < 0)
@@ -100,6 +104,7 @@ namespace DalObject
         /// Provide a package that's been collected by a drone to the customer
         /// </summary>
         /// <param name="packageId">The ID of the package to provide</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ProvidePackage(int packageId)
         {
             if (packageId < 0)
@@ -125,6 +130,7 @@ namespace DalObject
         /// </summary>
         /// <param name="droneId">The ID of the drone</param>
         /// <param name="stationId">The ID of the station</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ChargeDrone(int droneId, int stationId)
         {
             if (droneId < 0 || stationId < 0)
@@ -150,6 +156,7 @@ namespace DalObject
         /// Releases a drone from a charging station
         /// </summary>
         /// <param name="droneId">The ID of the drone</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleaseDrone(int droneId)
         {
             if (droneId < 0)
@@ -170,6 +177,7 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the drone</param>
         /// <returns>Drone with the given id if found. throws otherwise</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int id)
         {
             return GetItemByKey<Drone>(id, DataSource.drones);
@@ -182,6 +190,7 @@ namespace DalObject
         /// <returns>
         /// Drone list
         /// </returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public List<Drone> GetDroneList(Predicate<Drone>? filter = null)
         {
             return DataSource.drones.Where(new Func<Drone, bool>(filter ?? (x=> true))).ToList();
@@ -192,6 +201,7 @@ namespace DalObject
         /// </summary>
         /// <param name="filter">The filter applied to the objects in the list</param>
         /// <returns>Drone charge list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public List<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
         {
             return DataSource.droneCharges.Where(new Func<DroneCharge, bool>(filter ?? (x => true))).ToList();
@@ -202,6 +212,7 @@ namespace DalObject
         /// </summary>
         /// <param name="droneId"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int droneId)
         {
             return DataSource.droneCharges.Find(x => x.DroneId == droneId);
@@ -211,6 +222,7 @@ namespace DalObject
         /// Removes charge from the drone charge list with the given drone id
         /// </summary>
         /// <param name="droneId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteDroneCharge(int droneId)
         {
             DataSource.droneCharges.Remove(GetDroneCharge(droneId));
@@ -221,6 +233,7 @@ namespace DalObject
         /// </summary>
         /// <param name="stationId"></param>
         /// <param name="droneId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDroneCharge(int stationId, int droneId)
         {
             DataSource.droneCharges.Add(new DroneCharge(stationId, droneId, DateTime.UtcNow));
@@ -243,6 +256,7 @@ namespace DalObject
         /// <param name="model"></param>
         /// <param name="maxWeight"></param>
         /// <param name="battery"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null)
         {
             int index = GetDroneIndex(id);
@@ -260,6 +274,7 @@ namespace DalObject
         /// Sets the drone with a matching id in the database to the given drone.
         /// </summary>
         /// <param name="drone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetDrone(Drone drone)
         {
             int index = GetDroneIndex(drone.Id);
@@ -271,6 +286,7 @@ namespace DalObject
         /// Getter for the power consumption rates
         /// </summary>
         /// <returns> A double with the power consumption rates in the order: free, light-weight, mid-weight, heavy-weight, charging-rate</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public (double, double, double, double, double) GetPowerConsumption()
         {
             return (

@@ -4,9 +4,11 @@ using System.IO;
 using System.Xml.Linq;
 using DO;
 using DalXML.Utilities;
+using System.Runtime.CompilerServices;
 
 namespace DalXML {
     public partial class DalXml : IDAL {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(Drone drone) {
             if (drone.Id < 0) {
                 throw new InvalidIdException(drone.Id);
@@ -20,6 +22,7 @@ namespace DalXML {
             DataSourceXml.AddDrone(drone);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station station) {
             if (station.Id < 0) {
                 throw new InvalidIdException(station.Id);
@@ -33,6 +36,7 @@ namespace DalXML {
             DataSourceXml.AddStation(station);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority) {
             if (senderId < 0 || targetId < 0) {
                 throw new InvalidIdException((senderId < 0) ? senderId : targetId);
@@ -57,6 +61,7 @@ namespace DalXML {
             return ++DalObject.DataSource.Config.CurrentPackageId;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer customer) {
             if (customer.Id < 0) {
                 throw new InvalidIdException(customer.Id);
@@ -70,6 +75,7 @@ namespace DalXML {
             DataSourceXml.AddCustomer(customer);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDroneCharge(int stationId, int droneId) {
             var newCharge = new DroneCharge(stationId, droneId, DateTime.UtcNow);
 

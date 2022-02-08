@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Linq;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace DalXML {
     public partial class DalXml : IDAL {
@@ -16,22 +17,27 @@ namespace DalXML {
                     select item).FirstOrDefault();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int id) {
             return GetItemByKey<Station>(id, DalObject.DataSource.stations);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int id) {
             return GetItemByKey<Drone>(id, DalObject.DataSource.drones);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int id) {
             return GetItemByKey<Customer>(id, DalObject.DataSource.customers);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id) {
             return GetItemByKey<Package>(id, DalObject.DataSource.packages);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int droneId) {
             if (droneId < 0) { throw new InvalidIdException(droneId); }
 

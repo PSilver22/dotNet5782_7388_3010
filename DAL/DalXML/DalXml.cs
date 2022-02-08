@@ -12,7 +12,7 @@ namespace DalXML {
         /// <summary>
         /// The Instance for the singleton
         /// </summary>
-        public static DalXml Instance { 
+        public static DalXml Instance {
             get {
                 return instance.Value;
             }

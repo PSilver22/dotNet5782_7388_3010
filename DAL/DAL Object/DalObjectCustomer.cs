@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace DalObject
 {
@@ -14,6 +15,7 @@ namespace DalObject
         /// Adds a customer to the list of customers
         /// </summary>
         /// <param name="customer">The customer to add</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer customer)
         {
             if (customer.Id < 0)
@@ -34,6 +36,7 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the customer</param>
         /// <returns>Customer with the given id if found. null otherwise</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int id)
         {
             return GetItemByKey<Customer>(id, DataSource.customers);
@@ -46,6 +49,7 @@ namespace DalObject
         /// <returns>
         /// Customer list
         /// </returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public List<Customer> GetCustomerList(Predicate<Customer>? filter = null)
         {
             return DataSource.customers.Where(new Func<Customer, bool>(filter ?? (x => true))).ToList();
@@ -59,6 +63,7 @@ namespace DalObject
         /// <param name="phone"></param>
         /// <param name="longitude"></param>
         /// <param name="latitude"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(int id, string? name = null, string? phone = null, double? longitude = null, double? latitude = null)
         {
             int index = GetCustomerIndex(id);
@@ -77,6 +82,7 @@ namespace DalObject
         /// Sets the customer with matching id to the given customer
         /// </summary>
         /// <param name="customer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetCustomer(Customer customer)
         {
             int index = GetCustomerIndex(customer.Id);
