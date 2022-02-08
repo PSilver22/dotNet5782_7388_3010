@@ -1,80 +1,113 @@
 ﻿using DalApi;
 using System;
 using System.IO;
+using System.Net;
 using System.Xml.Linq;
+using DAL.Exceptions;
 using DO;
-using DalXML.Utilities;
 
-namespace DalXML {
-    public partial class DalXml : IDAL {
-        public void AddDrone(Drone drone) {
-            if (drone.Id < 0) {
+namespace DalXML
+{
+    public partial class DalXml : IDAL
+    {
+        public void AddDrone(Drone drone)
+        {
+            if (drone.Id < 0)
+            {
                 throw new InvalidIdException(drone.Id);
             }
 
-            if (DalObject.DataSource.drones.Exists(d => d.Id == drone.Id)) {
+            if (DalObject.DataSource.drones.Exists(d => d.Id == drone.Id))
+            {
                 throw new DuplicatedIdException(drone.Id, "drone");
             }
 
-            DalObject.DataSource.drones.Add(drone);
-            DataSourceXml.AddDrone(drone);
+            var xml = LoadFile(File.drones);
+            xml.Add(drone.ToXElement());
+            SaveFile(File.drones, xml);
         }
 
-        public void AddStation(Station station) {
-            if (station.Id < 0) {
+        public void AddStation(Station station)
+        {
+            if (station.Id < 0)
+            {
                 throw new InvalidIdException(station.Id);
             }
 
-            if (DalObject.DataSource.drones.Exists(s => s.Id == station.Id)) {
+            if (DalObject.DataSource.drones.Exists(s => s.Id == station.Id))
+            {
                 throw new DuplicatedIdException(station.Id, "station");
             }
 
-            DalObject.DataSource.stations.Add(station);
-            DataSourceXml.AddStation(station);
+            var xml = LoadFile(File.stations);
+            xml.Add(station.ToXElement());
+            SaveFile(File.stations, xml);
         }
 
-        public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority) {
-            if (senderId < 0 || targetId < 0) {
+        public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
+        {
+            if (senderId < 0 || targetId < 0)
+            {
                 throw new InvalidIdException((senderId < 0) ? senderId : targetId);
             }
 
-            var newPackage = new Package(
-                    id: DalObject.DataSource.Config.CurrentPackageId + 1,
-                    senderId,
-                    targetId,
-                    weight,
-                    priority,
-                    // Use UtcNow instead of Now to avoid portability issues
-                    DateTime.UtcNow,
-                    null,
-                    null,
-                    null,
-                    null);
+            var package = new Package(
+                id: DalObject.DataSource.Config.CurrentPackageId + 1,
+                senderId,
+                targetId,
+                weight,
+                priority,
+                // Use UtcNow instead of Now to avoid portability issues
+                DateTime.UtcNow,
+                null,
+                null,
+                null,
+                null);
 
-            DalObject.DataSource.packages.Add(newPackage);
+            try
+            {
+                var xml = LoadFile(File.packages);
+                xml.Add(package.ToXElement());
+                SaveFile(File.packages, xml);
+            
+                var configXML = LoadFile(File.config);
+                var currentPackageIdEl = configXML.Element("currentPackageId")!;
+                var currentPackageId = int.Parse(currentPackageIdEl.Value) + 1;
+                currentPackageIdEl.Value = currentPackageId.ToString();
+                SaveFile(File.config, configXML);
 
-            DataSourceXml.AddPackage(newPackage);
-            return ++DalObject.DataSource.Config.CurrentPackageId;
+                return currentPackageId;
+            }
+            catch
+            {
+                throw new InvalidXMLException();
+            }
         }
 
-        public void AddCustomer(Customer customer) {
-            if (customer.Id < 0) {
+        public void AddCustomer(Customer customer)
+        {
+            if (customer.Id < 0)
+            {
                 throw new InvalidIdException(customer.Id);
             }
 
-            if (DalObject.DataSource.customers.Exists(c => c.Id == customer.Id)) {
+            if (DalObject.DataSource.customers.Exists(c => c.Id == customer.Id))
+            {
                 throw new DuplicatedIdException(customer.Id, "customer");
             }
 
-            DalObject.DataSource.customers.Add(customer);
-            DataSourceXml.AddCustomer(customer);
+            var xml = LoadFile(File.customers);
+            xml.Add(customer.ToXElement());
+            SaveFile(File.customers, xml);
         }
 
-        public void AddDroneCharge(int stationId, int droneId) {
+        public void AddDroneCharge(int stationId, int droneId)
+        {
             var newCharge = new DroneCharge(stationId, droneId, DateTime.UtcNow);
 
-            DalObject.DataSource.droneCharges.Add(newCharge);
-            DataSourceXml.AddDroneCharge(newCharge);
+            var xml = LoadFile(File.droneCharges);
+            xml.Add(newCharge.ToXElement());
+            SaveFile(File.droneCharges, xml);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Linq;
 using DO;
 using System.Collections.Generic;
+using DAL.Exceptions;
 
 namespace DalXML {
     public partial class DalXml : IDAL {
@@ -13,11 +14,27 @@ namespace DalXML {
                 throw new InvalidIdException();
             }
 
-            if (!DalObject.DataSource.stations.Any(s => station.Id == s.Id)) {
-                throw new IdNotFoundException();
-            }
+            try
+            {
+                var xml = LoadFile(File.stations);
+                
+                try
+                {
+                    xml.Elements().First(e => e.Element("id")!.Value == station.Id.ToString()).Remove();
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new IdNotFoundException(station.Id);
+                }
 
-            Utilities.DataSourceXml.SetStation(station);
+                xml.Add(station.ToXElement());
+                SaveFile(File.stations, xml);
+            }
+            catch (Exception e)
+            {
+                if (e is IdNotFoundException) throw;
+                throw new InvalidXMLException();
+            }
         }
 
         public void SetDrone(Drone drone) {
@@ -25,11 +42,27 @@ namespace DalXML {
                 throw new InvalidIdException();
             }
 
-            if (!DalObject.DataSource.stations.Any(d => drone.Id == d.Id)) {
-                throw new IdNotFoundException();
-            }
+            try
+            {
+                var xml = LoadFile(File.drones);
+                
+                try
+                {
+                    xml.Elements().First(e => e.Element("id")!.Value == drone.Id.ToString()).Remove();
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new IdNotFoundException(drone.Id);
+                }
 
-            Utilities.DataSourceXml.SetDrone(drone);
+                xml.Add(drone.ToXElement());
+                SaveFile(File.drones, xml);
+            }
+            catch (Exception e)
+            {
+                if (e is IdNotFoundException) throw;
+                throw new InvalidXMLException();
+            }
         }
 
         public void SetCustomer(Customer customer) {
@@ -37,11 +70,27 @@ namespace DalXML {
                 throw new InvalidIdException();
             }
 
-            if (!DalObject.DataSource.stations.Any(c => customer.Id == c.Id)) {
-                throw new IdNotFoundException();
-            }
+            try
+            {
+                var xml = LoadFile(File.customers);
+                
+                try
+                {
+                    xml.Elements().First(e => e.Element("id")!.Value == customer.Id.ToString()).Remove();
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new IdNotFoundException(customer.Id);
+                }
 
-            Utilities.DataSourceXml.SetCustomer(customer);
+                xml.Add(customer.ToXElement());
+                SaveFile(File.customers, xml);
+            }
+            catch (Exception e)
+            {
+                if (e is IdNotFoundException) throw;
+                throw new InvalidXMLException();
+            }
         }
 
         public void SetPackage(Package package) {
@@ -49,11 +98,27 @@ namespace DalXML {
                 throw new InvalidIdException();
             }
 
-            if (!DalObject.DataSource.stations.Any(p => package.Id == p.Id)) {
-                throw new IdNotFoundException();
-            }
+            try
+            {
+                var xml = LoadFile(File.packages);
+                
+                try
+                {
+                    xml.Elements().First(e => e.Element("id")!.Value == package.Id.ToString()).Remove();
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new IdNotFoundException(package.Id);
+                }
 
-            Utilities.DataSourceXml.SetPackage(package);
+                xml.Add(package.ToXElement());
+                SaveFile(File.packages, xml);
+            }
+            catch (Exception e)
+            {
+                if (e is IdNotFoundException) throw;
+                throw new InvalidXMLException();
+            }
         }
     }
 }

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stations>
+  <station>
+    <id>1</id>
+    <name>First Station</name>
+    <longitude>35.191984019851596</longitude>
+    <latitude>31.765279856746353</latitude>
+    <chargeSlots>15</chargeSlots>
+  </station>
+</stations>
