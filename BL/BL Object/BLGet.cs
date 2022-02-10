@@ -80,7 +80,7 @@ namespace BlApi
 
                 PackageInTransfer? pkg = null;
                 var package = dal.GetPackageList(p => p.DroneId == id).Cast<DO.Package?>().FirstOrDefault();
-                if (package is not null) {
+                if (package is not null && package.Value.Delivered is null) {
                     var dalSender = dal.GetCustomer(package.Value.SenderId);
                     var dalRecipient = dal.GetCustomer(package.Value.TargetId);
                     var sender = new PackageCustomer(dalSender.Id, dalSender.Name);
@@ -100,7 +100,7 @@ namespace BlApi
                 }
 
                 var status = DroneStatus.free;
-                if (package is not null) status = DroneStatus.delivering;
+                if (package is not null && package.Value.Delivered is null) status = DroneStatus.delivering;
                 else if (dal.GetDroneChargeList(dc => dc.DroneId == id).Any())
                     status = DroneStatus.maintenance;
 

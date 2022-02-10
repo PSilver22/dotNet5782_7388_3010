@@ -171,6 +171,6 @@ namespace BlApi
 
         #endregion
 
-        public void StartSimulator();
+        public void StartSimulator(int id, Func<bool> condition, Action update);
     }
 }
