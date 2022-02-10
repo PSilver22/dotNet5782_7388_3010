@@ -12,8 +12,10 @@ namespace BL
         public DroneStatus Status { get; set; }
         public Location Location { get; set; }
         public int? PackageId { get; set; }
+        
+        public int? ChargingStationId { get; set; }
 
-        public DroneListing(int id, string model, DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, Location location, int? packageId)
+        public DroneListing(int id, string model, DO.WeightCategory weightCategory, double batteryStatus, DroneStatus status, Location location, int? packageId, int? chargingStationId)
         {
             Id = id;
             Model = model;
@@ -22,6 +24,7 @@ namespace BL
             Status = status;
             Location = location;
             PackageId = packageId;
+            ChargingStationId = chargingStationId;
         }
 
         public override string ToString()

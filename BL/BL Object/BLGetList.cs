@@ -23,13 +23,13 @@ namespace BlApi
         {
             var packages = dal.GetPackageList();
             return dal.GetCustomerList().Select(c => new CustomerListing(
-                c.Id,
-                c.Name,
-                c.Phone,
-                packages.Count(p => p.SenderId == c.Id && p.Delivered is not null),
-                packages.Count(p => p.SenderId == c.Id && p.Delivered is null),
-                packages.Count(p => p.TargetId == c.Id && p.Delivered is not null),
-                packages.Count(p => p.TargetId == c.Id && p.Delivered is null)))
+                    c.Id,
+                    c.Name,
+                    c.Phone,
+                    packages.Count(p => p.SenderId == c.Id && p.Delivered is not null),
+                    packages.Count(p => p.SenderId == c.Id && p.Delivered is null),
+                    packages.Count(p => p.TargetId == c.Id && p.Delivered is not null),
+                    packages.Count(p => p.TargetId == c.Id && p.Delivered is null)))
                 .Where(new Func<CustomerListing, bool>(filter ?? (x => true))).ToList();
         }
 
@@ -40,10 +40,15 @@ namespace BlApi
             {
                 var status = DroneStatus.free;
 
-                var packageId = dal.GetPackageList(p => p.DroneId == d.Id).Select(p => p.Id as int?).FirstOrDefault();
+                var packageId = dal.GetPackageList(p => p.DroneId == d.Id && p.Delivered is null).Select(p => p.Id as int?).FirstOrDefault();
+                int? chargingStationId = null;
                 if (packageId is not null) status = DroneStatus.delivering;
-                else if (dal.GetDroneChargeList(dc => dc.DroneId == d.Id).Any())
-                    status = DroneStatus.maintenance;
+                else
+                {
+                    chargingStationId = dal.GetDroneChargeList(dc => dc.DroneId == d.Id)
+                        .Select(dc => dc.StationId as int?).FirstOrDefault();
+                    if (chargingStationId.HasValue) status = DroneStatus.maintenance;
+                }
 
                 return new DroneListing(
                     d.Id,
@@ -52,7 +57,8 @@ namespace BlApi
                     d.Battery,
                     status,
                     new Location(d.Latitude, d.Longitude),
-                    packageId
+                    packageId,
+                    chargingStationId
                 );
             });
             return filter is null ? result : result.Where(new Func<DroneListing, bool>(filter));
