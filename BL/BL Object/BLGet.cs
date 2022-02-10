@@ -81,7 +81,7 @@ namespace BlApi
             }
 
             PackageInTransfer? pkg = null;
-            var package = dal.GetPackageList(p => p.DroneId == id).Cast<DO.Package?>().FirstOrDefault();
+            var package = dal.GetPackageList(p => p.DroneId == id && p.Delivered is null).Cast<DO.Package?>().FirstOrDefault();
             if (package is not null)
             {
                 var dalSender = dal.GetCustomer(package.Value.SenderId);
