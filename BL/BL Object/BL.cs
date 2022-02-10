@@ -6,6 +6,7 @@ using BL;
 using DalXML;
 using DO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace BlApi
 {
@@ -35,6 +36,11 @@ namespace BlApi
             // Convert to list so we can get a random station without
             // double-enumeration (count + access).
             var stations = dal.GetStationList().ToList();
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void StartSimulator(int id, Func<bool> condition, Action update) {
+            new Simulator(this, id, condition, update);
         }
     }
 }
