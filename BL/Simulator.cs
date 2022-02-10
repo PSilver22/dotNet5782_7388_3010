@@ -99,6 +99,8 @@ namespace BlApi {
                 Thread.Sleep(stepTime);
 
                 lock (bl) {
+                    updateAction.Invoke();
+
                     Drone drone = bl.GetDrone(droneId);
 
                     if (drone.Status == DroneStatus.free) {
