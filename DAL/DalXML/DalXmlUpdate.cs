@@ -8,11 +8,13 @@ using System.Linq;
 using DO;
 using System.Collections.Generic;
 using DAL.Exceptions;
+using System.Runtime.CompilerServices;
 
 namespace DalXML
 {
     public partial class DalXml : IDAL
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(int id, string? name = null, double? longitude = null, double? latitude = null,
             int? chargeSlots = null)
         {
@@ -30,6 +32,7 @@ namespace DalXML
             SaveFile(File.stations, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(int id, string? model = null, WeightCategory? maxWeight = null, double? battery = null,
             double? longitude = null, double? latitude = null)
         {
@@ -48,6 +51,7 @@ namespace DalXML
             SaveFile(File.drones, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(int id, string? name = null, string? phone = null, double? longitude = null,
             double? latitude = null)
         {
@@ -65,6 +69,7 @@ namespace DalXML
             SaveFile(File.customers, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatePackage(int id, int? senderId = null, int? targetId = null, WeightCategory? weight = null,
             Priority? priority = null, DateTime? requested = null, int? droneId = null, DateTime? scheduled = null,
             DateTime? pickedUp = null, DateTime? delivered = null)
@@ -88,6 +93,7 @@ namespace DalXML
             SaveFile(File.packages, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteDroneCharge(int droneId)
         {
             if (droneId < 0)

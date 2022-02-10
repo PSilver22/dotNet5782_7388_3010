@@ -6,6 +6,7 @@ using System.Linq;
 using DO;
 using System.Collections.Generic;
 using DAL.Exceptions;
+using System.Runtime.CompilerServices;
 
 namespace DalXML
 {
@@ -28,31 +29,37 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int id)
         {
             return GetItemByKey(id, GetStationList());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int id)
         {
             return GetItemByKey(id, GetDroneList());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int id)
         {
             return GetItemByKey(id, GetCustomerList());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id)
         {
             return GetItemByKey(id, GetPackageList());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int droneId)
         {
             return GetItemByKey(droneId, GetDroneChargeList());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate)
             GetPowerConsumption()
         {

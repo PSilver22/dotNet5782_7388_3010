@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace DalObject
 {
@@ -15,6 +16,7 @@ namespace DalObject
         /// </summary>
         /// <param name="station">The station to add</param>
         /// <returns>true if the station was successfully added, false otherwise</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station station)
         {
             if (station.Id < 0)
@@ -37,6 +39,7 @@ namespace DalObject
         /// <returns>
         /// Station list
         /// </returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetStationList(Predicate<Station>? filter = null)
         {
             return DataSource.stations.Where(new Func<Station, bool>(filter ?? (x => true))).ToList();
@@ -47,6 +50,7 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the station</param>
         /// <returns>Station with the given id if found. throws otherwise</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int id)
         {
             return GetItemByKey<Station>(id, DataSource.stations);
@@ -60,6 +64,7 @@ namespace DalObject
         /// <param name="longitude"> The new longitude of the station. </param>
         /// <param name="latitude"> The new latitude of the station. </param>
         /// <param name="chargeSlot"> The updated amount of charge slots. </param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(int id, string? name = null, double? longitude = null, double? latitude = null, int? chargeSlot = null)
         {
             int index = GetStationIndex(id);
@@ -78,6 +83,7 @@ namespace DalObject
         /// Sets the station with the matching id to the given station
         /// </summary>
         /// <param name="station"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetStation(Station station)
         {
             int index = GetStationIndex(station.Id);

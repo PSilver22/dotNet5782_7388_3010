@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace DalObject
 {
@@ -18,6 +19,7 @@ namespace DalObject
         /// <param name="weight">The package's weight category</param>
         /// <param name="priority">The package's priority</param>
         /// <returns>The new package's ID</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
         {
             if (senderId < 0 || targetId < 0)
@@ -45,6 +47,7 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the package</param>
         /// <returns>Package with the given id if found. null otherwise</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id)
         {
             return GetItemByKey<Package>(id, DataSource.packages);
@@ -57,6 +60,7 @@ namespace DalObject
         /// <returns>
         /// Packages list
         /// </returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetPackageList(Predicate<Package>? filter = null)
         {
             return DataSource.packages.Where(new Func<Package, bool>(filter ?? (x => true))).ToList();
@@ -75,6 +79,7 @@ namespace DalObject
         /// <param name="scheduled"></param>
         /// <param name="pickedUp"></param>
         /// <param name="delivered"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatePackage(
             int id,
             int? senderId = null,
@@ -108,6 +113,7 @@ namespace DalObject
         /// Sets the package with matching id to the given package
         /// </summary>
         /// <param name="package"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetPackage(Package package)
         {
             int index = GetPackageIndex(package.Id);
@@ -120,6 +126,7 @@ namespace DalObject
         /// </summary>
         /// <param name="id">id of the package</param>
         /// <returns>Index of the package with the given id if found.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private int GetPackageIndex(int id)
         {
             return GetItemIndexByKey<Package>(id, DataSource.packages);

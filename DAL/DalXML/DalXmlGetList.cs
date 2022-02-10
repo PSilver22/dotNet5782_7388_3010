@@ -8,11 +8,13 @@ using System.Linq;
 using DO;
 using System.Collections.Generic;
 using DAL.Exceptions;
+using System.Runtime.CompilerServices;
 
 namespace DalXML
 {
     public partial class DalXml : IDAL
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetStationList(Predicate<Station>? filter = null)
         {
             try
@@ -32,6 +34,7 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetDroneList(Predicate<Drone>? filter = null)
         {
             try
@@ -54,6 +57,7 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetPackageList(Predicate<Package>? filter = null)
         {
             try
@@ -80,6 +84,7 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> GetCustomerList(Predicate<Customer>? filter = null)
         {
             try
@@ -99,6 +104,7 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneCharge> GetDroneChargeList(Predicate<DroneCharge>? filter = null)
         {
             try

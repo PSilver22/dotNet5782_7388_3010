@@ -1,14 +1,14 @@
 ﻿using DalApi;
-using System;
-using System.IO;
-using System.Xml.Linq;
 using System.Linq;
 using DO;
 using System.Collections.Generic;
 using DAL.Exceptions;
+using System.Runtime.CompilerServices;
+using System;
 
 namespace DalXML {
     public partial class DalXml : IDAL {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetStation(Station station) {
             if (station.Id < 0) {
                 throw new InvalidIdException();
@@ -37,6 +37,7 @@ namespace DalXML {
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetDrone(Drone drone) {
             if (drone.Id < 0) {
                 throw new InvalidIdException();
@@ -65,6 +66,7 @@ namespace DalXML {
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetCustomer(Customer customer) {
             if (customer.Id < 0) {
                 throw new InvalidIdException();
@@ -93,6 +95,7 @@ namespace DalXML {
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SetPackage(Package package) {
             if (package.Id < 0) {
                 throw new InvalidIdException();

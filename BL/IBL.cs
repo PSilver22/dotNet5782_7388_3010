@@ -170,5 +170,7 @@ namespace BlApi
         public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null);
 
         #endregion
+
+        public void StartSimulator(int id, Func<bool> condition, Action update);
     }
 }

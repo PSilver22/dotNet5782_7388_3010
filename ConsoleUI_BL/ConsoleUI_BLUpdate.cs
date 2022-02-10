@@ -79,7 +79,7 @@ namespace ConsoleUI_BL
 			int id = Utils.ReadInt();
 			int time = Utils.ReadInt();
 
-			logicLayer.ReleaseDroneFromCharge(id, time);
+			logicLayer.ReleaseDroneFromCharge(id);
 		}
 
 		/// <summary>

@@ -11,9 +11,6 @@
     <None Remove="System.Device.Location.Portable" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Logic Entities\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\FormatUtils\FormatUtils.csproj" />
   </ItemGroup>

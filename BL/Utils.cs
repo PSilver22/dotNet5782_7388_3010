@@ -17,6 +17,7 @@ namespace BlApi
             return new GeoCoordinate(l1.Latitude, l1.Longitude).GetDistanceTo(new(l2.Latitude, l2.Longitude)) / 1000;
         }
 
+
         /// <summary>
         /// Finds the base station closest to a given location
         /// </summary>
@@ -30,6 +31,10 @@ namespace BlApi
                 Location sLoc = new(s.Latitude, s.Longitude);
                 return (s, Utils.DistanceBetween(location, sLoc));
             }).Aggregate((curr, next) => curr.dist < next.dist ? curr : next).station;
+        }
+
+        public static double GetBatteryUsage(Drone drone, Location fromLocation, Location toLocation) {
+            return BL.Instance.GetPowerConsumption(drone.WeightCategory) * DistanceBetween(fromLocation, toLocation);
         }
     }
 }

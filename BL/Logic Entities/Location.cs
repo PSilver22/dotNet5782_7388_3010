@@ -12,6 +12,14 @@ namespace BL
             Longitude = longitude;
         }
 
+        public static bool operator==(Location location1, Location location2) {
+            return location1.Latitude == location2.Latitude && 
+                location1.Longitude == location2.Longitude;
+        }
+        public static bool operator !=(Location location1, Location location2) {
+            return !(location1 == location2);
+        }
+
         public override string ToString()
         {
             return FormatUtils.Coordinates.Sexagesimal(Latitude, FormatUtils.Coordinates.Axis.latitude) +

@@ -5,11 +5,13 @@ using System.Net;
 using System.Xml.Linq;
 using DAL.Exceptions;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace DalXML
 {
     public partial class DalXml : IDAL
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(Drone drone)
         {
             if (drone.Id < 0)
@@ -27,6 +29,7 @@ namespace DalXML
             SaveFile(File.drones, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station station)
         {
             if (station.Id < 0)
@@ -44,6 +47,7 @@ namespace DalXML
             SaveFile(File.stations, xml);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddPackage(int senderId, int targetId, WeightCategory weight, Priority priority)
         {
             if (senderId < 0 || targetId < 0)
@@ -86,6 +90,7 @@ namespace DalXML
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer customer)
         {
             if (customer.Id < 0)
@@ -103,8 +108,8 @@ namespace DalXML
             SaveFile(File.customers, xml);
         }
 
-        public void AddDroneCharge(int stationId, int droneId)
-        {
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddDroneCharge(int stationId, int droneId) {
             var newCharge = new DroneCharge(stationId, droneId, DateTime.UtcNow);
 
             var xml = LoadFile(File.droneCharges);

@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BL;
+using System.Runtime.CompilerServices;
 
 namespace BlApi
 {
     public partial class BL : IBL
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null)
         {
             var charging = dal.GetDroneChargeList();
@@ -19,6 +21,7 @@ namespace BlApi
             }).Where(new Func<BaseStationListing, bool>(filter ?? (x => true))).ToList();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null)
         {
             var packages = dal.GetPackageList();
@@ -33,6 +36,7 @@ namespace BlApi
                 .Where(new Func<CustomerListing, bool>(filter ?? (x => true))).ToList();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null)
         {
             // return drones.Where(new Func<DroneListing, bool>(filter ?? (x => true))).ToList();
@@ -64,6 +68,7 @@ namespace BlApi
             return filter is null ? result : result.Where(new Func<DroneListing, bool>(filter));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)
         {
             return dal.GetPackageList().Select(p => new PackageListing(

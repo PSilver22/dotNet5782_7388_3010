@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace DalObject
 {
