@@ -10,10 +10,12 @@ namespace PL
     public partial class MainWindow : Window
     {
         public IBL Bl { get; set; }
+        public DataManager Dm { get; init; }
 
         public MainWindow()
         {
             Bl = BLFactory.GetBl();
+            Dm = new DataManager(Bl);
             InitializeComponent();
         }
 

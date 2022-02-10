@@ -35,7 +35,7 @@
                           ItemsSource="{Binding Source={StaticResource Groups}}"
                           SelectedValue="{Binding SelectedGrouping.Value, Mode=TwoWay}" />
             </Expander>
-            <ListView x:Name="List" ItemsSource="{Binding Stations}"
+            <ListView x:Name="List" ItemsSource="{Binding Dm.Stations}"
                       Grid.Row="1"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding SelectedStation.Value, Mode=TwoWay}"
@@ -62,7 +62,7 @@
             </ListView>
         </Grid>
         <local:UpdateBaseStationControl StationId="{Binding SelectedStation.Value}"
-                                        Bl="{Binding Bl}"
+                                        Bl="{Binding Dm}"
                                         StationUpdated="StationUpdated"/>
     </DockPanel>
 </UserControl>

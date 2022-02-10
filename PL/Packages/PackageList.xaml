@@ -72,7 +72,7 @@
                           ItemsSource="{Binding Source={StaticResource Groups}}"
                           SelectedValue="{Binding SelectedGrouping.Value, Mode=TwoWay}" />
             </Expander>
-            <ListView x:Name="List" ItemsSource="{Binding Packages}"
+            <ListView x:Name="List" ItemsSource="{Binding Dm.Packages}"
                       Grid.Row="2"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding SelectedPackage.Value, Mode=TwoWay}"
@@ -95,7 +95,7 @@
                 </ListView.GroupStyle>
             </ListView>
         </Grid>
-        <local:UpdatePackageControl PackageId="{Binding SelectedPackage.Value}" Bl="{Binding Bl}"
+        <local:UpdatePackageControl PackageId="{Binding SelectedPackage.Value}" Bl="{Binding Dm}"
                                     PackageUpdated="PackageUpdated" />
     </DockPanel>
 </UserControl>

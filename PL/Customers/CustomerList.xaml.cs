@@ -15,48 +15,38 @@ namespace PL
 {
     public partial class CustomerList : UserControl
     {
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(CustomerList));
-
-        public ObservableCollection<CustomerListing> Customers { get; } = new();
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(CustomerList));
+        
         public Prop<int?> SelectedCustomer { get; } = new();
         
         public CustomerList()
         {
             Loaded += OnLoaded;
             
-            var view = CollectionViewSource.GetDefaultView(Customers);
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-
             InitializeComponent();
         }
         
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
-            // Refresh
-            var customerId = SelectedCustomer.Value;
-            Customers.Clear();
-            foreach (var c in Bl.GetCustomerList()) Customers.Add(c);
-            if (customerId == null || Customers.All(c => c.Id != customerId))
-                SelectedCustomer.Value = Customers.Any() ? Customers.First().Id : null;
-            else SelectedCustomer.Value = customerId;
-            List.ScrollIntoView(List.SelectedItem);
+            var view = CollectionViewSource.GetDefaultView(Dm.Customers);
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+
+            Loaded -= OnLoaded;
         }
 
         private void NewCustomer_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var acw = new AddCustomerWindow(Bl);
+            var acw = new AddCustomerWindow(Dm);
             acw.CustomerAdded += id =>
             {
-                var newCustomer = Bl.GetCustomerList().First(c => c.Id == id);
-                Customers.Add(newCustomer);
                 SelectedCustomer.Value = id;
             };
             acw.ShowDialog();
@@ -69,9 +59,6 @@ namespace PL
 
         private void CustomerUpdated(object? sender, int id)
         {
-            Customers.Remove(Customers.Single(c => c.Id == id));
-            var customer = Bl.GetCustomerList().First(c => c.Id == id);
-            Customers.Add(customer);
             SelectedCustomer.Value = id;
         }
     }

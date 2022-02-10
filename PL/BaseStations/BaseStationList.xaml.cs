@@ -14,16 +14,14 @@ namespace PL
 {
     public partial class BaseStationList : UserControl
     {
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(BaseStationList));
-
-        public ObservableCollection<BaseStationListing> Stations { get; } = new();
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(BaseStationList));
 
         public Prop<int?> SelectedStation { get; } = new();
 
@@ -44,17 +42,12 @@ namespace PL
         {
             Loaded += OnLoaded;
 
-            var view = CollectionViewSource.GetDefaultView(Stations);
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-            
-            SelectedGrouping.PropertyChanged += OnSelectedGroupingChanged;
-
             InitializeComponent();
         }
         
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            var view = CollectionViewSource.GetDefaultView(Stations);
+            var view = CollectionViewSource.GetDefaultView(Dm.Stations);
             view.GroupDescriptions.Clear();
             switch (SelectedGrouping.Value)
             {
@@ -69,24 +62,21 @@ namespace PL
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
-            // Refresh
-            var stationId = SelectedStation.Value;
-            Stations.Clear();
-            foreach (var s in Bl.GetBaseStationList()) Stations.Add(s);
-            if (stationId is null || Stations.All(s => s.Id != stationId))
-                SelectedStation.Value = Stations.Any() ? Stations.First().Id : null;
-            else SelectedStation.Value = stationId;
-            List.ScrollIntoView(List.SelectedItem);
+
+            var view = CollectionViewSource.GetDefaultView(Dm.Stations);
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            
+            SelectedGrouping.PropertyChanged += OnSelectedGroupingChanged;
+
+            Loaded -= OnLoaded;
         }
 
         private void NewStation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var asw = new AddBaseStationWindow(Bl);
+            var asw = new AddBaseStationWindow(Dm);
             asw.StationAdded += id =>
             {
-                var newStation = Bl.GetBaseStationList().First(s => s.Id == id);
-                Stations.Add(newStation);
-                SelectedStation.Value = newStation.Id;
+                SelectedStation.Value = id;
             };
             asw.ShowDialog();
         }
@@ -98,9 +88,6 @@ namespace PL
 
         private void StationUpdated(object? sender, int id)
         {
-            Stations.Remove(Stations.Single(s => s.Id == id));
-            var station = Bl.GetBaseStationList().First(d => d.Id == id);
-            Stations.Add(station);
             SelectedStation.Value = id;
         }
     }

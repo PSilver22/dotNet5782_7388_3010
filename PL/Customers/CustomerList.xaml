@@ -19,7 +19,7 @@
                 <MenuItem Header="_Add Customer" Command="New" />
             </MenuItem>
         </Menu>
-        <ListView x:Name="List" ItemsSource="{Binding Customers}"
+        <ListView x:Name="List" ItemsSource="{Binding Dm.Customers}"
                   SelectedValuePath="Id"
                   SelectedValue="{Binding SelectedCustomer.Value, Mode=TwoWay}"
                   DockPanel.Dock="Left" SelectionMode="Single">
@@ -39,7 +39,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <local:UpdateCustomerControl CustomerId="{Binding SelectedCustomer.Value}" Bl="{Binding Bl}"
+        <local:UpdateCustomerControl CustomerId="{Binding SelectedCustomer.Value}" Bl="{Binding Dm}"
                                      CustomerUpdated="CustomerUpdated" />
     </DockPanel>
 </UserControl>

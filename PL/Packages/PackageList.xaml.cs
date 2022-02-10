@@ -16,16 +16,14 @@ namespace PL
 {
     public partial class PackageList : UserControl
     {
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(PackageList));
-
-        public ObservableCollection<PackageListing> Packages { get; } = new();
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(PackageList));
 
         public Prop<int?> SelectedPackage { get; } = new();
 
@@ -47,19 +45,11 @@ namespace PL
         public PackageList()
         {
             Loaded += OnLoaded;
-
-            var view = CollectionViewSource.GetDefaultView(Packages);
-            view.Filter = ListFilter;
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-
-            SelectedGrouping.PropertyChanged += OnSelectedGroupingChanged;
-
-            InitializeComponent();
         }
 
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            var view = CollectionViewSource.GetDefaultView(Packages);
+            var view = CollectionViewSource.GetDefaultView(Dm.Packages);
             view.GroupDescriptions.Clear();
             switch (SelectedGrouping.Value)
             {
@@ -74,14 +64,15 @@ namespace PL
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
-            // Refresh
-            var pkgId = SelectedPackage.Value;
-            Packages.Clear();
-            foreach (var p in Bl.GetPackageList()) Packages.Add(p);
-            if (pkgId is null || Packages.All(p => p.Id != pkgId))
-                SelectedPackage.Value = Packages.Any() ? Packages.First().Id : null;
-            else SelectedPackage.Value = pkgId;
-            List.ScrollIntoView(List.SelectedItem);
+            InitializeComponent();
+
+            var view = CollectionViewSource.GetDefaultView(Dm.Packages);
+            view.Filter = ListFilter;
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+
+            SelectedGrouping.PropertyChanged += OnSelectedGroupingChanged;
+
+            Loaded -= OnLoaded;
         }
 
         private bool ListFilter(object item)
@@ -98,13 +89,8 @@ namespace PL
 
         private void NewPackage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var apw = new AddPackageWindow(Bl);
-            apw.PackageAdded += id =>
-            {
-                var newPackage = Bl.GetPackageList().First(p => p.Id == id);
-                Packages.Add(newPackage);
-                SelectedPackage.Value = newPackage.Id;
-            };
+            var apw = new AddPackageWindow(Dm);
+            apw.PackageAdded += id => SelectedPackage.Value = id;
             apw.ShowDialog();
         }
 
@@ -115,14 +101,11 @@ namespace PL
 
         private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(Packages).Refresh();
+            CollectionViewSource.GetDefaultView(Dm.Packages).Refresh();
         }
 
         private void PackageUpdated(object? sender, int id)
         {
-            Packages.Remove(Packages.Single(p => p.Id == id));
-            var pkg = Bl.GetPackageList().First(p => p.Id == id);
-            Packages.Add(pkg);
             SelectedPackage.Value = id;
         }
     }

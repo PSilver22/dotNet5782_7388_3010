@@ -10,16 +10,16 @@
     <Grid>
         <TabControl x:Name="TabControl">
             <TabItem Header="Drones">
-                <local:DroneList x:Name="DroneList" Bl="{Binding Bl}"/>
+                <local:DroneList x:Name="DroneList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Packages">
-                <local:PackageList x:Name="PackageList" Bl="{Binding Bl}"/>
+                <local:PackageList x:Name="PackageList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Customers">
-                <local:CustomerList x:Name="CustomerList" Bl="{Binding Bl}"/>
+                <local:CustomerList x:Name="CustomerList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Base Stations">
-                <local:BaseStationList x:Name="StationList" Bl="{Binding Bl}"/>
+                <local:BaseStationList x:Name="StationList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Map">
                 <local:EntityMap x:Name="EntityMap" Bl="{Binding Bl}"/>

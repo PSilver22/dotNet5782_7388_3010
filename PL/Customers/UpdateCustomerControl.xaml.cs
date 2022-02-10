@@ -44,8 +44,9 @@ namespace PL
             {
                 if (Customer.Value?.Name != NewName.Value || Customer.Value.Phone != NewPhone.Value)
                 {
+                    var id = CustomerId!.Value;
                     Bl.UpdateCustomer(CustomerId!.Value, NewName.Value, NewPhone.Value);
-                    CustomerUpdated?.Invoke(this, Customer.Value!.Id);
+                    CustomerUpdated?.Invoke(this, id);
                 }
             });
             

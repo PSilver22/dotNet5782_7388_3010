@@ -62,7 +62,7 @@
                           ItemsSource="{Binding Source={StaticResource Groups}}"
                           SelectedValue="{Binding SelectedGrouping.Value, Mode=TwoWay}" />
             </Expander>
-            <ListView x:Name="List" ItemsSource="{Binding Drones}"
+            <ListView x:Name="List" ItemsSource="{Binding Dm.Drones}"
                       Grid.Row="2"
                       SelectedValuePath="Id"
                       SelectedValue="{Binding SelectedDrone.Value, Mode=TwoWay}"
@@ -88,7 +88,7 @@
                 </ListView.GroupStyle>
             </ListView>
         </Grid>
-        <local:UpdateDroneControl DroneId="{Binding SelectedDrone.Value}" Bl="{Binding Bl}"
+        <local:UpdateDroneControl DroneId="{Binding SelectedDrone.Value}" Bl="{Binding Dm}"
                                   DroneUpdated="DroneUpdated" />
     </DockPanel>
 </UserControl>

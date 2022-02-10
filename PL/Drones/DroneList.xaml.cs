@@ -16,16 +16,15 @@ namespace PL
 {
     public partial class DroneList : UserControl
     {
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(DroneList));
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(DroneList));
 
-        public ObservableCollection<DroneListing> Drones { get; } = new();
         public Prop<int?> SelectedDrone { get; } = new();
 
         public WeightCategory? SelectedWeight { get; set; }
@@ -46,19 +45,11 @@ namespace PL
         public DroneList()
         {
             Loaded += OnLoaded;
-            
-            var view = CollectionViewSource.GetDefaultView(Drones);
-            view.Filter = ListFilter;
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-
-            SelectedGrouping.PropertyChanged += OnSelectedGroupingOnPropertyChanged;
-            
-            InitializeComponent();
         }
 
         private void OnSelectedGroupingOnPropertyChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            var view = CollectionViewSource.GetDefaultView(Drones);
+            var view = CollectionViewSource.GetDefaultView(Dm.Drones);
             view.GroupDescriptions.Clear();
             switch (SelectedGrouping.Value)
             {
@@ -73,14 +64,15 @@ namespace PL
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
-            // Refresh
-            var droneId = SelectedDrone.Value;
-            Drones.Clear();
-            foreach (var d in Bl.GetDroneList()) Drones.Add(d);
-            if (droneId == null || Drones.All(d => d.Id != droneId))
-                SelectedDrone.Value = Drones.Any() ? Drones.First().Id : null;
-            else SelectedDrone.Value = droneId;
-            List.ScrollIntoView(List.SelectedItem);
+            InitializeComponent();
+            
+            var view = CollectionViewSource.GetDefaultView(Dm.Drones);
+            view.Filter = ListFilter;
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+
+            SelectedGrouping.PropertyChanged += OnSelectedGroupingOnPropertyChanged;
+
+            Loaded -= OnLoaded;
         }
         
         private bool ListFilter(object item)
@@ -95,13 +87,8 @@ namespace PL
 
         private void NewDrone_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var adw = new AddDroneWindow(Bl);
-            adw.DroneAdded += id =>
-            {
-                var newDrone = Bl.GetDroneList().First(d => d.Id == id);
-                Drones.Add(newDrone);
-                SelectedDrone.Value = id;
-            };
+            var adw = new AddDroneWindow(Dm);
+            adw.DroneAdded += id => SelectedDrone.Value = id;
             adw.ShowDialog();
         }
 
@@ -112,14 +99,11 @@ namespace PL
 
         private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(Drones).Refresh();
+            CollectionViewSource.GetDefaultView(Dm.Drones).Refresh();
         }
 
         private void DroneUpdated(object? sender, int id)
         {
-            Drones.Remove(Drones.Single(d => d.Id == id));
-            var drone = Bl.GetDroneList().First(d => d.Id == id);
-            Drones.Add(drone);
             SelectedDrone.Value = id;
         }
     }
