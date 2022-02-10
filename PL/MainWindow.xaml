@@ -22,7 +22,7 @@
                 <local:BaseStationList x:Name="StationList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Map">
-                <local:EntityMap x:Name="EntityMap" Bl="{Binding Bl}"/>
+                <local:EntityMap x:Name="EntityMap" Bl="{Binding Dm}"/>
             </TabItem>
         </TabControl>
     </Grid>
