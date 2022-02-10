@@ -66,15 +66,17 @@ namespace DalXML
 
             try
             {
+                var configXml = LoadFile(File.config);
+                var currentPackageIdEl = configXml.Element("currentPackageId")!;
+                var currentPackageId = int.Parse(currentPackageIdEl.Value) + 1;
+
+                package.Id = currentPackageId;
                 var xml = LoadFile(File.packages);
                 xml.Add(package.ToXElement());
                 SaveFile(File.packages, xml);
             
-                var configXML = LoadFile(File.config);
-                var currentPackageIdEl = configXML.Element("currentPackageId")!;
-                var currentPackageId = int.Parse(currentPackageIdEl.Value) + 1;
                 currentPackageIdEl.Value = currentPackageId.ToString();
-                SaveFile(File.config, configXML);
+                SaveFile(File.config, configXml);
 
                 return currentPackageId;
             }
