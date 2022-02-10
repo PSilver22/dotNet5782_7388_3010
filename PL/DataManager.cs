@@ -195,5 +195,10 @@ namespace PL
         {
             return _bl.GetPackageList(filter);
         }
+
+        public void StartSimulator(int id, Func<bool> condition, Action update)
+        {
+            _bl.StartSimulator(id, condition, update);
+        }
     }
 }
