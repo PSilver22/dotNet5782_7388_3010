@@ -105,6 +105,17 @@
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
+                                            <Label Content="{Binding PackageId}" ContentStringFormat="{}📦 #{0}">
+                                                <Label.Style>
+                                                    <Style>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PackageId}" Value="{x:Null}">
+                                                                <Setter Property="Label.Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
                                         </StackPanel>
                                     </map:Pushpin>
                                 </ControlTemplate>
