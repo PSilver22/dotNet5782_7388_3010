@@ -19,9 +19,9 @@ namespace BlApi
         {
             return weight switch
             {
-                WeightCategory.light => powerConsumption.LightWeight,
-                WeightCategory.medium => powerConsumption.MidWeight,
-                WeightCategory.heavy => powerConsumption.HeavyWeight,
+                WeightCategory.light => PowerConsumption.LightWeight,
+                WeightCategory.medium => PowerConsumption.MidWeight,
+                WeightCategory.heavy => PowerConsumption.HeavyWeight,
                 _ => 0,
             };
         }

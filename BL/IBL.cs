@@ -3,12 +3,23 @@
 using System;
 using System.Collections.Generic;
 using BL;
+using DalApi;
+using DO;
+using Customer = BL.Customer;
+using Drone = BL.Drone;
+using Package = BL.Package;
 
 namespace BlApi
 {
     public interface IBL
     {
+        public IDAL Dal { get; }
+
+        public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate)
+            PowerConsumption { get; }
+
         #region Add Methods
+
         /// <summary>
         /// Add a new base station
         /// </summary>
@@ -172,5 +183,16 @@ namespace BlApi
         #endregion
 
         public void StartSimulator(int id, Func<bool> condition, Action update);
+
+        double GetPowerConsumption(WeightCategory weight)
+        {
+            return weight switch
+            {
+                WeightCategory.light => PowerConsumption.LightWeight,
+                WeightCategory.medium => PowerConsumption.MidWeight,
+                WeightCategory.heavy => PowerConsumption.HeavyWeight,
+                _ => throw new ArgumentOutOfRangeException(nameof(weight), weight, null)
+            };
+        }
     }
 }

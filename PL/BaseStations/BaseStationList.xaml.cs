@@ -24,6 +24,7 @@ namespace PL
             DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(BaseStationList));
 
         public Prop<int?> SelectedStation { get; } = new();
+        private int? _lastSelectedStation = null;
 
         public enum Groups
         {
@@ -41,12 +42,23 @@ namespace PL
         public BaseStationList()
         {
             Loaded += OnLoaded;
-
-            InitializeComponent();
         }
         
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            InitializeComponent();
+            
+            SelectedStation.PropertyChanged += (_, _) =>
+            {
+                if (SelectedStation.Value.HasValue)
+                    _lastSelectedStation = SelectedStation.Value;
+            };
+            Dm.Stations.CollectionChanged += (_, _) =>
+            {
+                if (!SelectedStation.Value.HasValue && _lastSelectedStation.HasValue)
+                    SelectedStation.Value = _lastSelectedStation;
+            };
+            
             var view = CollectionViewSource.GetDefaultView(Dm.Stations);
             view.GroupDescriptions.Clear();
             switch (SelectedGrouping.Value)

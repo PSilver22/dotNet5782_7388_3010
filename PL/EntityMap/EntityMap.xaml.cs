@@ -14,18 +14,14 @@ namespace PL
 {
     public partial class EntityMap : UserControl
     {
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register(nameof(Bl), typeof(IBL), typeof(EntityMap));
-
-        public ObservableCollection<BaseStation> Stations { get; } = new();
-        public ObservableCollection<Drone> Drones { get; } = new();
-        public ObservableCollection<Customer> Customers { get; } = new();
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(EntityMap));
 
         public Prop<BL.Location> Center { get; } = new()
         {
@@ -35,25 +31,12 @@ namespace PL
         public EntityMap()
         {
             Loaded += OnLoaded;
-
-            InitializeComponent();
         }
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
-            // Refresh
-            Stations.Clear();
-            Drones.Clear();
-            Customers.Clear();
-            
-            foreach (var s in Bl.GetBaseStationList())
-                Stations.Add(Bl.GetBaseStation(s.Id));
-            
-            foreach (var d in Bl.GetDroneList())
-                Drones.Add(Bl.GetDrone(d.Id));
-            
-            foreach (var c in Bl.GetCustomerList())
-                Customers.Add(Bl.GetCustomer(c.Id));
+            InitializeComponent();
+            // Loaded -= OnLoaded;
         }
 
         private void ShowStation(object sender, MouseButtonEventArgs e)

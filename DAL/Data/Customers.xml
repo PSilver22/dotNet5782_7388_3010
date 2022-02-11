@@ -14,4 +14,11 @@
     <longitude>35.19137247619629</longitude>
     <latitude>31.763592311377643</latitude>
   </customer>
+  <customer>
+    <id>3</id>
+    <name>Person</name>
+    <phone>1234</phone>
+    <longitude>35.19239171562195</longitude>
+    <latitude>31.76580891868778</latitude>
+  </customer>
 </customers>

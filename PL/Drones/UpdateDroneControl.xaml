@@ -9,12 +9,15 @@
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600"
              x:Name="Control">
+    <Control.Resources>
+        <utils:InCollectionConverter x:Key="InCollectionConverter" />
+    </Control.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=Control}">
         <Grid.Style>
             <Style>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding DroneId}" Value="{x:Null}">
-                        <Setter Property="Grid.Visibility" Value="Collapsed"/>
+                        <Setter Property="Grid.Visibility" Value="Collapsed" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -119,11 +122,22 @@
                                 <Label Content="{Binding Drone.Value.Package.DeliveryLoc, FallbackValue=''}" />
                             </utils:InfoStackItem>
                             <utils:InfoStackItem Key="Delivery Distance">
-                                <Label Content="{Binding Drone.Value.Package.DeliveryDistance, FallbackValue=''}" />
+                                <Label Content="{Binding Drone.Value.Package.DeliveryDistance, FallbackValue=''}"
+                                       ContentStringFormat="{}{0:0}m" />
                             </utils:InfoStackItem>
                         </StackPanel>
                     </Expander>
                 </utils:InfoStackItem>
+                <CheckBox Margin="4" FontWeight="Bold" Click="SimulatorCheckboxToggled" Content="Simulator">
+                    <CheckBox.IsChecked>
+                        <MultiBinding Converter="{StaticResource InCollectionConverter}" Mode="OneWay">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Drone.Value.Id" Mode="OneWay"/>
+                                <Binding Path="Dm.SimulatedDrones" Mode="OneWay"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </CheckBox.IsChecked>
+                </CheckBox>
             </StackPanel>
         </ScrollViewer>
         <Button VerticalAlignment="Bottom" Width="80" HorizontalAlignment="Right" Grid.Row="1" Margin="0,0,8,8"

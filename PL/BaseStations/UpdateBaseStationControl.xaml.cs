@@ -45,8 +45,9 @@ namespace PL
                 {
                     if (!Validation.GetHasError((TextBox)ChargingSlotsItem.Value))
                     {
+                        var id = Station.Value!.Id;
                         Bl.UpdateBaseStation(StationId!.Value, NewName.Value, NewNumChargingSlots.Value);
-                        StationUpdated?.Invoke(this, Station.Value!.Id);
+                        StationUpdated?.Invoke(this, id);
                     }
                 }
             });
@@ -70,8 +71,9 @@ namespace PL
         
         private void UpdateStationButton_Click(object sender, RoutedEventArgs e)
         {
+            var id = Station.Value!.Id;
             Bl.UpdateBaseStation(Station.Value!.Id, NewName.Value, NewNumChargingSlots.Value);
-            StationUpdated?.Invoke(this, Station.Value.Id);
+            StationUpdated?.Invoke(this, id);
         }
 
         private void ShowDrone(object sender, MouseButtonEventArgs e)

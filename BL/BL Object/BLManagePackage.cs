@@ -12,34 +12,34 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AssignPackageToDrone(int id)
         {
-            lock (dal) {
+            lock (Dal) {
                 var drone = GetDrone(id);
 
                 if (drone.Status != DroneStatus.free) {
                     throw new DroneNotFreeException("assign package");
                 }
 
-                var package = dal.GetPackageList()
+                var package = Dal.GetPackageList()
                     .Where(p => p.DroneId is null)
                     .Where(p => p.Weight <= drone.WeightCategory)
                     .OrderByDescending(p => p.Priority)
                     .ThenByDescending(p => {
-                        var sender = dal.GetCustomer(p.SenderId);
+                        var sender = Dal.GetCustomer(p.SenderId);
                         return Utils.DistanceBetween(drone.Location, new(sender.Latitude, sender.Longitude));
                     })
                     .ThenByDescending(p => p.Weight)
                     .Where(p => {
-                        var sender = dal.GetCustomer(p.SenderId);
+                        var sender = Dal.GetCustomer(p.SenderId);
                         Location senderLoc = new(sender.Latitude, sender.Longitude);
-                        var recip = dal.GetCustomer(p.TargetId);
+                        var recip = Dal.GetCustomer(p.TargetId);
                         Location recipLoc = new(recip.Latitude, recip.Longitude);
-                        var station = Utils.ClosestStation(recipLoc, dal.GetStationList());
+                        var station = Utils.ClosestStation(recipLoc, Dal.GetStationList());
 
                         var distToSender = Utils.DistanceBetween(drone.Location, senderLoc);
                         var distToRecip = Utils.DistanceBetween(senderLoc, recipLoc);
                         var distToStation = Utils.DistanceBetween(recipLoc, new(station.Latitude, station.Longitude));
 
-                        var reqBattery = powerConsumption.Free * (distToSender + distToStation) +
+                        var reqBattery = PowerConsumption.Free * (distToSender + distToStation) +
                                         (GetPowerConsumption(p.Weight) * distToRecip);
 
                         return drone.BatteryStatus >= reqBattery;
@@ -47,7 +47,7 @@ namespace BlApi
                     .FirstOrDefault();
 
                 if (package.Requested != default) {
-                    dal.UpdatePackage(package.Id, droneId: drone.Id, scheduled: DateTime.UtcNow);
+                    Dal.UpdatePackage(package.Id, droneId: drone.Id, scheduled: DateTime.UtcNow);
                 } else {
                     throw new NoRelevantPackageException();
                 }
@@ -57,57 +57,57 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void CollectPackageByDrone(int id)
         {
-            lock (dal) {
+            lock (Dal) {
                 var drone = GetDrone(id);
 
                 if (drone.Package is null) {
                     throw new DroneNotAssignedPackageException();
                 }
 
-                var package = dal.GetPackage(drone.Package.Id);
+                var package = Dal.GetPackage(drone.Package.Id);
 
                 if (package.PickedUp is not null) {
                     throw new PackageAlreadyPickedUpException();
                 }
 
-                var sender = dal.GetCustomer(package.SenderId);
+                var sender = Dal.GetCustomer(package.SenderId);
                 Location senderLoc = new(sender.Latitude, sender.Longitude);
-                var batteryUsage = powerConsumption.Free * Utils.DistanceBetween(drone.Location, senderLoc);
+                var batteryUsage = PowerConsumption.Free * Utils.DistanceBetween(drone.Location, senderLoc);
 
-                dal.UpdateDrone(id,
+                Dal.UpdateDrone(id,
                     battery: drone.BatteryStatus - batteryUsage,
                     longitude: sender.Longitude,
                     latitude: sender.Latitude);
 
-                dal.UpdatePackage(package.Id, pickedUp: DateTime.UtcNow);
+                Dal.UpdatePackage(package.Id, pickedUp: DateTime.UtcNow);
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliverPackageByDrone(int id) {
-            lock (dal) {
+            lock (Dal) {
                 var drone = GetDrone(id);
 
                 if (drone.Package is null) {
                     throw new DroneNotAssignedPackageException();
                 }
 
-                var package = dal.GetPackage(drone.Package.Id);
+                var package = Dal.GetPackage(drone.Package.Id);
 
                 if (package.PickedUp is null) {
                     throw new PackageAlreadyPickedUpException();
                 }
 
-                var recip = dal.GetCustomer(package.TargetId);
+                var recip = Dal.GetCustomer(package.TargetId);
                 Location recipLoc = new(recip.Latitude, recip.Longitude);
 
-                dal.UpdateDrone(id,
+                Dal.UpdateDrone(id,
                     battery: drone.BatteryStatus - GetPowerConsumption(package.Weight) *
                     Utils.DistanceBetween(drone.Location, recipLoc),
                     longitude: recip.Longitude,
                     latitude: recip.Latitude);
 
-                dal.UpdatePackage(package.Id, delivered: DateTime.UtcNow);
+                Dal.UpdatePackage(package.Id, delivered: DateTime.UtcNow);
             }
         }
     }

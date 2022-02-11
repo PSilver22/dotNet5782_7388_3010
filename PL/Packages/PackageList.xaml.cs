@@ -26,6 +26,7 @@ namespace PL
             DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(PackageList));
 
         public Prop<int?> SelectedPackage { get; } = new();
+        private int? _lastSelectedPackage;
 
         public WeightCategory? SelectedWeight { get; set; }
         public Priority? SelectedPriority { get; set; }
@@ -65,6 +66,17 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             InitializeComponent();
+            
+            SelectedPackage.PropertyChanged += (_, _) =>
+            {
+                if (SelectedPackage.Value.HasValue)
+                    _lastSelectedPackage = SelectedPackage.Value;
+            };
+            Dm.Packages.CollectionChanged += (_, _) =>
+            {
+                if (!SelectedPackage.Value.HasValue && _lastSelectedPackage.HasValue)
+                    SelectedPackage.Value = _lastSelectedPackage;
+            };
 
             var view = CollectionViewSource.GetDefaultView(Dm.Packages);
             view.Filter = ListFilter;

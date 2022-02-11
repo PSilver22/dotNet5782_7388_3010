@@ -26,6 +26,7 @@ namespace PL
             DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(DroneList));
 
         public Prop<int?> SelectedDrone { get; } = new();
+        private int? _lastSelectedDrone = null;
 
         public WeightCategory? SelectedWeight { get; set; }
         public DroneStatus? SelectedStatus { get; set; }
@@ -65,6 +66,17 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             InitializeComponent();
+            
+            SelectedDrone.PropertyChanged += (_, _) =>
+            {
+                if (SelectedDrone.Value.HasValue)
+                    _lastSelectedDrone = SelectedDrone.Value;
+                else SelectedDrone.Value = _lastSelectedDrone;
+            };
+            Dm.Drones.CollectionChanged += (_, _) =>
+            {
+                SelectedDrone.Value = _lastSelectedDrone;
+            };
             
             var view = CollectionViewSource.GetDefaultView(Dm.Drones);
             view.Filter = ListFilter;

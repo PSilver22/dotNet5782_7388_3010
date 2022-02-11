@@ -13,8 +13,8 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<BaseStationListing> GetBaseStationList(Predicate<BaseStationListing>? filter = null)
         {
-            var charging = dal.GetDroneChargeList();
-            return dal.GetStationList().Select(s =>
+            var charging = Dal.GetDroneChargeList();
+            return Dal.GetStationList().Select(s =>
             {
                 var numOccSlots = charging.Count(c => c.StationId == s.Id);
                 return new BaseStationListing(s.Id, s.Name, s.ChargeSlots, numOccSlots);
@@ -24,8 +24,8 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerListing> GetCustomerList(Predicate<CustomerListing>? filter = null)
         {
-            var packages = dal.GetPackageList();
-            return dal.GetCustomerList().Select(c => new CustomerListing(
+            var packages = Dal.GetPackageList();
+            return Dal.GetCustomerList().Select(c => new CustomerListing(
                     c.Id,
                     c.Name,
                     c.Phone,
@@ -40,16 +40,16 @@ namespace BlApi
         public IEnumerable<DroneListing> GetDroneList(Predicate<DroneListing>? filter = null)
         {
             // return drones.Where(new Func<DroneListing, bool>(filter ?? (x => true))).ToList();
-            var result = dal.GetDroneList().Select(d =>
+            var result = Dal.GetDroneList().Select(d =>
             {
                 var status = DroneStatus.free;
 
-                var packageId = dal.GetPackageList(p => p.DroneId == d.Id && p.Delivered is null).Select(p => p.Id as int?).FirstOrDefault();
+                var packageId = Dal.GetPackageList(p => p.DroneId == d.Id && p.Delivered is null).Select(p => p.Id as int?).FirstOrDefault();
                 int? chargingStationId = null;
                 if (packageId is not null) status = DroneStatus.delivering;
                 else
                 {
-                    chargingStationId = dal.GetDroneChargeList(dc => dc.DroneId == d.Id)
+                    chargingStationId = Dal.GetDroneChargeList(dc => dc.DroneId == d.Id)
                         .Select(dc => dc.StationId as int?).FirstOrDefault();
                     if (chargingStationId.HasValue) status = DroneStatus.maintenance;
                 }
@@ -71,10 +71,10 @@ namespace BlApi
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<PackageListing> GetPackageList(Predicate<PackageListing>? filter = null)
         {
-            return dal.GetPackageList().Select(p => new PackageListing(
+            return Dal.GetPackageList().Select(p => new PackageListing(
                 p.Id,
-                dal.GetCustomer(p.SenderId).Name,
-                dal.GetCustomer(p.TargetId).Name,
+                Dal.GetCustomer(p.SenderId).Name,
+                Dal.GetCustomer(p.TargetId).Name,
                 p.Weight,
                 p.Priority,
                 p.Delivered is not null ? PackageStatus.delivered

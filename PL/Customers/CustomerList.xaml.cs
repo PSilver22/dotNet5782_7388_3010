@@ -25,17 +25,28 @@ namespace PL
             DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(CustomerList));
         
         public Prop<int?> SelectedCustomer { get; } = new();
+        private int? _lastSelectedCustomer = null;
         
         public CustomerList()
         {
             Loaded += OnLoaded;
-            
-            InitializeComponent();
         }
         
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
+            InitializeComponent();
+
+            SelectedCustomer.PropertyChanged += (_, _) =>
+            {
+                if (SelectedCustomer.Value.HasValue)
+                    _lastSelectedCustomer = SelectedCustomer.Value;
+            };
+            Dm.Customers.CollectionChanged += (_, _) =>
+            {
+                if (!SelectedCustomer.Value.HasValue && _lastSelectedCustomer.HasValue)
+                    SelectedCustomer.Value = _lastSelectedCustomer;
+            };
             var view = CollectionViewSource.GetDefaultView(Dm.Customers);
             view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Drone Manager" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
         <TabControl x:Name="TabControl">
@@ -22,7 +22,7 @@
                 <local:BaseStationList x:Name="StationList" Dm="{Binding Dm}"/>
             </TabItem>
             <TabItem Header="Map">
-                <local:EntityMap x:Name="EntityMap" Bl="{Binding Dm}"/>
+                <local:EntityMap x:Name="EntityMap" Dm="{Binding Dm}"/>
             </TabItem>
         </TabControl>
     </Grid>

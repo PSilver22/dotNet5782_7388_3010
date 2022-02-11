@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,14 +27,14 @@ namespace PL
 
         public Prop<PackageStatus?> PackageStatus { get; } = new();
 
-        public IBL Bl
+        public DataManager Dm
         {
-            get => (IBL) GetValue(BlProperty);
-            set => SetValue(BlProperty, value);
+            get => (DataManager) GetValue(DmProperty);
+            set => SetValue(DmProperty, value);
         }
 
-        public static readonly DependencyProperty BlProperty =
-            DependencyProperty.Register("Bl", typeof(IBL), typeof(UpdateDroneControl));
+        public static readonly DependencyProperty DmProperty =
+            DependencyProperty.Register("Dm", typeof(DataManager), typeof(UpdateDroneControl));
 
 
         public Prop<string> NewModel { get; } = new();
@@ -44,21 +45,27 @@ namespace PL
         /// </summary>
         public UpdateDroneControl()
         {
-            UpdateDroneCommand = new DelegateCommand((_) =>
+            Loaded += OnLoaded;
+
+            UpdateDroneCommand = new DelegateCommand(_ =>
             {
-                if (Drone.Value?.Model != NewModel.Value)
-                {
-                    Bl.UpdateDrone(DroneId!.Value, NewModel.Value);
-                    DroneUpdated?.Invoke(this, Drone.Value!.Id);
-                }
+                if (Drone.Value?.Model == NewModel.Value) return;
+                var id = DroneId!.Value;
+                Dm.UpdateDrone(DroneId!.Value, NewModel.Value);
+                DroneUpdated?.Invoke(this, id);
             });
-            
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
             InitializeComponent();
+
+            Loaded -= OnLoaded;
         }
 
         private void LoadDrone()
         {
-            Drone.Value = DroneId is null ? null : Bl.GetDrone(DroneId.Value);
+            Drone.Value = DroneId is null ? null : Dm.GetDrone(DroneId.Value);
 
             NewModel.Value = Drone.Value?.Model ?? string.Empty;
 
@@ -68,7 +75,7 @@ namespace PL
             }
             else
             {
-                var package = Bl.GetPackage(Drone.Value.Package.Id);
+                var package = Dm.GetPackage(Drone.Value.Package.Id);
                 PackageStatus.Value = package.AssignmentTime is null ? BL.PackageStatus.created
                     : package.CollectionTime is null ? BL.PackageStatus.assigned
                     : package.DeliveryTime is null ? BL.PackageStatus.collected
@@ -86,8 +93,9 @@ namespace PL
         {
             try
             {
-                Bl.SendDroneToCharge(Drone.Value!.Id);
-                DroneUpdated?.Invoke(this, Drone.Value!.Id);
+                var id = DroneId!.Value;
+                Dm.SendDroneToCharge(Drone.Value!.Id);
+                DroneUpdated?.Invoke(this, id);
             }
             catch (NoStationInRangeException)
             {
@@ -98,22 +106,25 @@ namespace PL
 
         private void ReleaseButton_Click(object sender, RoutedEventArgs e)
         {
-            Bl.ReleaseDroneFromCharge(Drone.Value!.Id);
-            DroneUpdated?.Invoke(this, Drone.Value.Id);
+            var id = DroneId!.Value;
+            Dm.ReleaseDroneFromCharge(Drone.Value!.Id);
+            DroneUpdated?.Invoke(this, id);
         }
 
         private void UpdateDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            Bl.UpdateDrone(Drone.Value!.Id, NewModel.Value);
-            DroneUpdated?.Invoke(this, Drone.Value.Id);
+            var id = DroneId!.Value;
+            Dm.UpdateDrone(Drone.Value!.Id, NewModel.Value);
+            DroneUpdated?.Invoke(this, id);
         }
 
         private void AssignPackageButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Bl.AssignPackageToDrone(Drone.Value!.Id);
-                DroneUpdated?.Invoke(this, Drone.Value.Id);
+                var id = DroneId!.Value;
+                Dm.AssignPackageToDrone(Drone.Value!.Id);
+                DroneUpdated?.Invoke(this, id);
             }
             catch (NoRelevantPackageException)
             {
@@ -125,29 +136,38 @@ namespace PL
 
         private void CollectPackageButton_Click(object sender, RoutedEventArgs e)
         {
-            Bl.CollectPackageByDrone(Drone.Value!.Id);
-            DroneUpdated?.Invoke(this, Drone.Value!.Id);
+            var id = Drone.Value!.Id;
+            Dm.CollectPackageByDrone(Drone.Value!.Id);
+            DroneUpdated?.Invoke(this, id);
         }
 
         private void DeliverPackageButton_Click(object sender, RoutedEventArgs e)
         {
-            Bl.DeliverPackageByDrone(Drone.Value!.Id);
-            DroneUpdated?.Invoke(this, Drone.Value.Id);
+            var id = Drone.Value!.Id;
+            Dm.DeliverPackageByDrone(Drone.Value!.Id);
+            DroneUpdated?.Invoke(this, id);
         }
 
         private void ShowPackage(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow!).ShowPackage(Drone.Value!.Package!.Id);
+            ((MainWindow) Application.Current.MainWindow!).ShowPackage(Drone.Value!.Package!.Id);
         }
 
         private void ShowPackageSender(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Sender.Id);
+            ((MainWindow) Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Sender.Id);
         }
 
         private void ShowPackageRecipient(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Receiver.Id);
+            ((MainWindow) Application.Current.MainWindow!).ShowCustomer(Drone.Value!.Package!.Receiver.Id);
+        }
+
+        private void SimulatorCheckboxToggled(object sender, RoutedEventArgs e)
+        {
+            if (((CheckBox) sender).IsChecked!.Value)
+                Dm.StartSimulator(DroneId!.Value);
+            else Dm.StopSimulator(DroneId!.Value);
         }
     }
 }

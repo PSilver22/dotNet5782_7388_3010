@@ -59,16 +59,18 @@ namespace PL
 
         private void CollectPackage(object sender, RoutedEventArgs e)
         {
+            var id = Package.Value!.Id;
             Bl.CollectPackageByDrone(Package.Value!.Drone!.Id);
-            Package.Value = Bl.GetPackage(Package.Value.Id);
-            PackageUpdated?.Invoke(this, Package.Value.Id);
+            // Package.Value = Bl.GetPackage(Package.Value.Id);
+            PackageUpdated?.Invoke(this, id);
         }
 
         private void DeliverPackage(object sender, RoutedEventArgs e)
         {
+            var id = Package.Value!.Id;
             Bl.DeliverPackageByDrone(Package.Value!.Drone!.Id);
-            Package.Value = Bl.GetPackage(Package.Value.Id);
-            PackageUpdated?.Invoke(this, Package.Value.Id);
+            // Package.Value = Bl.GetPackage(Package.Value.Id);
+            PackageUpdated?.Invoke(this, id);
         }
 
         private void ShowDrone(object sender, RoutedEventArgs e)

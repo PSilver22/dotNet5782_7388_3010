@@ -17,6 +17,10 @@ namespace BlApi
             return new GeoCoordinate(l1.Latitude, l1.Longitude).GetDistanceTo(new(l2.Latitude, l2.Longitude)) / 1000;
         }
 
+        public static Location FractionPointBetween(Location l1, Location l2, double f)
+        {
+            return l1;
+        }
 
         /// <summary>
         /// Finds the base station closest to a given location

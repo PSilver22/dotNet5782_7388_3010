@@ -4,8 +4,16 @@
     <id>1</id>
     <model>a</model>
     <maxWeight>heavy</maxWeight>
-    <battery>71.6710704231622</battery>
-    <longitude>35.19137247619629</longitude>
-    <latitude>31.763592311377643</latitude>
+    <battery>100</battery>
+    <longitude>35.191401877287454</longitude>
+    <latitude>31.76503228234108</latitude>
+  </drone>
+  <drone>
+    <id>2</id>
+    <model>b</model>
+    <maxWeight>heavy</maxWeight>
+    <battery>100</battery>
+    <longitude>35.192096609470205</longitude>
+    <latitude>31.765247670878313</latitude>
   </drone>
 </drones>

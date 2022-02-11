@@ -11,12 +11,15 @@
              x:Name="Control">
     <Control.Resources>
         <utils:LocationConverter x:Key="LocationConverter" />
+        <local:ListingConverter x:Key="ListingConverter" />
     </Control.Resources>
     <DockPanel DataContext="{Binding ElementName=Control}">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <CheckBox x:Name="StationsCheckBox" Margin="4" IsChecked="True">Base Stations</CheckBox>
             <CheckBox x:Name="DronesCheckBox" Margin="4" IsChecked="True">Drones</CheckBox>
             <CheckBox x:Name="CustomersCheckBox" Margin="4" IsChecked="True">Customers</CheckBox>
+            <Label Content="{Binding Path=Center.Value}" Margin="4 0 4 0 ">
+            </Label>
         </StackPanel>
         <map:Map Height="auto" Width="auto"
                  MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="16" MouseWheelZoomDelta="0.1"
@@ -28,7 +31,7 @@
                     Description="© [OpenStreetMap contributors](http://www.openstreetmap.org/copyright)" />
             </map:Map.MapLayer>
 
-            <map:MapItemsControl ItemsSource="{Binding Stations}">
+            <map:MapItemsControl ItemsSource="{Binding Dm.Stations}">
                 <map:MapItemsControl.Style>
                     <Style>
                         <Style.Triggers>
@@ -44,6 +47,7 @@
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
                         <Setter Property="VerticalAlignment" Value="Bottom" />
+                        <Setter Property="Opacity" Value="0.75"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
@@ -56,14 +60,21 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Location"
-                                Value="{Binding Path=Location, Converter={StaticResource LocationConverter}}">
+                        <Setter Property="Location">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding />
+                                        <Binding Path="Dm" ElementName="Control"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Setter.Value>
                         </Setter>
                     </Style>
                 </map:MapItemsControl.ItemContainerStyle>
             </map:MapItemsControl>
 
-            <map:MapItemsControl ItemsSource="{Binding Drones}">
+            <map:MapItemsControl ItemsSource="{Binding Dm.Drones}">
                 <map:MapItemsControl.Style>
                     <Style>
                         <Style.Triggers>
@@ -79,6 +90,7 @@
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
                         <Setter Property="VerticalAlignment" Value="Bottom" />
+                        <Setter Property="Opacity" Value="0.75"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
@@ -98,14 +110,21 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Location"
-                                Value="{Binding Path=Location, Converter={StaticResource LocationConverter}}">
+                        <Setter Property="Location">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding />
+                                        <Binding Path="Dm" ElementName="Control"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Setter.Value>
                         </Setter>
                     </Style>
                 </map:MapItemsControl.ItemContainerStyle>
             </map:MapItemsControl>
 
-            <map:MapItemsControl ItemsSource="{Binding Customers}">
+            <map:MapItemsControl ItemsSource="{Binding Dm.Customers}">
                 <map:MapItemsControl.Style>
                     <Style>
                         <Style.Triggers>
@@ -121,6 +140,7 @@
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
                         <Setter Property="VerticalAlignment" Value="Bottom" />
+                        <Setter Property="Opacity" Value="0.75"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
@@ -133,8 +153,15 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Location"
-                                Value="{Binding Path=Location, Converter={StaticResource LocationConverter}}">
+                        <Setter Property="Location">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding />
+                                        <Binding Path="Dm" ElementName="Control"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Setter.Value>
                         </Setter>
                     </Style>
                 </map:MapItemsControl.ItemContainerStyle>

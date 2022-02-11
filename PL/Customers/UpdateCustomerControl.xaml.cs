@@ -69,8 +69,9 @@ namespace PL
         
         private void UpdateCustomerButton_Click(object sender, RoutedEventArgs e)
         {
+            var id = Customer.Value!.Id;
             Bl.UpdateCustomer(Customer.Value!.Id, NewName.Value, NewPhone.Value);
-            CustomerUpdated?.Invoke(this, Customer.Value.Id);
+            CustomerUpdated?.Invoke(this, id);
         }
 
         private void ShowPackage(object sender, MouseButtonEventArgs e)

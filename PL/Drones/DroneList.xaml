@@ -88,7 +88,7 @@
                 </ListView.GroupStyle>
             </ListView>
         </Grid>
-        <local:UpdateDroneControl DroneId="{Binding SelectedDrone.Value}" Bl="{Binding Dm}"
+        <local:UpdateDroneControl DroneId="{Binding SelectedDrone.Value}" Dm="{Binding Dm}"
                                   DroneUpdated="DroneUpdated" />
     </DockPanel>
 </UserControl>

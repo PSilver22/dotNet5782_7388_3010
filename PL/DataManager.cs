@@ -3,8 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Threading;
 using BL;
 using BlApi;
+using DalApi;
 using DO;
 using Customer = BL.Customer;
 using Drone = BL.Drone;
@@ -17,56 +21,64 @@ namespace PL
     /// listing, and wrapping update operations to keep the collections
     /// up-to-date.
     /// </summary>
-    public class DataManager: IBL
+    public class DataManager : IBL
     {
         private readonly IBL _bl;
-        
+
         public ObservableCollection<BaseStationListing> Stations { get; }
         public ObservableCollection<CustomerListing> Customers { get; }
         public ObservableCollection<DroneListing> Drones { get; }
         public ObservableCollection<PackageListing> Packages { get; }
 
+        public ObservableCollection<int> SimulatedDrones { get; } = new();
+
         public DataManager(IBL bl)
         {
             _bl = bl;
-            Stations = new (_bl.GetBaseStationList());
-            Customers = new (_bl.GetCustomerList());
-            Drones = new (_bl.GetDroneList());
-            Packages = new (_bl.GetPackageList());
+            Stations = new(_bl.GetBaseStationList());
+            Customers = new(_bl.GetCustomerList());
+            Drones = new(_bl.GetDroneList());
+            Packages = new(_bl.GetPackageList());
         }
 
-        private BaseStationListing RefreshStationListing(int id)
+        private BaseStationListing RefreshStationListing(int id) => Application.Current.Dispatcher.Invoke(() =>
         {
             Stations.Remove(Stations.Single(s => s.Id == id));
             var station = _bl.GetBaseStationList().First(s => s.Id == id);
             Stations.Add(station);
             return station;
-        }
+        });
 
-        private CustomerListing RefreshCustomerListing(int id)
+        private CustomerListing RefreshCustomerListing(int id) => Application.Current.Dispatcher.Invoke(() =>
         {
             Customers.Remove(Customers.Single(c => c.Id == id));
             var customer = _bl.GetCustomerList().First(c => c.Id == id);
             Customers.Add(customer);
             return customer;
-        }
+        });
 
-        private DroneListing RefreshDroneListing(int id)
+        private DroneListing RefreshDroneListing(int id) => Application.Current.Dispatcher.Invoke(() =>
         {
             Drones.Remove(Drones.Single(d => d.Id == id));
             var drone = _bl.GetDroneList().First(d => d.Id == id);
             Drones.Add(drone);
             return drone;
-        }
+        });
 
-        private PackageListing RefreshPackageListing(int id)
+        private PackageListing RefreshPackageListing(int id) => Application.Current.Dispatcher.Invoke(() =>
         {
             Packages.Remove(Packages.Single(p => p.Id == id));
             var package = _bl.GetPackageList().First(p => p.Id == id);
             Packages.Add(package);
             return package;
-        }
-        
+        });
+
+        public IDAL Dal => _bl.Dal;
+
+        public (double Free, double LightWeight, double MidWeight, double HeavyWeight, double ChargeRate)
+            PowerConsumption
+            => _bl.PowerConsumption;
+
         public void AddBaseStation(int id, string name, double latitude, double longitude, int numChargingSlots)
         {
             _bl.AddBaseStation(id, name, latitude, longitude, numChargingSlots);
@@ -150,10 +162,10 @@ namespace PL
 
         public void DeliverPackageByDrone(int id)
         {
-            var drone = Drones.FirstOrDefault(d => d.Id == id);
+            var pkgId = Drones.FirstOrDefault(d => d.Id == id)?.PackageId;
             _bl.DeliverPackageByDrone(id);
             RefreshDroneListing(id);
-            RefreshPackageListing(drone!.PackageId!.Value);
+            RefreshPackageListing(pkgId!.Value);
         }
 
         public BaseStation GetBaseStation(int id)
@@ -196,9 +208,35 @@ namespace PL
             return _bl.GetPackageList(filter);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void StartSimulator(int id, Func<bool> condition, Action update)
         {
-            _bl.StartSimulator(id, condition, update);
+            new Simulator(this, id, condition, () =>
+            {
+                update();
+                var droneListing = RefreshDroneListing(id);
+                var drone = _bl.GetDrone(id);
+                if (drone.Package is not null)
+                {
+                    RefreshPackageListing(drone.Package.Id);
+                    RefreshCustomerListing(drone.Package.Sender.Id);
+                    RefreshCustomerListing(drone.Package.Receiver.Id);
+                }
+                if (droneListing.ChargingStationId.HasValue)
+                    RefreshStationListing(droneListing.ChargingStationId.Value);
+            });
+        }
+
+        public void StartSimulator(int id)
+        {
+            if (SimulatedDrones.Contains(id)) return;
+            SimulatedDrones.Add(id);
+            StartSimulator(id, () => SimulatedDrones.Contains(id), () => {});
+        }
+
+        public void StopSimulator(int id)
+        {
+            SimulatedDrones.Remove(id);
         }
     }
 }

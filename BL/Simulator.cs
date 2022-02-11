@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.ComponentModel;
 using System.Threading;
 using static BlApi.BL;
 using System.Linq;
@@ -7,47 +8,66 @@ using System.Windows;
 using BL;
 
 
-namespace BlApi {
-    class Simulator {
-        public BL bl;
-        Func<bool> condition;
-        Action updateAction;
-        int droneId;
+namespace BlApi
+{
+    public class Simulator
+    {
+        private readonly IBL _bl;
+        private readonly int _droneId;
 
-        const double droneSpeed = .5;
-        const int stepTime = 1000;
-        const int earthRadius = 6378137;
+        private const double DroneSpeed = 10;
+        private const int StepTime = 500;
+        private const int EarthRadius = 6378137;
         const double threshold = .001;
 
-        public Simulator(BL bl, int droneId, Func<bool> condition, Action updateAction) {
-            this.bl = bl;
-            this.droneId = droneId;
-            this.condition = condition;
-            this.updateAction = updateAction;
+        private readonly BackgroundWorker _worker = new();
 
-            Run();
+        public Simulator(IBL bl, int droneId, Func<bool> condition, Action updateAction)
+        {
+            this._bl = bl;
+            this._droneId = droneId;
+
+            _worker.DoWork += (_, _) => Run();
+            _worker.RunWorkerCompleted += (_, _) =>
+            {
+                updateAction();
+                if (condition())
+                    _worker.RunWorkerAsync();
+            };
+            _worker.RunWorkerAsync();
         }
 
-        private void SimulatorUpdateDroneBattery(Location? startPos = null, Location? endPos = null) {
-            Drone drone = bl.GetDrone(droneId);
+        private void SimulatorUpdateDroneBattery(Location? startPos = null, Location? endPos = null)
+        {
+            Drone drone = _bl.GetDrone(_droneId);
 
-            if (drone.Status == DroneStatus.maintenance) {
-                lock (bl.dal) {
-                    bl.dal.UpdateDrone(droneId,
-                        battery: Math.Min(100, drone.BatteryStatus + bl.powerConsumption.ChargeRate));
+            if (drone.Status == DroneStatus.maintenance)
+            {
+                lock (_bl.Dal)
+                {
+                    _bl.Dal.UpdateDrone(_droneId,
+                        battery: Math.Min(100, drone.BatteryStatus + _bl.PowerConsumption.ChargeRate));
                 }
-            } else {
-                lock (bl.dal) {
+            }
+            else
+            {
+                lock (_bl.Dal)
+                {
                     double distance = (startPos != null) ? Utils.DistanceBetween(startPos, endPos) : 1;
 
-                    bl.dal.UpdateDrone(droneId,
-                        battery: Math.Max(0, drone.BatteryStatus - distance * bl.GetPowerConsumption(drone.WeightCategory)));
+                    var powerConsump = drone.Package is null
+                        ? _bl.PowerConsumption.Free
+                        : _bl.GetPowerConsumption(drone.Package.Weight);
+
+                    _bl.Dal.UpdateDrone(_droneId,
+                        battery: Math.Max(0, drone.BatteryStatus - distance * powerConsump));
                 }
             }
         }
 
-        private Location NextMove(Location destination) {
-            Drone drone = bl.GetDrone(droneId);
+        private Location NextMove(Location destination)
+        {
+            Drone drone = _bl.GetDrone(_droneId);
 
             double totalDLat = Utils.DistanceBetween(drone.Location,
                 new Location(destination.Latitude, drone.Location.Longitude));
@@ -57,89 +77,117 @@ namespace BlApi {
 
             Location direction = GetDirection(drone.Location, destination);
 
-            double dLat = direction.Latitude * (droneSpeed / (totalDLat + totalDLon)) * totalDLat;
-            double dLon = direction.Longitude * (droneSpeed / (totalDLat + totalDLon)) * totalDLon;
+            double dLat = direction.Latitude * (DroneSpeed / (totalDLat + totalDLon)) * totalDLat;
+            double dLon = direction.Longitude * (DroneSpeed / (totalDLat + totalDLon)) * totalDLon;
 
-            return new Location(drone.Location.Latitude + ((180 / Math.PI) * (dLat / earthRadius)),
-                drone.Location.Longitude + ((180 / Math.PI) * (dLon / earthRadius) / Math.Cos(destination.Latitude)));
+            return new Location(drone.Location.Latitude + ((180 / Math.PI) * (dLat / EarthRadius)),
+                drone.Location.Longitude + ((180 / Math.PI) * (dLon / EarthRadius) / Math.Cos(destination.Latitude)));
         }
 
-        private bool InRange(Location destination) {
-            Drone drone = bl.GetDrone(droneId);
+        private bool InRange(Location destination)
+        {
+            Drone drone = _bl.GetDrone(_droneId);
             return GetDirection(drone.Location, destination) !=
-                GetDirection(NextMove(destination), destination);
+                   GetDirection(NextMove(destination), destination);
         }
 
-        private Location GetDirection(Location source, Location destination) {
+        private Location GetDirection(Location source, Location destination)
+        {
             return new Location(
                 (destination.Latitude >= source.Latitude) ? 1 : -1,
                 (destination.Longitude >= source.Longitude) ? 1 : -1);
         }
 
-        private void MoveNextStep(Location destination) {
-            Drone drone = bl.GetDrone(droneId);
+        private void MoveNextStep(Location destination)
+        {
+            Drone drone = _bl.GetDrone(_droneId);
             double distance = Utils.DistanceBetween(destination, drone.Location);
             var nextMove = NextMove(destination);
 
-            lock (bl.dal) {
-                if (InRange(destination)) {
-                    bl.dal.UpdateDrone(droneId,
+            lock (_bl.Dal)
+            {
+                if (InRange(destination))
+                {
+                    _bl.Dal.UpdateDrone(_droneId,
                         longitude: destination.Longitude,
                         latitude: destination.Latitude);
-                } else {
-                    bl.dal.UpdateDrone(droneId,
+                }
+                else
+                {
+                    _bl.Dal.UpdateDrone(_droneId,
                         longitude: nextMove.Longitude,
                         latitude: nextMove.Latitude);
                 }
             }
         }
 
-        public void Run() {
-            while (condition.Invoke()) {
-                Thread.Sleep(stepTime);
+        private void Run()
+        {
+            Thread.Sleep(StepTime);
 
-                lock (bl) {
-                    Drone drone = bl.GetDrone(droneId);
+            lock (_bl)
+            {
+                var drone = _bl.GetDrone(_droneId);
 
-                    if (drone.Status == DroneStatus.free) {
-                        try {
-                            bl.AssignPackageToDrone(drone.Id);
-                        } catch (NoRelevantPackageException ex) {
-                            if (drone.BatteryStatus != 100) {
-                                BaseStation closestStation = bl.GetBaseStation(Utils.ClosestStation(drone.Location, bl.dal.GetStationList()).Id);
+                switch (drone.Status)
+                {
+                    case DroneStatus.free:
+                        try
+                        {
+                            _bl.AssignPackageToDrone(drone.Id);
+                        }
+                        catch (NoRelevantPackageException ex)
+                        {
+                            if (drone.BatteryStatus != 100)
+                            {
+                                BaseStation closestStation =
+                                    _bl.GetBaseStation(Utils.ClosestStation(drone.Location, _bl.Dal.GetStationList())
+                                        .Id);
 
-                                if (drone.Location != closestStation.Location) {
+                                if (drone.Location != closestStation.Location)
+                                {
                                     MoveNextStep(closestStation.Location);
-                                } else if (closestStation.AvailableChargingSlots > 0) {
-                                    bl.SendDroneToCharge(drone.Id);
+                                }
+                                else if (closestStation.AvailableChargingSlots > 0)
+                                {
+                                    _bl.SendDroneToCharge(drone.Id);
                                 }
                             }
                         }
-                    } else if (drone.Status == DroneStatus.maintenance) {
-                        if (drone.BatteryStatus != 100) {
-                            SimulatorUpdateDroneBattery();
-                        } else {
-                            bl.ReleaseDroneFromCharge(droneId);
-                        }
-                    } else {
-                        Package package = bl.GetPackage(drone.Package.Id);
-                        if (package.CollectionTime is null) {
-                            if (drone.Location == drone.Package.CollectionLoc) {
-                                bl.CollectPackageByDrone(droneId);
+
+                        break;
+                    case DroneStatus.maintenance when drone.BatteryStatus != 100:
+                        SimulatorUpdateDroneBattery();
+                        break;
+                    case DroneStatus.maintenance:
+                        _bl.ReleaseDroneFromCharge(_droneId);
+                        break;
+                    case DroneStatus.delivering:
+                    default:
+                    {
+                        Package package = _bl.GetPackage(drone.Package!.Id);
+                        if (package.CollectionTime is null)
+                        {
+                            if (drone.Location == drone.Package.CollectionLoc)
+                            {
+                                _bl.CollectPackageByDrone(_droneId);
                             }
 
                             MoveNextStep(drone.Package.CollectionLoc);
-                        } else {
-                            if (drone.Location == drone.Package.DeliveryLoc) {
-                                bl.DeliverPackageByDrone(droneId);
+                        }
+                        else
+                        {
+                            if (drone.Location == drone.Package.DeliveryLoc)
+                            {
+                                _bl.DeliverPackageByDrone(_droneId);
                             }
 
                             MoveNextStep(drone.Package.DeliveryLoc);
                         }
+
+                        break;
                     }
                 }
-
-                Console.ReadKey();
             }
         }
     }
