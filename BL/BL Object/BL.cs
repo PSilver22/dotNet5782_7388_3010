@@ -44,10 +44,5 @@ namespace BlApi
         {
             new Simulator(this, id, condition, update);
         }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void StartSimulator(int id, Func<bool> condition, Action update) {
-            new Simulator(this, id, condition, update);
-        }
     }
 }
