@@ -2,23 +2,30 @@
 <customers>
   <customer>
     <id>1</id>
-    <name>Guy</name>
-    <phone>123</phone>
-    <longitude>35.19124373016357</longitude>
-    <latitude>31.764936512171737</latitude>
+    <name>Chaim</name>
+    <phone>055-5555555</phone>
+    <longitude>35.191377181865626</longitude>
+    <latitude>31.764835229106417</latitude>
   </customer>
   <customer>
     <id>2</id>
-    <name>Gal</name>
-    <phone>456</phone>
-    <longitude>35.19137247619629</longitude>
-    <latitude>31.763592311377643</latitude>
+    <name>Yosef</name>
+    <phone>055-5555555</phone>
+    <longitude>35.187349162673726</longitude>
+    <latitude>31.764221723788793</latitude>
   </customer>
   <customer>
     <id>3</id>
-    <name>Person</name>
-    <phone>1234</phone>
-    <longitude>35.19239171562195</longitude>
-    <latitude>31.76580891868778</latitude>
+    <name>Avi</name>
+    <phone>055-5555555</phone>
+    <longitude>35.192227941481896</longitude>
+    <latitude>31.754759390111282</latitude>
+  </customer>
+  <customer>
+    <id>4</id>
+    <name>Yaakov</name>
+    <phone>055-5555555</phone>
+    <longitude>35.18726027680042</longitude>
+    <latitude>31.758230631323407</latitude>
   </customer>
 </customers>

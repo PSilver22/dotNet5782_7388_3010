@@ -2,18 +2,26 @@
 <drones>
   <drone>
     <id>1</id>
-    <model>a</model>
-    <maxWeight>heavy</maxWeight>
-    <battery>100</battery>
-    <longitude>35.191401877287454</longitude>
-    <latitude>31.76503228234108</latitude>
+    <model>Flyer2000</model>
+    <maxWeight>medium</maxWeight>
+    <battery>27.453881310044732</battery>
+    <longitude>35.1906</longitude>
+    <latitude>31.765</latitude>
   </drone>
   <drone>
     <id>2</id>
-    <model>b</model>
+    <model>Flyer3000</model>
     <maxWeight>heavy</maxWeight>
-    <battery>100</battery>
-    <longitude>35.192096609470205</longitude>
-    <latitude>31.765247670878313</latitude>
+    <battery>28.120818765890235</battery>
+    <longitude>35.18223097699435</longitude>
+    <latitude>31.76134912658521</latitude>
+  </drone>
+  <drone>
+    <id>3</id>
+    <model>Flyer1000</model>
+    <maxWeight>light</maxWeight>
+    <battery>22.02446390968955</battery>
+    <longitude>35.194485745869876</longitude>
+    <latitude>31.759134025029688</latitude>
   </drone>
 </drones>

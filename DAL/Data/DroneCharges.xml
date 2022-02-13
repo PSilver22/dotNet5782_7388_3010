@@ -1,2 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<droneCharges />
+<droneCharges>
+  <droneCharge>
+    <stationId>1</stationId>
+    <droneId>1</droneId>
+    <startTime>2022-02-13T17:10:48.7816391Z</startTime>
+  </droneCharge>
+  <droneCharge>
+    <stationId>2</stationId>
+    <droneId>2</droneId>
+    <startTime>2022-02-13T17:12:05.3623075Z</startTime>
+  </droneCharge>
+  <droneCharge>
+    <stationId>3</stationId>
+    <droneId>3</droneId>
+    <startTime>2022-02-13T17:16:37.3033476Z</startTime>
+  </droneCharge>
+</droneCharges>

@@ -1,67 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <packages>
   <package>
-    <id>3</id>
-    <senderId>1</senderId>
-    <targetId>2</targetId>
-    <weight>heavy</weight>
-    <priority>regular</priority>
-    <requested>2022-02-10T22:24:26.6079993Z</requested>
-  </package>
-  <package>
-    <id>4</id>
-    <senderId>1</senderId>
-    <targetId>2</targetId>
-    <weight>light</weight>
-    <priority>regular</priority>
-    <requested>2022-02-10T22:28:26.3286396Z</requested>
-  </package>
-  <package>
-    <id>5</id>
-    <senderId>1</senderId>
-    <targetId>3</targetId>
-    <weight>medium</weight>
-    <priority>emergency</priority>
-    <requested>2022-02-10T23:30:42.7087068Z</requested>
-    <droneId>1</droneId>
-    <scheduled>2022-02-11T11:25:52.4837907Z</scheduled>
-    <pickedUp>2022-02-11T11:26:02.367329Z</pickedUp>
-    <delivered>2022-02-11T11:26:15.2428438Z</delivered>
-  </package>
-  <package>
-    <id>1</id>
-    <senderId>1</senderId>
-    <targetId>2</targetId>
-    <weight>heavy</weight>
-    <priority>fast</priority>
-    <requested>2022-02-08T17:43:45.4456752Z</requested>
-    <droneId>1</droneId>
-    <scheduled>2022-02-11T11:26:15.7848744Z</scheduled>
-    <pickedUp />
-    <delivered />
-  </package>
-  <package>
     <id>2</id>
     <senderId>1</senderId>
     <targetId>2</targetId>
+    <weight>medium</weight>
+    <priority>regular</priority>
+    <requested>2022-02-13T17:19:19.8192383Z</requested>
+  </package>
+  <package>
+    <id>3</id>
+    <senderId>2</senderId>
+    <targetId>3</targetId>
     <weight>light</weight>
+    <priority>fast</priority>
+    <requested>2022-02-13T17:24:35.8218647Z</requested>
+  </package>
+  <package>
+    <id>4</id>
+    <senderId>3</senderId>
+    <targetId>4</targetId>
+    <weight>heavy</weight>
     <priority>emergency</priority>
-    <requested>2022-02-10T21:22:11.0211045Z</requested>
-    <droneId>2</droneId>
-    <scheduled>2022-02-11T11:25:58.4107388Z</scheduled>
-    <pickedUp>2022-02-11T11:26:08.5512431Z</pickedUp>
-    <delivered>2022-02-11T11:26:18.6484118Z</delivered>
+    <requested>2022-02-13T17:24:50.0996193Z</requested>
+  </package>
+  <package>
+    <id>5</id>
+    <senderId>4</senderId>
+    <targetId>1</targetId>
+    <weight>light</weight>
+    <priority>regular</priority>
+    <requested>2022-02-13T17:25:00.137591Z</requested>
   </package>
   <package>
     <id>6</id>
     <senderId>3</senderId>
-    <targetId>2</targetId>
+    <targetId>1</targetId>
     <weight>light</weight>
+    <priority>regular</priority>
+    <requested>2022-02-13T17:25:15.8828444Z</requested>
+  </package>
+  <package>
+    <id>7</id>
+    <senderId>2</senderId>
+    <targetId>4</targetId>
+    <weight>heavy</weight>
     <priority>fast</priority>
-    <requested>2022-02-11T11:10:08.5581942Z</requested>
-    <droneId>2</droneId>
-    <scheduled>2022-02-11T11:26:19.2018884Z</scheduled>
-    <pickedUp />
-    <delivered />
+    <requested>2022-02-13T17:25:38.7375282Z</requested>
   </package>
 </packages>

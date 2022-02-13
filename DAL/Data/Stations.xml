@@ -1,10 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <stations>
   <station>
+    <id>4</id>
+    <name>4th Station</name>
+    <longitude>35.18734697698583</longitude>
+    <latitude>31.751541296561356</latitude>
+    <chargeSlots>10</chargeSlots>
+  </station>
+  <station>
     <id>1</id>
-    <name>First Station</name>
-    <longitude>35.191984019851596</longitude>
-    <latitude>31.765279856746353</latitude>
-    <chargeSlots>15</chargeSlots>
+    <name>1st Station</name>
+    <longitude>35.1906</longitude>
+    <latitude>31.765</latitude>
+    <chargeSlots>9</chargeSlots>
+  </station>
+  <station>
+    <id>2</id>
+    <name>2nd Station</name>
+    <longitude>35.18223097699435</longitude>
+    <latitude>31.76134912658521</latitude>
+    <chargeSlots>9</chargeSlots>
+  </station>
+  <station>
+    <id>3</id>
+    <name>3rd Station</name>
+    <longitude>35.194485745869876</longitude>
+    <latitude>31.759134025029688</latitude>
+    <chargeSlots>9</chargeSlots>
   </station>
 </stations>
