@@ -42,23 +42,11 @@ namespace PL
         public BaseStationList()
         {
             Loaded += OnLoaded;
+            Loaded += (_, _) => List.Focus();
         }
         
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            InitializeComponent();
-            
-            SelectedStation.PropertyChanged += (_, _) =>
-            {
-                if (SelectedStation.Value.HasValue)
-                    _lastSelectedStation = SelectedStation.Value;
-            };
-            Dm.Stations.CollectionChanged += (_, _) =>
-            {
-                if (!SelectedStation.Value.HasValue && _lastSelectedStation.HasValue)
-                    SelectedStation.Value = _lastSelectedStation;
-            };
-            
             var view = CollectionViewSource.GetDefaultView(Dm.Stations);
             view.GroupDescriptions.Clear();
             switch (SelectedGrouping.Value)
@@ -74,6 +62,18 @@ namespace PL
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
+            InitializeComponent();
+            
+            SelectedStation.PropertyChanged += (_, _) =>
+            {
+                if (SelectedStation.Value.HasValue)
+                    _lastSelectedStation = SelectedStation.Value;
+            };
+            Dm.Stations.CollectionChanged += (_, _) =>
+            {
+                if (!SelectedStation.Value.HasValue && _lastSelectedStation.HasValue)
+                    SelectedStation.Value = _lastSelectedStation;
+            };
 
             var view = CollectionViewSource.GetDefaultView(Dm.Stations);
             view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));

@@ -46,6 +46,7 @@ namespace PL
         public DroneList()
         {
             Loaded += OnLoaded;
+            Loaded += (_, _) => List.Focus();
         }
 
         private void OnSelectedGroupingOnPropertyChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)

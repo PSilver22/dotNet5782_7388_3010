@@ -30,6 +30,7 @@ namespace PL
         public CustomerList()
         {
             Loaded += OnLoaded;
+            Loaded += (_, _) => List.Focus();
         }
         
 

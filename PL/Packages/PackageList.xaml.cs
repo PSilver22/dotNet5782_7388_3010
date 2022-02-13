@@ -46,6 +46,7 @@ namespace PL
         public PackageList()
         {
             Loaded += OnLoaded;
+            Loaded += (_, _) => List.Focus();
         }
 
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
