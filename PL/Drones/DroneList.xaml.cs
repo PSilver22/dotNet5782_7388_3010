@@ -72,7 +72,7 @@ namespace PL
             {
                 if (SelectedDrone.Value.HasValue)
                     _lastSelectedDrone = SelectedDrone.Value;
-                else SelectedDrone.Value = _lastSelectedDrone;
+                else if (_lastSelectedDrone.HasValue) SelectedDrone.Value = _lastSelectedDrone;
             };
             Dm.Drones.CollectionChanged += (_, _) =>
             {
