@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PL"
              xmlns:utils="clr-namespace:PL.Utilities"
+             xmlns:bl="clr-namespace:BL;assembly=BL"
              xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
@@ -46,17 +47,33 @@
                         <EventSetter Event="MouseDown" Handler="ShowStation" />
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
-                        <Setter Property="VerticalAlignment" Value="Bottom" />
-                        <Setter Property="Opacity" Value="0.75"/>
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="Opacity" Value="0.75" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
-                                    <map:Pushpin>
-                                        <StackPanel Orientation="Vertical">
-                                            <Label FontWeight="Light" Padding="0">Base Station</Label>
-                                            <Label Content="{Binding Name}" Padding="2" />
-                                        </StackPanel>
-                                    </map:Pushpin>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel.RenderTransform>
+                                            <TranslateTransform Y="-15" />
+                                        </StackPanel.RenderTransform>
+                                        <Canvas Height="30" Width="30">
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent"
+                                                  Data="M 0,30 V 20 A 5,5 90 0 1 5,15 H 25 A 5,5 90 0 1 30,20 V 30 Z"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="13" Y1="15" X2="13" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="7" X2="21" Y2="7"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="11" X2="5" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="9" Y1="11" X2="9" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="17" Y1="11" X2="17" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="11" X2="21" Y2="3"/>
+                                        </Canvas>
+                                        <Label Content="{Binding Name}" FontWeight="Bold" Height="20"
+                                               VerticalContentAlignment="Top" Padding="0">
+                                            <Label.Effect>
+                                                <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="1"
+                                                                  Color="White" />
+                                            </Label.Effect>
+                                        </Label>
+                                    </StackPanel>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -65,7 +82,7 @@
                                 <MultiBinding Converter="{StaticResource ListingConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
-                                        <Binding Path="Dm" ElementName="Control"/>
+                                        <Binding Path="Dm" ElementName="Control" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Setter.Value>
@@ -86,38 +103,84 @@
                 </map:MapItemsControl.Style>
                 <map:MapItemsControl.ItemContainerStyle>
                     <Style TargetType="map:MapItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.maintenance}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
                         <EventSetter Event="MouseDown" Handler="ShowDrone" />
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
-                        <Setter Property="VerticalAlignment" Value="Bottom" />
-                        <Setter Property="Opacity" Value="0.75"/>
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="Opacity" Value="0.75" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
-                                    <map:Pushpin>
-                                        <StackPanel Orientation="Vertical">
-                                            <Label FontWeight="Light" Padding="0">Drone</Label>
-                                            <TextBlock Padding="2">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0} [{1}]">
-                                                        <Binding Path="Id" />
-                                                        <Binding Path="Model" />
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                            <Label Content="{Binding PackageId}" ContentStringFormat="{}📦 #{0}">
-                                                <Label.Style>
-                                                    <Style>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding PackageId}" Value="{x:Null}">
-                                                                <Setter Property="Label.Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Label.Style>
-                                            </Label>
-                                        </StackPanel>
-                                    </map:Pushpin>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel.RenderTransform>
+                                            <TranslateTransform Y="-45" />
+                                        </StackPanel.RenderTransform>
+                                        <Label Content="{Binding Model}" FontWeight="SemiBold" Height="30">
+                                            <Label.Effect>
+                                                <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="1"
+                                                                  Color="White" />
+                                            </Label.Effect>
+                                        </Label>
+                                        <Canvas Height="30" Width="30">
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent">
+                                                <Path.Data>
+                                                    <EllipseGeometry RadiusX="8" RadiusY="8" Center="3,3" />
+                                                </Path.Data>
+                                            </Path>
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent">
+                                                <Path.Data>
+                                                    <EllipseGeometry RadiusX="8" RadiusY="8" Center="27,3" />
+                                                </Path.Data>
+                                            </Path>
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent">
+                                                <Path.Data>
+                                                    <EllipseGeometry RadiusX="8" RadiusY="8" Center="3,27" />
+                                                </Path.Data>
+                                            </Path>
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent">
+                                                <Path.Data>
+                                                    <EllipseGeometry RadiusX="8" RadiusY="8" Center="27,27" />
+                                                </Path.Data>
+                                            </Path>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="3" X2="9" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="-3" X2="3" Y2="9"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="3" X2="33" Y2="3"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="-3" X2="27" Y2="9"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="27" X2="9" Y2="27"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="21" X2="3" Y2="33"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="27" X2="33" Y2="27"/>
+                                            <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="21" X2="27" Y2="33"/>
+                                            <Rectangle StrokeThickness="2" Stroke="Black" Fill="Black"
+                                                       Canvas.Top="4" Canvas.Left="4"
+                                                       Height="22" Width="22"
+                                                       RadiusX="3" RadiusY="3" />
+                                            <Label Content="{Binding Id}" Foreground="White" FontWeight="SemiBold"
+                                                   HorizontalContentAlignment="Center"
+                                                   VerticalContentAlignment="Center" Width="30" />
+                                        </Canvas>
+                                        <Label Content="{Binding PackageId}" FontWeight="SemiBold"
+                                               ContentStringFormat="{}📦 #{0}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Label.Effect>
+                                                <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="1"
+                                                                  Color="White" />
+                                            </Label.Effect>
+                                            <Label.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding PackageId}" Value="{x:Null}">
+                                                            <Setter Property="Label.Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Label.Style>
+                                        </Label>
+                                    </StackPanel>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -126,7 +189,7 @@
                                 <MultiBinding Converter="{StaticResource ListingConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
-                                        <Binding Path="Dm" ElementName="Control"/>
+                                        <Binding Path="Dm" ElementName="Control" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Setter.Value>
@@ -150,17 +213,40 @@
                         <EventSetter Event="MouseDown" Handler="ShowCustomer" />
                         <Setter Property="Tag" Value="{Binding Id}" />
                         <Setter Property="AutoCollapse" Value="True" />
-                        <Setter Property="VerticalAlignment" Value="Bottom" />
-                        <Setter Property="Opacity" Value="0.75"/>
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="Opacity" Value="0.75" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="map:MapItem">
-                                    <map:Pushpin>
-                                        <StackPanel Orientation="Vertical">
-                                            <Label FontWeight="Light" Padding="0">Customer</Label>
-                                            <Label Padding="2" Content="{Binding Name}" />
-                                        </StackPanel>
-                                    </map:Pushpin>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel.RenderTransform>
+                                            <TranslateTransform Y="-15" />
+                                        </StackPanel.RenderTransform>
+                                        <Canvas Height="30" Width="30">
+                                            <Path StrokeThickness="2" Stroke="Black" Fill="Transparent">
+                                                <Path.Data>
+                                                    <EllipseGeometry RadiusX="5" RadiusY="5" Center="15,5" />
+                                                </Path.Data>
+                                            </Path>
+                                            <Line StrokeThickness="2" Stroke="Black"
+                                                  X1="15" Y1="10" X2="15" Y2="25"/>
+                                            <Line StrokeThickness="2" Stroke="Black"
+                                                  X1="15" Y1="15" X2="10" Y2="20"/>
+                                            <Line StrokeThickness="2" Stroke="Black"
+                                                  X1="15" Y1="15" X2="20" Y2="20"/>
+                                            <Line StrokeThickness="2" Stroke="Black"
+                                                  X1="15" Y1="25" X2="10" Y2="30"/>
+                                            <Line StrokeThickness="2" Stroke="Black"
+                                                  X1="15" Y1="25" X2="20" Y2="30"/>
+                                        </Canvas>
+                                        <Label Content="{Binding Name}" FontWeight="Bold" Height="20"
+                                               VerticalContentAlignment="Top" Padding="0">
+                                            <Label.Effect>
+                                                <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="1"
+                                                                  Color="White" />
+                                            </Label.Effect>
+                                        </Label>
+                                    </StackPanel>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -169,7 +255,7 @@
                                 <MultiBinding Converter="{StaticResource ListingConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
-                                        <Binding Path="Dm" ElementName="Control"/>
+                                        <Binding Path="Dm" ElementName="Control" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Setter.Value>
