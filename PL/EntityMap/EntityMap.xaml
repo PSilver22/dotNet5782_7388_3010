@@ -58,13 +58,13 @@
                                         </StackPanel.RenderTransform>
                                         <Canvas Height="30" Width="30">
                                             <Path StrokeThickness="2" Stroke="Black" Fill="Transparent"
-                                                  Data="M 0,30 V 20 A 5,5 90 0 1 5,15 H 25 A 5,5 90 0 1 30,20 V 30 Z"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="13" Y1="15" X2="13" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="7" X2="21" Y2="7"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="11" X2="5" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="9" Y1="11" X2="9" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="17" Y1="11" X2="17" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="11" X2="21" Y2="3"/>
+                                                  Data="M 0,30 V 20 A 5,5 90 0 1 5,15 H 25 A 5,5 90 0 1 30,20 V 30 Z" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="13" Y1="15" X2="13" Y2="3" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="7" X2="21" Y2="7" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="5" Y1="11" X2="5" Y2="3" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="9" Y1="11" X2="9" Y2="3" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="17" Y1="11" X2="17" Y2="3" />
+                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="11" X2="21" Y2="3" />
                                         </Canvas>
                                         <Label Content="{Binding Name}" FontWeight="Bold" Height="20"
                                                VerticalContentAlignment="Top" Padding="0">
@@ -105,7 +105,7 @@
                     <Style TargetType="map:MapItem">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.maintenance}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
                         <EventSetter Event="MouseDown" Handler="ShowDrone" />
@@ -147,25 +147,33 @@
                                                     <EllipseGeometry RadiusX="8" RadiusY="8" Center="27,27" />
                                                 </Path.Data>
                                             </Path>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="3" X2="9" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="-3" X2="3" Y2="9"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="3" X2="33" Y2="3"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="-3" X2="27" Y2="9"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="27" X2="9" Y2="27"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="21" X2="3" Y2="33"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="27" X2="33" Y2="27"/>
-                                            <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="21" X2="27" Y2="33"/>
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="3" X2="9" Y2="3"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="-3" X2="3" Y2="9"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="3" X2="33" Y2="3"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="-3" X2="27" Y2="9"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="-3" Y1="27" X2="9" Y2="27"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="3" Y1="21" X2="3" Y2="33"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="27" X2="33" Y2="27"/> -->
+                                            <!-- <Line StrokeThickness="2" Stroke="Black" X1="27" Y1="21" X2="27" Y2="33"/> -->
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="-1" Y1="-1" X2="7" Y2="7" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="-1" Y1="7" X2="7" Y2="-1" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="23" Y1="-1" X2="31" Y2="7" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="23" Y1="7" X2="31" Y2="-1" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="-1" Y1="31" X2="7" Y2="23" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="-1" Y1="23" X2="7" Y2="31" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="23" Y1="31" X2="31" Y2="23" />
+                                            <Line StrokeThickness="2" Stroke="Gray" X1="23" Y1="23" X2="31" Y2="31" />
                                             <Rectangle StrokeThickness="2" Stroke="Black" Fill="Black"
                                                        Canvas.Top="4" Canvas.Left="4"
                                                        Height="22" Width="22"
                                                        RadiusX="3" RadiusY="3" />
                                             <Label Content="{Binding Id}" Foreground="White" FontWeight="SemiBold"
-                                                   HorizontalContentAlignment="Center"
-                                                   VerticalContentAlignment="Center" Width="30" />
+                                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                   Padding="0" Width="30" Height="30" />
                                         </Canvas>
                                         <Label Content="{Binding PackageId}" FontWeight="SemiBold"
-                                               ContentStringFormat="{}📦 #{0}"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                               ContentStringFormat="{}📦 #{0}" Padding="0" Margin="0 6 0 0"
+                                               HorizontalAlignment="Center" VerticalAlignment="Top">
                                             <Label.Effect>
                                                 <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="1"
                                                                   Color="White" />
@@ -229,15 +237,15 @@
                                                 </Path.Data>
                                             </Path>
                                             <Line StrokeThickness="2" Stroke="Black"
-                                                  X1="15" Y1="10" X2="15" Y2="25"/>
+                                                  X1="15" Y1="10" X2="15" Y2="25" />
                                             <Line StrokeThickness="2" Stroke="Black"
-                                                  X1="15" Y1="15" X2="10" Y2="20"/>
+                                                  X1="15" Y1="15" X2="10" Y2="20" />
                                             <Line StrokeThickness="2" Stroke="Black"
-                                                  X1="15" Y1="15" X2="20" Y2="20"/>
+                                                  X1="15" Y1="15" X2="20" Y2="20" />
                                             <Line StrokeThickness="2" Stroke="Black"
-                                                  X1="15" Y1="25" X2="10" Y2="30"/>
+                                                  X1="15" Y1="25" X2="10" Y2="30" />
                                             <Line StrokeThickness="2" Stroke="Black"
-                                                  X1="15" Y1="25" X2="20" Y2="30"/>
+                                                  X1="15" Y1="25" X2="20" Y2="30" />
                                         </Canvas>
                                         <Label Content="{Binding Name}" FontWeight="Bold" Height="20"
                                                VerticalContentAlignment="Top" Padding="0">
