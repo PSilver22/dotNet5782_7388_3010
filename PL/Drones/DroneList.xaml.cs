@@ -34,15 +34,14 @@ namespace PL
         public enum Groups
         {
             status,
-            [Description("weight class")]
-            weightClass
+            [Description("weight class")] weightClass
         }
 
         public Prop<Groups?> SelectedGrouping { get; set; } = new();
 
         private static readonly PropertyGroupDescription StatusGrouping = new("Status");
         private static readonly PropertyGroupDescription WeightGrouping = new("WeightCategory");
-        
+
         public DroneList()
         {
             Loaded += OnLoaded;
@@ -67,18 +66,15 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             InitializeComponent();
-            
+
             SelectedDrone.PropertyChanged += (_, _) =>
             {
                 if (SelectedDrone.Value.HasValue)
                     _lastSelectedDrone = SelectedDrone.Value;
                 else if (_lastSelectedDrone.HasValue) SelectedDrone.Value = _lastSelectedDrone;
             };
-            Dm.Drones.CollectionChanged += (_, _) =>
-            {
-                SelectedDrone.Value = _lastSelectedDrone;
-            };
-            
+            Dm.Drones.CollectionChanged += (_, _) => { SelectedDrone.Value = _lastSelectedDrone; };
+
             var view = CollectionViewSource.GetDefaultView(Dm.Drones);
             view.Filter = ListFilter;
             view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
@@ -87,7 +83,7 @@ namespace PL
 
             Loaded -= OnLoaded;
         }
-        
+
         private bool ListFilter(object item)
         {
             var incl = true;

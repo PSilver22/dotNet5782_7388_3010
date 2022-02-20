@@ -23,16 +23,16 @@ namespace PL
 
         public static readonly DependencyProperty DmProperty =
             DependencyProperty.Register(nameof(Dm), typeof(DataManager), typeof(CustomerList));
-        
+
         public Prop<int?> SelectedCustomer { get; } = new();
         private int? _lastSelectedCustomer = null;
-        
+
         public CustomerList()
         {
             Loaded += OnLoaded;
             Loaded += (_, _) => List.Focus();
         }
-        
+
 
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
@@ -42,12 +42,10 @@ namespace PL
             {
                 if (SelectedCustomer.Value.HasValue)
                     _lastSelectedCustomer = SelectedCustomer.Value;
+                else if (_lastSelectedCustomer.HasValue) SelectedCustomer.Value = _lastSelectedCustomer;
             };
-            Dm.Customers.CollectionChanged += (_, _) =>
-            {
-                if (!SelectedCustomer.Value.HasValue && _lastSelectedCustomer.HasValue)
-                    SelectedCustomer.Value = _lastSelectedCustomer;
-            };
+            Dm.Customers.CollectionChanged += (_, _) => { SelectedCustomer.Value = _lastSelectedCustomer; };
+
             var view = CollectionViewSource.GetDefaultView(Dm.Customers);
             view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
 
@@ -57,10 +55,7 @@ namespace PL
         private void NewCustomer_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var acw = new AddCustomerWindow(Dm);
-            acw.CustomerAdded += id =>
-            {
-                SelectedCustomer.Value = id;
-            };
+            acw.CustomerAdded += id => { SelectedCustomer.Value = id; };
             acw.ShowDialog();
         }
 

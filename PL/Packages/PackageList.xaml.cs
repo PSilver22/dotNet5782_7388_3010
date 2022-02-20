@@ -67,17 +67,14 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             InitializeComponent();
-            
+
             SelectedPackage.PropertyChanged += (_, _) =>
             {
                 if (SelectedPackage.Value.HasValue)
                     _lastSelectedPackage = SelectedPackage.Value;
+                else if (_lastSelectedPackage.HasValue) SelectedPackage.Value = _lastSelectedPackage;
             };
-            Dm.Packages.CollectionChanged += (_, _) =>
-            {
-                if (!SelectedPackage.Value.HasValue && _lastSelectedPackage.HasValue)
-                    SelectedPackage.Value = _lastSelectedPackage;
-            };
+            Dm.Packages.CollectionChanged += (_, _) => { SelectedPackage.Value = _lastSelectedPackage; };
 
             var view = CollectionViewSource.GetDefaultView(Dm.Packages);
             view.Filter = ListFilter;

@@ -44,7 +44,7 @@ namespace PL
             Loaded += OnLoaded;
             Loaded += (_, _) => List.Focus();
         }
-        
+
         private void OnSelectedGroupingChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var view = CollectionViewSource.GetDefaultView(Dm.Stations);
@@ -63,21 +63,18 @@ namespace PL
         private void OnLoaded(object o, RoutedEventArgs routedEventArgs)
         {
             InitializeComponent();
-            
+
             SelectedStation.PropertyChanged += (_, _) =>
             {
                 if (SelectedStation.Value.HasValue)
                     _lastSelectedStation = SelectedStation.Value;
+                else if (_lastSelectedStation.HasValue) SelectedStation.Value = _lastSelectedStation;
             };
-            Dm.Stations.CollectionChanged += (_, _) =>
-            {
-                if (!SelectedStation.Value.HasValue && _lastSelectedStation.HasValue)
-                    SelectedStation.Value = _lastSelectedStation;
-            };
+            Dm.Stations.CollectionChanged += (_, _) => { SelectedStation.Value = _lastSelectedStation; };
 
             var view = CollectionViewSource.GetDefaultView(Dm.Stations);
             view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-            
+
             SelectedGrouping.PropertyChanged += OnSelectedGroupingChanged;
 
             Loaded -= OnLoaded;
@@ -86,10 +83,7 @@ namespace PL
         private void NewStation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var asw = new AddBaseStationWindow(Dm);
-            asw.StationAdded += id =>
-            {
-                SelectedStation.Value = id;
-            };
+            asw.StationAdded += id => { SelectedStation.Value = id; };
             asw.ShowDialog();
         }
 
