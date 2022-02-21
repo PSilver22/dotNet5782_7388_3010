@@ -123,7 +123,7 @@
                             </utils:InfoStackItem>
                             <utils:InfoStackItem Key="Delivery Distance">
                                 <Label Content="{Binding Drone.Value.Package.DeliveryDistance, FallbackValue=''}"
-                                       ContentStringFormat="{}{0:0}m" />
+                                       ContentStringFormat="{}{0:0}km" />
                             </utils:InfoStackItem>
                         </StackPanel>
                     </Expander>
