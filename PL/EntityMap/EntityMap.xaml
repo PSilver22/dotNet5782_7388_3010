@@ -13,6 +13,7 @@
              x:Name="Control">
     <Control.Resources>
         <utils:LocationConverter x:Key="LocationConverter" />
+        <local:ListingLocationConverter x:Key="ListingLocationConverter" />
         <local:ListingConverter x:Key="ListingConverter" />
         <utils:ScaleConverter x:Key="ScaleConverter" />
         <utils:CompareConverter x:Key="CompareConverter" />
@@ -22,8 +23,8 @@
             <CheckBox x:Name="StationsCheckBox" Margin="4" IsChecked="True">Base Stations</CheckBox>
             <CheckBox x:Name="DronesCheckBox" Margin="4" IsChecked="True">Drones</CheckBox>
             <CheckBox x:Name="CustomersCheckBox" Margin="4" IsChecked="True">Customers</CheckBox>
-            <Label Content="{Binding Path=Center.Value}" Margin="4 0 4 0 ">
-            </Label>
+            <Label Content="{Binding Path=Center.Value}" Margin="4 0 4 0 " />
+            <CheckBox x:Name="HideIdleDrones" Margin="4" IsChecked="True">Hide Idle Drones</CheckBox>
         </StackPanel>
         <map:Map Height="auto" Width="auto"
                  MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="16" MouseWheelZoomDelta="0.1"
@@ -38,6 +39,7 @@
             <map:MapItemsControl ItemsSource="{Binding Dm.Stations}">
                 <map:MapItemsControl.Style>
                     <Style>
+                        <Setter Property="Panel.ZIndex" Value="1" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsChecked, ElementName=StationsCheckBox}" Value="False">
                                 <Setter Property="map:MapItemsControl.Visibility" Value="Collapsed" />
@@ -70,19 +72,70 @@
                                             <Line StrokeThickness="2" Stroke="Black" X1="21" Y1="11" X2="21" Y2="3" />
                                         </Canvas>
                                         <Label Content="{Binding Name}" FontWeight="Bold" Height="20"
-                                               VerticalContentAlignment="Top" Padding="0">
+                                               VerticalContentAlignment="Top" HorizontalAlignment="Center" Padding="0">
                                             <Label.Effect>
                                                 <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="1"
                                                                   Color="White" />
                                             </Label.Effect>
                                         </Label>
+                                        <StackPanel Orientation="Vertical" Background="White"
+                                                    Grid.IsSharedSizeScope="True">
+                                            <StackPanel.DataContext>
+                                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                                    <Binding />
+                                                    <Binding Path="Dm" ElementName="Control" />
+                                                </MultiBinding>
+                                            </StackPanel.DataContext>
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger
+                                                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel,AncestorLevel=1}}"
+                                                            Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <Label FontWeight="Bold" Content="{Binding AvailableChargingSlots}"
+                                                   ContentStringFormat="Charging Drones ({0} Avail.)" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Id" />
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Battery" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Content="ID" FontWeight="SemiBold" />
+                                                <Label Grid.Column="1" Content="Battery" />
+                                            </Grid>
+                                            <ItemsControl ItemsSource="{Binding ChargingDrones}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel Orientation="Vertical" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition SharedSizeGroup="Id" />
+                                                                <ColumnDefinition SharedSizeGroup="Battery" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0" Content="{Binding Id}" />
+                                                            <Label Grid.Column="1" Content="{Binding BatteryStatus}"
+                                                                   ContentStringFormat="{}{0:#0.00}%" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
                                     </StackPanel>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                         <Setter Property="Location">
                             <Setter.Value>
-                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                <MultiBinding Converter="{StaticResource ListingLocationConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
                                         <Binding Path="Dm" ElementName="Control" />
@@ -110,6 +163,14 @@
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.maintenance}">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsChecked, ElementName=HideIdleDrones}" Value="True"/>
+                                    <Condition Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.free}"/>
+                                    <Condition Binding="{Binding BatteryStatus}" Value="100.0"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                         <EventSetter Event="MouseDown" Handler="ShowDrone" />
                         <Setter Property="Tag" Value="{Binding Id}" />
@@ -178,7 +239,7 @@
                                                 </Rectangle.Width>
                                                 <Rectangle.Style>
                                                     <Style>
-                                                        <Setter Property="Rectangle.Fill" Value="Green"/>
+                                                        <Setter Property="Rectangle.Fill" Value="Green" />
                                                         <Style.Triggers>
                                                             <DataTrigger Value="-1">
                                                                 <DataTrigger.Binding>
@@ -225,7 +286,7 @@
                         </Setter>
                         <Setter Property="Location">
                             <Setter.Value>
-                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                <MultiBinding Converter="{StaticResource ListingLocationConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
                                         <Binding Path="Dm" ElementName="Control" />
@@ -291,7 +352,7 @@
                         </Setter>
                         <Setter Property="Location">
                             <Setter.Value>
-                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                <MultiBinding Converter="{StaticResource ListingLocationConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding />
                                         <Binding Path="Dm" ElementName="Control" />
