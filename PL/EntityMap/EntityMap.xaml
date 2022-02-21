@@ -106,7 +106,7 @@
                                                     <ColumnDefinition Width="Auto" SharedSizeGroup="Battery" />
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Content="ID" FontWeight="SemiBold" />
-                                                <Label Grid.Column="1" Content="Battery" />
+                                                <Label Grid.Column="1" Content="Battery" FontWeight="SemiBold" />
                                             </Grid>
                                             <ItemsControl ItemsSource="{Binding ChargingDrones}">
                                                 <ItemsControl.ItemsPanel>
