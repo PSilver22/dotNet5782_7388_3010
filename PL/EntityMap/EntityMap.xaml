@@ -165,11 +165,11 @@
                             </DataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsChecked, ElementName=HideIdleDrones}" Value="True"/>
-                                    <Condition Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.free}"/>
-                                    <Condition Binding="{Binding BatteryStatus}" Value="100.0"/>
+                                    <Condition Binding="{Binding IsChecked, ElementName=HideIdleDrones}" Value="True" />
+                                    <Condition Binding="{Binding Status}" Value="{x:Static bl:DroneStatus.free}" />
+                                    <Condition Binding="{Binding BatteryStatus}" Value="100.0" />
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Visibility" Value="Collapsed" />
                             </MultiDataTrigger>
                         </Style.Triggers>
                         <EventSetter Event="MouseDown" Handler="ShowDrone" />
@@ -263,9 +263,16 @@
                                                    VerticalContentAlignment="Center"
                                                    Padding="0" Width="30" Height="30" />
                                         </Canvas>
-                                        <Label Content="{Binding PackageId}" FontWeight="SemiBold"
-                                               ContentStringFormat="{}📦 #{0}" Padding="0" Margin="0 6 0 0"
+                                        <Label Content="{Binding Package.Id}" FontWeight="SemiBold"
+                                               ContentStringFormat="📦 #{0}" Padding="0" Margin="0 6 0 0"
                                                HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <Label.DataContext>
+                                                <MultiBinding Converter="{StaticResource ListingConverter}">
+                                                    <Binding Path="DataContext"
+                                                             RelativeSource="{RelativeSource FindAncestor,AncestorType=StackPanel,AncestorLevel=1}" />
+                                                    <Binding Path="Dm" ElementName="Control" />
+                                                </MultiBinding>
+                                            </Label.DataContext>
                                             <Label.Effect>
                                                 <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="1"
                                                                   Color="White" />
@@ -273,8 +280,13 @@
                                             <Label.Style>
                                                 <Style>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding PackageId}" Value="{x:Null}">
+                                                        <DataTrigger Binding="{Binding Package.Id}" Value="{x:Null}">
                                                             <Setter Property="Label.Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Package.OutForDelivery, FallbackValue=False}"
+                                                            Value="False">
+                                                            <Setter Property="Label.Foreground" Value="Gray" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
