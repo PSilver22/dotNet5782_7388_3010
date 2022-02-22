@@ -68,11 +68,11 @@ namespace DalXML
             {
                 var powerConsumption = config.Element("powerConsumption")!;
                 return (
-                    int.Parse(powerConsumption.Element("free")!.Value),
-                    int.Parse(powerConsumption.Element("light")!.Value),
-                    int.Parse(powerConsumption.Element("mid")!.Value),
-                    int.Parse(powerConsumption.Element("heavy")!.Value),
-                    int.Parse(config.Element("chargeRate")!.Value));
+                    double.Parse(powerConsumption.Element("free")!.Value),
+                    double.Parse(powerConsumption.Element("light")!.Value),
+                    double.Parse(powerConsumption.Element("mid")!.Value),
+                    double.Parse(powerConsumption.Element("heavy")!.Value),
+                    double.Parse(config.Element("chargeRate")!.Value));
             }
             catch
             {
