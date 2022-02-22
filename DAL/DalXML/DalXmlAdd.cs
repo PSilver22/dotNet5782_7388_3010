@@ -1,6 +1,7 @@
 ﻿using DalApi;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 using DAL.Exceptions;
@@ -19,7 +20,7 @@ namespace DalXML
                 throw new InvalidIdException(drone.Id);
             }
 
-            if (DalObject.DataSource.drones.Exists(d => d.Id == drone.Id))
+            if (GetDroneList(d => d.Id == drone.Id).Any())
             {
                 throw new DuplicatedIdException(drone.Id, "drone");
             }
